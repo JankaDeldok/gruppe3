@@ -1,5 +1,6 @@
 package com.jolufeja.httpclient
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
 import okhttp3.Callback
@@ -8,6 +9,7 @@ import okhttp3.Response
 import java.io.IOException
 import kotlin.coroutines.resumeWithException
 
+@OptIn(ExperimentalCoroutinesApi::class)
 suspend fun Call.await(): Response =
     suspendCancellableCoroutine { continuation ->
 
