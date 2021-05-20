@@ -1,4 +1,4 @@
-package com.jolufeja.presentation
+package com.jolufeja.presentation.viewmodel
 
 import com.jolufeja.httpclient.error.ErrorHandler
 import kotlinx.coroutines.CoroutineScope
@@ -62,10 +62,7 @@ fun <E, V> DataSource(
         }
     }
 
-
-
     return DefaultDataSource(status.stateIn(scope, SharingStarted.Eagerly, DataSource.State.Empty)) {
         refreshSignal.trySend(Unit)
     }
-
 }
