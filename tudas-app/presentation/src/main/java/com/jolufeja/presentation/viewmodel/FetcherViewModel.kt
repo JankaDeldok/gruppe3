@@ -3,13 +3,12 @@ package com.jolufeja.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jolufeja.httpclient.error.ErrorHandler
-import com.jolufeja.presentation.viewmodel.DataSource
 import kotlinx.coroutines.flow.*
 
 abstract class FetcherViewModel<E, V>(errorHandler: ErrorHandler<E>, autoLoad: Boolean = true) : ViewModel() {
 
     private val dataSource: DataSource<E, V> =
-        DataSource({ fetchData() }, errorHandler, viewModelScope, autoLoad = autoLoad)
+        DataSource(::fetchData, errorHandler, viewModelScope, autoLoad = autoLoad)
 
     protected abstract suspend fun fetchData(): V
 
