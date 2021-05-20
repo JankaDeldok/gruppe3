@@ -19,6 +19,5 @@ class TudasApplication : Application() {
             modules(ApplicationModule.withDependencies.toList())
         }
 
-
     }
 }
