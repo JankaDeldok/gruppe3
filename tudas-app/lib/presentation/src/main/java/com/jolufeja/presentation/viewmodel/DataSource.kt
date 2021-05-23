@@ -3,7 +3,10 @@ package com.jolufeja.presentation.viewmodel
 import com.jolufeja.httpclient.error.ErrorHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 
 
 interface DataSource<E, V> {
@@ -15,7 +18,6 @@ interface DataSource<E, V> {
     sealed interface State<out E, out V> {
         object Empty : State<Nothing, Nothing>
         object Loading : State<Nothing, Nothing>
-
 
         data class Success<out V>(val data: V) : State<Nothing, V>
         data class Error<out E>(val error: E) : State<E, Nothing>
@@ -43,7 +45,7 @@ fun <E, V> DataSource(
 
     val refreshSignal = Channel<Unit>()
 
-    val status: Flow<DataSource.State<E, V>> = flow {
+    val status = flow {
         if (!autoLoad) {
             refreshSignal.receive()
         }
@@ -60,9 +62,7 @@ fun <E, V> DataSource(
             emit(data)
             refreshSignal.receive()
         }
-    }
+    }.stateIn(scope, SharingStarted.Eagerly, DataSource.State.Empty)
 
-    return DefaultDataSource(status.stateIn(scope, SharingStarted.Eagerly, DataSource.State.Empty)) {
-        refreshSignal.trySend(Unit)
-    }
+    return DefaultDataSource(status) { refreshSignal.trySend(Unit) }
 }

@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
 }
 
 android {
@@ -31,11 +30,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    buildFeatures {
-        dataBinding true
-    }
-
 }
 
 dependencies {
@@ -47,11 +41,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
     implementation "io.insert-koin:koin-core:3.0.1"
     implementation "io.insert-koin:koin-android-ext:3.0.1"
+    api "androidx.navigation:navigation-fragment-ktx:2.3.5"
+    api "androidx.navigation:navigation-ui-ktx:2.3.5"
 
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
-
-    implementation project(":http-client")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
