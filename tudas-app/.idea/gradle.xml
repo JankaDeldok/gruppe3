@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/lib/navigation" />
             <option value="$PROJECT_DIR$/lib/presentation" />
             <option value="$PROJECT_DIR$/lib/theme" />
+            <option value="$PROJECT_DIR$/platform" />
           </set>
         </option>
       </GradleProjectSettings>
