@@ -3,5 +3,6 @@ include 'lib:presentation'
 include 'lib:http-client'
 include 'lib:authentication'
 include 'lib:navigation'
+include 'lib:theme'
 rootProject.name = "tudas"
 

@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/lib/http-client" />
             <option value="$PROJECT_DIR$/lib/navigation" />
             <option value="$PROJECT_DIR$/lib/presentation" />
+            <option value="$PROJECT_DIR$/lib/theme" />
           </set>
         </option>
       </GradleProjectSettings>
