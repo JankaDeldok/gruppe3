@@ -35,6 +35,9 @@ android {
 dependencies {
     api platform(project(':platform'))
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    def nav_version = "2.3.5"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx'
     implementation 'androidx.appcompat:appcompat'
@@ -43,6 +46,9 @@ dependencies {
 
     implementation "io.insert-koin:koin-core"
     implementation "io.insert-koin:koin-android-ext"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation project(":lib:http-client")
     implementation project(":lib:presentation")
