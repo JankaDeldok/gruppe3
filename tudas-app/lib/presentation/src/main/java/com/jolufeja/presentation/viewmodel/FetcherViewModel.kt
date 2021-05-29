@@ -22,7 +22,7 @@ abstract class FetcherViewModel<E, V>(errorHandler: ErrorHandler<E>, autoLoad: B
     val data: StateFlow<V?> = fetchStatus
         .filter { it is DataSource.State.Success<V> }
         .map { (it as DataSource.State.Success<V>).data }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     fun refresh() = dataSource.refresh()
 
