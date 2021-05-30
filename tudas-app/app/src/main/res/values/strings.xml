@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">tudas</string>
+    <string name="challenges">Challenges</string>
+    <string name="rankings">Rankings</string>
+    <string name="profile">Profile</string>
+    <string name="feed">Feed</string>
+    <string name="home">Home</string>
+    <string name="jonathan">Jonathan</string>
+    <string name="points">Points</string>
+    <string name="friends">Friends</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
