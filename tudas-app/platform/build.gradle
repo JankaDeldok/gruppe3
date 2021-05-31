@@ -32,6 +32,8 @@ dependencies {
         api "androidx.navigation:navigation-fragment-ktx:$navVersion"
         api "androidx.navigation:navigation-ui-ktx:$navVersion"
 
+        api "androidx.datastore:datastore-preferences:1.0.0-beta01"
+
         api "io.insert-koin:koin-core:$koinVersion"
         api "io.insert-koin:koin-android-ext:$koinVersion"
 

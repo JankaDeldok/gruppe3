@@ -40,6 +40,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat'
     implementation 'com.google.android.material:material'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core"
+    implementation "androidx.datastore:datastore-preferences"
+    implementation "io.insert-koin:koin-core"
+
+
+    implementation project(":lib:http-client")
 
     testImplementation 'junit:junit'
     androidTestImplementation 'androidx.test.ext:junit'
