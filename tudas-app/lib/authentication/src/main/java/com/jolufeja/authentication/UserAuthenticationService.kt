@@ -25,7 +25,10 @@ class DefaultUserAuthenticationService(
     private val authStore: AuthenticationStore
 ) : UserAuthenticationService {
 
-    object EmptyAuthStoreException : Throwable("Authentication store is empty.")
+    companion object {
+        private object EmptyAuthStoreException : Throwable("Authentication store is empty.")
+        private const val LoginUrl = "Set backend login url here"
+    }
 
     private val authCancellable: MutableStateFlow<CacheState> = MutableStateFlow(CacheState.Active)
 
@@ -40,28 +43,32 @@ class DefaultUserAuthenticationService(
         authCancellable.value = CacheState.Active
     }
 
-
     override suspend fun logout() {
         authStore.clear()
         authCancellable.value = CacheState.Cancelled
     }
 
+    /**
+     * This may become relevant if we decide to include expiration dates for JWT auth tokens. In that case,
+     * the [cached] delegate can automatically try to refresh or revalidate the token through the backend
+     */
     override val authentication: Deferred<AuthenticationInfo> by cached(
         ttlForValue = { Duration.ofDays(100) },
         ttlForError = { Duration.ofMinutes(5) },
         cancellation = authCancellable
     ) { authStore.retrieve() ?: throw EmptyAuthStoreException }
 
+
+    private suspend fun HttpClient.loginCredentialRequest(
+        credentials: UserCredentials
+    ): Either<AuthenticationError.LoginFailed, AuthenticationInfo> = post(LoginUrl)
+        .formBody { form ->
+            form.add("username", credentials.username)
+            form.add("password", credentials.password)
+        }
+        .tryExecute()
+        .awaitJsonBody<AuthenticationInfo>()
+        .mapLeft { AuthenticationError.LoginFailed }
+
 }
 
-private suspend fun HttpClient.loginCredentialRequest(
-    credentials: UserCredentials
-): Either<AuthenticationError.LoginFailed, AuthenticationInfo> = post("TODO()")
-    .formBody { form ->
-        // We need to decide on the exact structure in which the backend expects login requests to be sent.
-        form.add("username", credentials.username)
-        form.add("password", credentials.password)
-    }
-    .tryExecute()
-    .awaitJsonBody<AuthenticationInfo>()
-    .mapLeft { AuthenticationError.LoginFailed }

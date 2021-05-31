@@ -1,12 +1,13 @@
 package com.jolufeja.authentication
 
+import com.jolufeja.authentication.registration.RegistrationModule
 import com.jolufeja.httpclient.HttpClient
 import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
 
 object AuthenticationModule {
 
-    val module = module {
+    private val module = module {
 
         single<UserAuthenticationService> {
             DefaultUserAuthenticationService(get(), get())
@@ -23,5 +24,5 @@ object AuthenticationModule {
         }
     }
 
-    val withDependencies get() = setOf(module)
+    val withDependencies get() = setOf(module) + RegistrationModule.withDependencies
 }
