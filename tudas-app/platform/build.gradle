@@ -15,6 +15,7 @@ def navigationVersion = "2.3.5"
 def jupiterVersion = "5.7.1"
 def kotlinVersion = "1.5.10"
 def navVersion = "2.3.5"
+def kotestVersion = "4.6.0"
 
 dependencies {
 
@@ -36,6 +37,8 @@ dependencies {
 
         api "io.insert-koin:koin-core:$koinVersion"
         api "io.insert-koin:koin-android-ext:$koinVersion"
+        api "io.insert-koin:koin-test:$koinVersion"
+
 
         api "com.squareup.okhttp3:okhttp:$httpVersion"
         api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
@@ -51,6 +54,8 @@ dependencies {
 
         api "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
         api "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
+
+        api "io.kotest:kotest-runner-junit5:$kotestVersion"
 
         api 'junit:junit:4.13.2'
         api 'androidx.test.ext:junit:1.1.2'

@@ -30,6 +30,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
@@ -55,7 +61,8 @@ dependencies {
     implementation project(":lib:navigation")
     implementation project(":lib:theme")
 
-    testImplementation 'junit:junit'
+    testImplementation 'io.kotest:kotest-runner-junit5'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
