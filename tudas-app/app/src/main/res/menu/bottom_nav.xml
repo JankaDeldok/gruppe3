@@ -7,17 +7,17 @@
     <item
         android:id="@+id/feedFragment"
         android:title="@string/feed"
-        android:icon="@drawable/ic_baseline_text_snippet_24"/>
+        android:icon="@drawable/ic_baseline_home_24"/>
     <item
         android:id="@+id/challengesFragment"
         android:title="@string/challenges"
-        android:icon="@drawable/ic_baseline_schedule_24"/>
+        android:icon="@drawable/ic_baseline_home_24"/>
     <item
         android:id="@+id/rankingsFragment"
         android:title="@string/rankings"
-        android:icon="@drawable/ic_baseline_star_24"/>
+        android:icon="@drawable/ic_baseline_home_24"/>
     <item
         android:id="@+id/profileFragment"
         android:title="@string/profile"
-        android:icon="@drawable/ic_baseline_person_24"/>
+        android:icon="@drawable/ic_baseline_home_24"/>
 </menu>
