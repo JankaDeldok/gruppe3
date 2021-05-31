@@ -11,8 +11,6 @@ import java.time.Duration
 
 interface UserAuthenticationService {
 
-    object EmptyAuthStoreException : Throwable("Authentication store is empty.")
-
     suspend fun login(credentials: UserCredentials): Either<AuthenticationError.LoginFailed, Unit>
 
     suspend fun logout()
@@ -27,9 +25,13 @@ class DefaultUserAuthenticationService(
     private val authStore: AuthenticationStore
 ) : UserAuthenticationService {
 
+    object EmptyAuthStoreException : Throwable("Authentication store is empty.")
+
     private val authCancellable: MutableStateFlow<CacheState> = MutableStateFlow(CacheState.Active)
 
-    override suspend fun login(credentials: UserCredentials): Either<AuthenticationError.LoginFailed, Unit> = either {
+    override suspend fun login(
+        credentials: UserCredentials
+    ): Either<AuthenticationError.LoginFailed, Unit> = either {
         val authInfo = httpClient
             .loginCredentialRequest(credentials)
             .bind()
@@ -48,7 +50,7 @@ class DefaultUserAuthenticationService(
         ttlForValue = { Duration.ofDays(100) },
         ttlForError = { Duration.ofMinutes(5) },
         cancellation = authCancellable
-    ) { authStore.retrieve() ?: throw UserAuthenticationService.EmptyAuthStoreException }
+    ) { authStore.retrieve() ?: throw EmptyAuthStoreException }
 
 }
 
