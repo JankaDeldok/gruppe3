@@ -42,6 +42,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core"
     implementation "androidx.datastore:datastore-preferences"
     implementation "io.insert-koin:koin-core"
+    implementation "io.arrow-kt:arrow-fx-coroutines"
 
 
     implementation project(":lib:http-client")

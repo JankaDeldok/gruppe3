@@ -9,7 +9,7 @@ object AuthenticationModule {
     val module = module {
 
         single<UserAuthenticationService> {
-            DefaultUserAuthenticationService(get())
+            DefaultUserAuthenticationService(get(), get())
         }
 
         single<AuthenticationStore> {

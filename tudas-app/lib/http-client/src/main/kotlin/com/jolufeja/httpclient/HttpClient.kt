@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 internal typealias UrlSupplier = () -> HttpUrl
 
 
-interface HttpClient {
+interface HttpClient : RequestBuilderFactory, HttpRequestExecutor  {
 
     companion object {
         fun builder(): Builder =
