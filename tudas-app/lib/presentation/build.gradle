@@ -52,7 +52,7 @@ dependencies {
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     api "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
 
-    implementation project(":lib:http-client")
+    implementation project(':lib:http-client')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

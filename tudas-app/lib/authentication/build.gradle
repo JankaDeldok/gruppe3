@@ -45,7 +45,7 @@ dependencies {
     implementation "io.arrow-kt:arrow-fx-coroutines"
 
 
-    implementation project(":lib:http-client")
+    api project(':lib:http-client')
 
     testImplementation 'junit:junit'
     androidTestImplementation 'androidx.test.ext:junit'

@@ -49,7 +49,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx"
     implementation "androidx.navigation:navigation-ui-ktx"
 
-    implementation project(":lib:http-client")
+    implementation project(':lib:http-client')
     implementation project(":lib:presentation")
     implementation project(":lib:authentication")
     implementation project(":lib:navigation")
