@@ -61,14 +61,15 @@ class DefaultUserAuthenticationService(
 
     private suspend fun HttpClient.loginCredentialRequest(
         credentials: UserCredentials
-    ): Either<AuthenticationError.LoginFailed, AuthenticationInfo> = post(LoginUrl)
-        .formBody { form ->
-            form.add("username", credentials.username)
-            form.add("password", credentials.password)
-        }
-        .tryExecute()
-        .awaitJsonBody<AuthenticationInfo>()
-        .mapLeft { AuthenticationError.LoginFailed }
+    ): Either<AuthenticationError.LoginFailed, AuthenticationInfo> =
+        post(LoginUrl)
+            .formBody { form ->
+                form.add("username", credentials.username)
+                form.add("password", credentials.password)
+            }
+            .tryExecute()
+            .awaitJsonBody<AuthenticationInfo>()
+            .mapLeft { AuthenticationError.LoginFailed }
 
 }
 

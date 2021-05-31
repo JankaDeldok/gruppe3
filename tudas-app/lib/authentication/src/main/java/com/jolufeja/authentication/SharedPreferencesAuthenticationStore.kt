@@ -23,7 +23,7 @@ class SharedPreferencesAuthenticationStore(context: Context) : AuthenticationSto
         val TokenTypeKey = stringPreferencesKey("tokenType")
     }
 
-    private val dataStore = context.dataStore
+    private val dataStore by lazy { context.dataStore }
 
     override suspend fun retrieve(): AuthenticationInfo? = dataStore.data
         .map { store ->
