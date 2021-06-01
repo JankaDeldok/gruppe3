@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/lib/http-client/build
+/app/.idea/workspace.xml
