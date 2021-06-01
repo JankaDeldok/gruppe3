@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tudasGreen">#00bd9d</color>
+    <color name="tudasLightGreen">#c6ffd2</color>
+
+    <color name="tudasPurple">#8783d1</color>
+    <color name="tudasLightPurple">#c6ddff</color>
+
+    <color name="tudasRed">#e06666</color>
+    
+    <color name="tudasYellow">#e0c566</color>
+    <color name="tudasLightYellow">#f6ffde</color>
+    
+    <color name="tudasBlack">#02182b</color>
+    <color name="tudasWhite">#f2f7f8</color>
+</resources>

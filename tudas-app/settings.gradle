@@ -1,4 +1,9 @@
-include ':presentation'
 include ':app'
+include 'lib:presentation'
+include 'lib:http-client'
+include 'lib:authentication'
+include 'lib:navigation'
+include 'lib:theme'
+include ':platform'
 rootProject.name = "tudas"
-include 'http-client'
+
