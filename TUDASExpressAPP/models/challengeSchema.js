@@ -35,6 +35,11 @@ const challengeSchema = new Schema({
     proofMedia: {
         type: String
     },
+    // the reward for finishing a challenge
+    reward: {
+        type: String,
+        required: true,
+    },
     // the points a number is worth, depending on the difficulty
     worth: Number,
 });

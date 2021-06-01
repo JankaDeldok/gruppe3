@@ -17,11 +17,6 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    // salt for password encryption
-    salt: {
-        type: String,
-        required: true,
-    },
     // emailaddress of the suer
     emailAddress: {
         type: String,

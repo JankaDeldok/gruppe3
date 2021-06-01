@@ -32,8 +32,13 @@ db.once('open', function () {
 
 // setup corresponding routes
 var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/userIO');
+// var challengeRouter = require('./routes/challengeIO');
+var authRouter = require('./routes/auth');
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/user', usersRouter);
+// app.use('/challenge', challengeRouter);
+app.use('/auth', authRouter);
 
 
 // catch 404 and forward to error handler

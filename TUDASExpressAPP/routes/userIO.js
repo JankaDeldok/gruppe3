@@ -37,9 +37,10 @@ userIO.use(function (req, res, next) {
     next();
 });
 
+
 // Work in Progress, only serves as a template
-/* POST /userIO/upload-picture */
-userIO.post('/upload-picture', uploadProfilePic.single("file"), auth, async (req, res) => {
+/* POST /user/upload-picture */
+userIO.post('/upload-picture', uploadProfilePic.single("file"), async (req, res) => {
     //get the user from the db
     let user = await User.findById(req.user.id);
 });
