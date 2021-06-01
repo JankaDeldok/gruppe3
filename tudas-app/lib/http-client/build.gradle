@@ -12,7 +12,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "com.squareup.okhttp3:okhttp"
+    api "com.squareup.okhttp3:okhttp"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core"
     implementation "io.arrow-kt:arrow-fx-coroutines"
     implementation "io.insert-koin:koin-core"

@@ -1,10 +1,10 @@
 package com.jolufeja.httpclient
 
-interface HttpInterceptor {
+fun interface HttpInterceptor {
 
     suspend fun intercept(request: HttpClientRequest, chain: Chain): HttpClientResponse
 
-    interface Chain {
+    fun interface Chain {
         suspend fun proceed(request: HttpClientRequest): HttpClientResponse
     }
 }

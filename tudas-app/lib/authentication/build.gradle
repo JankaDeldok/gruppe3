@@ -40,8 +40,17 @@ dependencies {
     implementation 'androidx.appcompat:appcompat'
     implementation 'com.google.android.material:material'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core"
+    implementation "androidx.datastore:datastore-preferences"
 
-    testImplementation 'junit:junit'
+    implementation "io.insert-koin:koin-core"
+    implementation "io.arrow-kt:arrow-fx-coroutines"
+
+
+    api project(':lib:http-client')
+
+    testImplementation "io.kotest:kotest-runner-junit5"
+    testImplementation "io.insert-koin:koin-test"
+
     androidTestImplementation 'androidx.test.ext:junit'
     androidTestImplementation 'androidx.test.espresso:espresso-core'
 }

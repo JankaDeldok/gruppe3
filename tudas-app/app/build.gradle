@@ -30,10 +30,18 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
     api platform(project(':platform'))
+
+    implementation 'androidx.legacy:legacy-support-v4'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx'
@@ -44,13 +52,17 @@ dependencies {
     implementation "io.insert-koin:koin-core"
     implementation "io.insert-koin:koin-android-ext"
 
-    implementation project(":lib:http-client")
+    implementation "androidx.navigation:navigation-fragment-ktx"
+    implementation "androidx.navigation:navigation-ui-ktx"
+
+    implementation project(':lib:http-client')
     implementation project(":lib:presentation")
     implementation project(":lib:authentication")
     implementation project(":lib:navigation")
     implementation project(":lib:theme")
 
-    testImplementation 'junit:junit'
+    testImplementation 'io.kotest:kotest-runner-junit5'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
