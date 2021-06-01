@@ -4,7 +4,6 @@ import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import kotlinx.coroutines.runBlocking
-import org.koin.core.context.startKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
 
@@ -15,8 +14,7 @@ class DefaultUserAuthenticationServiceTest : FunSpec(), KoinTest {
     private val authStore: AuthenticationStore by inject()
 
     init {
-
-            startKoin { modules(AuthenticationTestModule.withDependencies.toList()) }
+        AuthenticationTestModule.init()
 
             test("login") { }
 

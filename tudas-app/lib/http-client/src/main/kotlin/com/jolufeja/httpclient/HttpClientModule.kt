@@ -6,11 +6,11 @@ import okhttp3.OkHttpClient
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-fun provideUrl(): String = TODO("Provide static tudas backend URL")
+fun provideUrl(): String = "http://localhost:3000/"
 
 object HttpClientModule {
 
-    val module = module {
+    private val module = module {
 
         single {
             OkHttpClient.Builder().build()

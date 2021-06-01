@@ -27,7 +27,7 @@ class DefaultUserAuthenticationService(
 
     companion object {
         private object EmptyAuthStoreException : Throwable("Authentication store is empty.")
-        private const val LoginUrl = "Set backend login url here"
+        private const val LoginUrl = "auth/login"
     }
 
     private val authCancellable: MutableStateFlow<CacheState> = MutableStateFlow(CacheState.Active)
@@ -69,7 +69,7 @@ class DefaultUserAuthenticationService(
             }
             .tryExecute()
             .awaitJsonBody<AuthenticationInfo>()
-            .mapLeft { AuthenticationError.LoginFailed }
+            .mapLeft { AuthenticationError.LoginFailed(it.message) }
 
 }
 

@@ -1,5 +1,5 @@
 package com.jolufeja.authentication
 
 sealed interface AuthenticationError {
-    object LoginFailed : AuthenticationError
+   data class LoginFailed(val reason: String) : AuthenticationError
 }

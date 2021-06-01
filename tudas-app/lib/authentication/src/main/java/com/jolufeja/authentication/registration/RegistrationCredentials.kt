@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class RegistrationCredentials(
-    val firstName: String,
-    val lastName: String,
-    val userName: String,
-    val emailAddress: String,
+    val name: String,
+    val email: String,
     val password: String
 )

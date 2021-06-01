@@ -2,5 +2,5 @@ package com.jolufeja.authentication.registration
 
 
 sealed interface RegistrationError {
-    object RegistrationFailed : RegistrationError
+   data class RegistrationFailed(val reason: String) : RegistrationError
 }

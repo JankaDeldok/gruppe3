@@ -1,7 +1,6 @@
 package com.jolufeja.authentication
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
-data class AuthenticationInfo(
-    val type: String,
-    val token: String
-)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class AuthenticationInfo(val token: String)

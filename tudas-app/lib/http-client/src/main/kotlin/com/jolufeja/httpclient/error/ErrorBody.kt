@@ -1,5 +1,4 @@
 package com.jolufeja.httpclient.error
 
-data class ErrorBody(
-    val placeholder: Unit
-)
+
+data class ErrorBody(val msg: String)

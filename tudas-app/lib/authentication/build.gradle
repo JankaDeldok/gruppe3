@@ -3,7 +3,11 @@ plugins {
     id 'kotlin-android'
 }
 
+
+
 android {
+
+
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -29,6 +33,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
     }
 }
 

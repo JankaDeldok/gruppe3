@@ -21,7 +21,7 @@ class DefaultRegistrationService(
 ) : RegistrationService {
 
     companion object {
-        private const val RegistrationUrl: String = "Set corresponding backend url here"
+        private const val RegistrationUrl: String = "auth/register"
     }
 
     override suspend fun registerUser(
@@ -42,7 +42,7 @@ class DefaultRegistrationService(
             .jsonBody(credentials)
             .tryExecute()
             .awaitJsonBody<AuthenticationInfo>()
-            .mapLeft { RegistrationError.RegistrationFailed }
+            .mapLeft { RegistrationError.RegistrationFailed(it.message) }
 
 
 }
