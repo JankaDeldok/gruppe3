@@ -8,5 +8,10 @@
     <string name="jonathan">Jonathan</string>
     <string name="points">Points</string>
     <string name="friends">Friends</string>
+    <string name="no_account_yet_register_now">No account yet? Register now</string>
+    <string name="log_in">Log in</string>
+    <string name="password">password</string>
+    <string name="username">username</string>
+    <string name="signing_in">Signing in</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
