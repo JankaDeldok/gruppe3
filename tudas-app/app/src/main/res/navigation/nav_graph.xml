@@ -14,12 +14,12 @@
 
         <fragment
                 android:id="@+id/loginFragment"
-                android:name="com.jolufeja.tudas.LoginFragment"
+                android:name="com.jolufeja.tudas.login.LoginFragment"
                 android:label="fragment_login"
                 tools:layout="@layout/fragment_login"/>
         <fragment
                 android:id="@+id/registrationFragment"
-                android:name="com.jolufeja.tudas.RegistrationFragment"
+                android:name="com.jolufeja.tudas.registration.RegistrationFragment"
                 android:label="fragment_registration"
                 tools:layout="@layout/fragment_registration"/>
     </navigation>

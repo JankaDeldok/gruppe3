@@ -1,4 +1,4 @@
-package com.jolufeja.tudas
+package com.jolufeja.tudas.registration
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -41,7 +41,7 @@ class RegistrationViewModel(
                 ifLeft = {
                     Log.d("RegistrationViewModel", "Registration failed due to: $it")
                 },
-                ifRight = { navigator.publish(LoginNavigationEvents.PROCEED_TO_HOME) }
+                ifRight = { navigator.publish(RegistrationNavigationEvents.PROCEED_TO_HOME) }
             )
         }
     }

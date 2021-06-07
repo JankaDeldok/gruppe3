@@ -8,8 +8,11 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.jolufeja.navigation.NavigationEvent
 import com.jolufeja.navigation.NavigationEventBus
 import com.jolufeja.navigation.eventDrivenNavigation
+import com.jolufeja.tudas.login.LoginNavigationEvents
+import com.jolufeja.tudas.registration.RegistrationNavigationEvents
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
@@ -31,20 +34,20 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         bottomNavigationView.setupWithNavController(navController)
 
         lifecycleScope.launch {
-            navigationEventBus.subscribe { navigationSubscriptions(navController)(it) }
+            navigationEventBus.subscribe { navController.navigationSubscriptions(it) }
         }
     }
 
 }
 
-private fun navigationSubscriptions(navController: NavController) =
-    eventDrivenNavigation(navController) {
+private fun NavController.navigationSubscriptions(event: NavigationEvent) =
+    eventDrivenNavigation(this) {
         register(RegistrationNavigationEvents.PROCEED_TO_HOME, R.id.nav_graph_authenticated)
         register(RegistrationNavigationEvents.PROCEED_TO_LOGIN, R.id.loginFragment)
 
         register(LoginNavigationEvents.PROCEED_TO_HOME, R.id.nav_graph_authenticated)
         register(LoginNavigationEvents.PROCEED_TO_REGISTRATION, R.id.registrationFragment)
-    }
+    }(event)
 
 private fun NavController.hideBottomNavigationOnInit(bottomNavigation: BottomNavigationView) =
     apply {

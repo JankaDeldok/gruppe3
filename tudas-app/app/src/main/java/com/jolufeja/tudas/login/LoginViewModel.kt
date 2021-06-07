@@ -1,4 +1,4 @@
-package com.jolufeja.tudas
+package com.jolufeja.tudas.login
 
 import android.util.Log
 import androidx.lifecycle.*

@@ -3,6 +3,10 @@ package com.jolufeja.tudas
 import com.jolufeja.authentication.AuthenticationModule
 import com.jolufeja.httpclient.HttpClientModule
 import com.jolufeja.navigation.EventDrivenNavigationModule
+import com.jolufeja.tudas.login.LoginFragment
+import com.jolufeja.tudas.login.LoginViewModel
+import com.jolufeja.tudas.registration.RegistrationFragment
+import com.jolufeja.tudas.registration.RegistrationViewModel
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
