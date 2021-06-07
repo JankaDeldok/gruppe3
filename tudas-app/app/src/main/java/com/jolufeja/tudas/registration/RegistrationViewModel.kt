@@ -1,20 +1,18 @@
 package com.jolufeja.tudas.registration
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jolufeja.authentication.registration.RegistrationCredentials
 import com.jolufeja.authentication.registration.RegistrationService
-import com.jolufeja.navigation.NavigationEventPublisher
+import com.jolufeja.presentation.viewmodel.BaseViewModel
+import com.jolufeja.presentation.viewmodel.debug
 import com.jolufeja.tudas.CommonNavigationEvents
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 
 class RegistrationViewModel(
-    private val registrationService: RegistrationService,
-    private val navigator: NavigationEventPublisher
-) : ViewModel() {
+    private val registrationService: RegistrationService
+) : BaseViewModel() {
 
     val userName: MutableStateFlow<String> = MutableStateFlow("")
     val password: MutableStateFlow<String> = MutableStateFlow("")
@@ -34,9 +32,7 @@ class RegistrationViewModel(
             )
 
             registrationService.registerUser(credentials).fold(
-                ifLeft = {
-                    Log.d("RegistrationViewModel", "Registration failed due to: $it")
-                },
+                ifLeft = { debug("Registration failed", it) },
                 ifRight = { navigator.publish(CommonNavigationEvents.PROCEED_TO_HOME) }
             )
         }

@@ -1,11 +1,13 @@
 package com.jolufeja.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jolufeja.httpclient.error.ErrorHandler
 import kotlinx.coroutines.flow.*
 
-abstract class FetcherViewModel<E, V>(errorHandler: ErrorHandler<E>, autoLoad: Boolean = true) : ViewModel() {
+abstract class FetcherViewModel<E, V>(
+    errorHandler: ErrorHandler<E>,
+    autoLoad: Boolean = true
+) : BaseViewModel() {
 
     private val dataSource: DataSource<E, V> =
         DataSource(::fetchData, errorHandler, viewModelScope, autoLoad = autoLoad)
