@@ -1,6 +1,5 @@
 package com.jolufeja.navigation
 
-import android.util.Log
 import kotlinx.coroutines.flow.*
 
 interface NavigationEventPublisher {

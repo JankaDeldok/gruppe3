@@ -1,6 +1,5 @@
 package com.jolufeja.navigation
 
-import android.util.Log
 import androidx.navigation.NavController
 
 internal class NavControllerNavigator(

@@ -20,7 +20,7 @@ object AuthenticationTestModule {
         single<UserAuthenticationService> { DefaultUserAuthenticationService(get(), get()) }
     }
 
-    val withDependencies = setOf(module) + HttpClientModule.withDependencies
+    private val withDependencies = setOf(module) + HttpClientModule.withDependencies
 
     init {
         startKoin { modules(withDependencies.toList()) }

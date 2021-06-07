@@ -38,7 +38,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.497"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="" />
 
             <EditText
                     android:id="@+id/editTextTextPassword"
@@ -52,7 +53,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.497"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"/>
+                    app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+                android:autofillHints="" />
 
             <Button
                     android:id="@+id/button2"

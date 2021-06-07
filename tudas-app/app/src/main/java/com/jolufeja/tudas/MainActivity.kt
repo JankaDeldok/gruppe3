@@ -1,12 +1,10 @@
 package com.jolufeja.tudas
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,15 +25,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
 
-        val navController = findNavController(R.id.nav_fragment).also {
-            it.addOnDestinationChangedListener { _, dest, _ ->
-                if (dest.id == R.id.loginFragment || dest.id == R.id.registrationFragment ) {
-                    bottomNavigationView.visibility = View.GONE
-                } else {
-                    bottomNavigationView.visibility = View.VISIBLE
-                }
-            }
-        }
+        val navController = findNavController(R.id.nav_fragment)
+            .hideBottomNavigationOnInit(bottomNavigationView)
 
         bottomNavigationView.setupWithNavController(navController)
 
@@ -44,11 +35,24 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    private fun navigationSubscriptions(navController: NavController) = eventDrivenNavigation(navController) {
+}
+
+private fun navigationSubscriptions(navController: NavController) =
+    eventDrivenNavigation(navController) {
         register(RegistrationNavigationEvents.PROCEED_TO_HOME, R.id.nav_graph_authenticated)
         register(RegistrationNavigationEvents.PROCEED_TO_LOGIN, R.id.loginFragment)
 
         register(LoginNavigationEvents.PROCEED_TO_HOME, R.id.nav_graph_authenticated)
         register(LoginNavigationEvents.PROCEED_TO_REGISTRATION, R.id.registrationFragment)
     }
-}
+
+private fun NavController.hideBottomNavigationOnInit(bottomNavigation: BottomNavigationView) =
+    apply {
+        addOnDestinationChangedListener { _, dest, _ ->
+            if (dest.id == R.id.loginFragment || dest.id == R.id.registrationFragment) {
+                bottomNavigation.visibility = View.GONE
+            } else {
+                bottomNavigation.visibility = View.VISIBLE
+            }
+        }
+    }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.*
 
 abstract class FetcherViewModel<E, V>(errorHandler: ErrorHandler<E>, autoLoad: Boolean = true) : ViewModel() {
 
-    protected val dataSource: DataSource<E, V> =
+    private val dataSource: DataSource<E, V> =
         DataSource(::fetchData, errorHandler, viewModelScope, autoLoad = autoLoad)
 
     protected abstract suspend fun fetchData(): V

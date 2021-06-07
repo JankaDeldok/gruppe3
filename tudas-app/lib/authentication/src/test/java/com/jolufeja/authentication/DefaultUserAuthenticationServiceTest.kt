@@ -3,7 +3,7 @@ package com.jolufeja.authentication
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import org.koin.test.KoinTest
 import org.koin.test.inject
 
@@ -19,7 +19,7 @@ class DefaultUserAuthenticationServiceTest : FunSpec(), KoinTest {
             test("login") { }
 
             test("logout clears the AuthenticationStore and succeeds on empty") {
-                runBlocking {
+                launch {
                     shouldNotThrowAny { authStore.clear() }
                     shouldNotThrowAny { authStore.retrieve().shouldBeNull() }
                 }

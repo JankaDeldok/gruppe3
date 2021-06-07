@@ -10,8 +10,6 @@ import com.jolufeja.httpclient.awaitJsonBody
 import com.jolufeja.httpclient.awaitJsonBodyOrNull
 
 
-typealias Result<T> = Either<CommonErrors, T>
-
 typealias ErrorConstructor = (String) -> CommonErrors
 
 fun interface ErrorHandler<E> : (Throwable) -> E {

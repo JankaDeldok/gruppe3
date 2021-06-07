@@ -16,9 +16,6 @@ interface HttpClientResponse {
 
     suspend fun <T : Any> awaitReadBodyOrNull(reader: (InputStream) -> T): T?
 
-    suspend fun <T : Any> awaitReadBody(reader: (InputStream) -> T): T =
-        awaitReadBodyOrNull(reader) ?: throw MissingResponseBodyException()
-
     suspend fun <T : Any> awaitJsonBodyOrNull(payloadType: JsonTypeSupplier<T>): T?
 
     suspend fun <T : Any> awaitJsonBody(payloadType: JsonTypeSupplier<T>): T =

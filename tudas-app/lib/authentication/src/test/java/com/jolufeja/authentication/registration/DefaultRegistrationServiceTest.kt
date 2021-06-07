@@ -6,7 +6,7 @@ import com.jolufeja.authentication.AuthenticationTestModule
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.types.shouldBeInstanceOf
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import org.koin.test.KoinTest
 import org.koin.test.inject
 
@@ -21,13 +21,14 @@ class DefaultRegistrationServiceTest : FunSpec(), KoinTest {
         AuthenticationTestModule.init()
 
         test("User registration returns valid auth token for new user") {
-            runBlocking {
+            launch {
                 val result = registrationService.registerUser(
                     RegistrationCredentials(randomString(), randomString(), randomString())
                 )
 
                 when(result) {
-                    is Either.Left -> println(result.value.toString())
+                    is Either.Left -> println("Failed due to: ${result.value}")
+                    else -> println("Success.")
                 }
 
                 result.shouldBeInstanceOf<Either.Right<Unit>>()

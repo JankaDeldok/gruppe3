@@ -6,7 +6,7 @@ import org.koin.dsl.module
 
 object EventDrivenNavigationModule {
 
-    val module = module {
+    private val module = module {
         single { DefaultNavigationEventBus() }
             .bind<NavigationEventBus>()
             .bind<NavigationEventPublisher>()
