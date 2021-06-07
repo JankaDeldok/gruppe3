@@ -1,8 +1,7 @@
 package com.jolufeja.navigation
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
+import android.util.Log
+import kotlinx.coroutines.flow.*
 
 interface NavigationEventPublisher {
 
@@ -19,10 +18,10 @@ interface NavigationEventBus {
 
 internal class DefaultNavigationEventBus : NavigationEventBus, NavigationEventPublisher {
 
-    private val _sharedFlow = MutableSharedFlow<NavigationEvent>()
+    private val _sharedFlow = MutableSharedFlow<NavigationEvent>(10)
 
     override fun asFlow(): Flow<NavigationEvent> =
-        _sharedFlow
+        _sharedFlow.asSharedFlow()
 
     override fun publish(event: NavigationEvent) {
         _sharedFlow.tryEmit(event)

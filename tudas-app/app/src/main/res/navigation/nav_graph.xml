@@ -1,43 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/mainFragment">
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.jolufeja.tudas.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/feedFragment"
-        android:name="com.jolufeja.tudas.FeedFragment"
-        android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed" />
-    <fragment
-        android:id="@+id/challengesFragment"
-        android:name="com.jolufeja.tudas.ChallengesFragment"
-        android:label="fragment_challenges"
-        tools:layout="@layout/fragment_challenges" />
-    <fragment
-        android:id="@+id/rankingsFragment"
-        android:name="com.jolufeja.tudas.RankingsFragment"
-        android:label="fragment_rankings"
-        tools:layout="@layout/fragment_rankings" />
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.jolufeja.tudas.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.jolufeja.tudas.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
-    <fragment
-        android:id="@+id/registrationFragment"
-        android:name="com.jolufeja.tudas.RegistrationFragment"
-        android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" />
+            android:id="@+id/mainFragment"
+            android:name="com.jolufeja.tudas.MainFragment" />
+
+    <navigation android:id="@+id/nav_graph_unauthenticated"
+                app:startDestination="@id/registrationFragment">
+
+        <fragment
+                android:id="@+id/loginFragment"
+                android:name="com.jolufeja.tudas.LoginFragment"
+                android:label="fragment_login"
+                tools:layout="@layout/fragment_login"/>
+        <fragment
+                android:id="@+id/registrationFragment"
+                android:name="com.jolufeja.tudas.RegistrationFragment"
+                android:label="fragment_registration"
+                tools:layout="@layout/fragment_registration"/>
+    </navigation>
+
+    <navigation android:id="@+id/nav_graph_authenticated"
+                app:startDestination="@id/homeFragment">
+
+        <fragment
+                android:id="@+id/homeFragment"
+                android:name="com.jolufeja.tudas.HomeFragment"
+                android:label="fragment_home"
+                tools:layout="@layout/fragment_home"/>
+        <fragment
+                android:id="@+id/feedFragment"
+                android:name="com.jolufeja.tudas.FeedFragment"
+                android:label="fragment_feed"
+                tools:layout="@layout/fragment_feed"/>
+        <fragment
+                android:id="@+id/challengesFragment"
+                android:name="com.jolufeja.tudas.ChallengesFragment"
+                android:label="fragment_challenges"
+                tools:layout="@layout/fragment_challenges"/>
+        <fragment
+                android:id="@+id/rankingsFragment"
+                android:name="com.jolufeja.tudas.RankingsFragment"
+                android:label="fragment_rankings"
+                tools:layout="@layout/fragment_rankings"/>
+        <fragment
+                android:id="@+id/profileFragment"
+                android:name="com.jolufeja.tudas.ProfileFragment"
+                android:label="fragment_profile"
+                tools:layout="@layout/fragment_profile"/>
+    </navigation>
+
 </navigation>

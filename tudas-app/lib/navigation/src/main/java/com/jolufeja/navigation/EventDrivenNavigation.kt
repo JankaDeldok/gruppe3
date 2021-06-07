@@ -6,6 +6,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 
 
+fun eventDrivenNavigation(
+    navController: NavController,
+    spec: EventDrivenNavigationBuilder.() -> Unit
+): (NavigationEvent) -> Unit = EventDrivenNavigationBuilderImpl(navController)
+    .apply(spec)
+    .build()
+
 @DslMarker
 annotation class EventDrivenNavigationDsl
 
@@ -47,7 +54,7 @@ inline fun <reified T : NavigationEvent> EventDrivenNavigationBuilder.register(
     noinline argsSpec: Bundle.(T) -> Unit
 ) = register(T::class.java, actionId, options, argsSpec)
 
-inline fun <reified T : NavigationEvent> EventDrivenNavigationBuilder.regsiter(
+inline fun <reified T : NavigationEvent> EventDrivenNavigationBuilder.register(
     noinline action: NavController.(T) -> Unit
 ) = register(T::class.java, action)
 
@@ -55,8 +62,10 @@ private class EventDrivenNavigationBuilderImpl(
     private val navController: NavController
 ) : EventDrivenNavigationBuilder {
 
-    private val navActionsByInstance = mutableMapOf<NavigationEvent, (NavController) -> Unit>()
-    private val navActionsByType = mutableMapOf<Class<out NavigationEvent>, (NavController, NavigationEvent) -> Unit>()
+    private val navActionsByInstance =
+        mutableMapOf<NavigationEvent, (NavController) -> Unit>()
+    private val navActionsByType =
+        mutableMapOf<Class<out NavigationEvent>, (NavController, NavigationEvent) -> Unit>()
 
     override fun register(event: NavigationEvent, actionId: Int, options: NavOptions?, args: Bundle) {
         navActionsByInstance[event] = { navController ->
@@ -85,7 +94,7 @@ private class EventDrivenNavigationBuilderImpl(
                 @Suppress("UNCHECKED_CAST")
                 argsSpec(navigationEvent as T)
             }
-            navController.navigate(actionId, args , options)
+            navController.navigate(actionId, args, options)
         }
     }
 
