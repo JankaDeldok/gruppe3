@@ -20,8 +20,8 @@ abstract class FetcherViewModel<E, V>(errorHandler: ErrorHandler<E>, autoLoad: B
      * If no value was successfully produced at the point of subscription, this stateflow will return null.
      */
     val data: StateFlow<V?> = fetchStatus
-        .filter { it is DataSource.State.Success<V> }
-        .map { (it as DataSource.State.Success<V>).data }
+        .filterIsInstance<DataSource.State.Success<V>>()
+        .map { it.data }
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     fun refresh() = dataSource.refresh()
