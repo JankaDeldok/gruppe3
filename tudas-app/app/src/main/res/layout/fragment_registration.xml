@@ -23,7 +23,7 @@
                     android:layout_marginTop="76dp"
                     android:ems="10"
                     android:inputType="textEmailAddress"
-                    android:text="@={registrationViewModel.emailAddressData}"
+                    android:text="@={registrationViewModel.emailAddress}"
                     android:hint="Email address"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.502"
@@ -37,7 +37,7 @@
                     android:layout_marginTop="132dp"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="@={registrationViewModel.userNameData}"
+                    android:text="@={registrationViewModel.userName}"
                     android:hint="@string/username"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.502"
@@ -51,7 +51,7 @@
                     android:layout_marginTop="16dp"
                     android:ems="10"
                     android:inputType="textPassword"
-                    android:text="@={registrationViewModel.passwordData}"
+                    android:text="@={registrationViewModel.password}"
                     android:hint="@string/password"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button2"/>
+                    app:layout_constraintTop_toBottomOf="@+id/registerButton"/>
 
             <TextView
                     android:id="@+id/textView5"

@@ -6,10 +6,7 @@ import com.jolufeja.authentication.registration.RegistrationCredentials
 import com.jolufeja.authentication.registration.RegistrationService
 import com.jolufeja.navigation.NavigationEvent
 import com.jolufeja.navigation.NavigationEventPublisher
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 
@@ -23,37 +20,28 @@ class RegistrationViewModel(
     private val navigator: NavigationEventPublisher
 ) : ViewModel() {
 
-    val userNameData: MutableLiveData<String> = MutableLiveData("")
-    val passwordData: MutableLiveData<String> = MutableLiveData("")
-    val emailAddressData: MutableLiveData<String> = MutableLiveData("")
+    val userName: MutableStateFlow<String> = MutableStateFlow("")
+    val password: MutableStateFlow<String> = MutableStateFlow("")
+    val emailAddress: MutableStateFlow<String> = MutableStateFlow("")
 
-
-    private val userNameState: StateFlow<String> =
-        userNameData.asFlow().stateIn(viewModelScope, SharingStarted.Lazily, "")
-
-    private val passwordState: StateFlow<String> =
-        passwordData.asFlow().stateIn(viewModelScope, SharingStarted.Lazily, "")
-
-    private val emailAddressState: StateFlow<String> =
-        emailAddressData.asFlow().stateIn(viewModelScope, SharingStarted.Lazily, "")
-
-    val canPerformRegistration: LiveData<Boolean> = combine(
-        userNameState,
-        passwordState,
-        emailAddressState
-    ) { (userName, password, emailAddress) ->
-        userName.isNotBlank() && password.isNotBlank() && emailAddress.isNotBlank()
-    }.asLiveData()
+    val canPerformRegistration: StateFlow<Boolean> =
+        combine(userName, password, emailAddress) { (name, password, email) ->
+            name.isNotBlank() && password.isNotBlank() && email.isNotBlank()
+        }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     fun performRegistration() {
         viewModelScope.launch {
-            val credentials = RegistrationCredentials(userNameState.value, passwordState.value, emailAddressState.value)
+            val credentials = RegistrationCredentials(
+                userName.value,
+                password.value,
+                emailAddress.value
+            )
 
             registrationService.registerUser(credentials).fold(
-                ifLeft = { Log.d("RegistrationViewModel", "Registration failed. $it") },
-                ifRight = {
-                    navigator.publish(LoginNavigationEvents.PROCEED_TO_HOME)
-                }
+                ifLeft = {
+                    Log.d("RegistrationViewModel", "Registration failed due to: $it")
+                },
+                ifRight = { navigator.publish(LoginNavigationEvents.PROCEED_TO_HOME) }
             )
         }
     }
