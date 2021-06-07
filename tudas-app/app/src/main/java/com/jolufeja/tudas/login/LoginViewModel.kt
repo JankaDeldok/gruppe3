@@ -1,18 +1,15 @@
 package com.jolufeja.tudas.login
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.jolufeja.authentication.UserAuthenticationService
 import com.jolufeja.authentication.UserCredentials
-import com.jolufeja.navigation.NavigationEvent
 import com.jolufeja.navigation.NavigationEventPublisher
+import com.jolufeja.tudas.CommonNavigationEvents
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-enum class LoginNavigationEvents : NavigationEvent {
-    PROCEED_TO_REGISTRATION,
-    PROCEED_TO_HOME
-}
 
 class LoginViewModel(
     private val authenticationService: UserAuthenticationService,
@@ -33,11 +30,11 @@ class LoginViewModel(
 
             authenticationService.login(credentials).fold(
                 ifLeft = { Log.d("LoginViewModel", "Login failed due to: $it") },
-                ifRight = { navigator.publish(LoginNavigationEvents.PROCEED_TO_HOME) }
+                ifRight = { navigator.publish(CommonNavigationEvents.PROCEED_TO_HOME) }
             )
         }
     }
 
-    fun switchToRegistration() = navigator.publish(LoginNavigationEvents.PROCEED_TO_REGISTRATION)
+    fun switchToRegistration() = navigator.publish(CommonNavigationEvents.PROCEED_TO_REGISTRATION)
 
 }
