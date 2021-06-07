@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             navigationEventBus.subscribe { navController.navigationSubscriptions(it) }
         }
     }
-
 }
 
 private fun NavController.navigationSubscriptions(event: NavigationEvent) =
