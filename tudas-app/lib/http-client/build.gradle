@@ -22,8 +22,8 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation "io.kotest:kotest-runner-junit5"
+    testImplementation "io.insert-koin:koin-test"
 }
 
 compileKotlin {

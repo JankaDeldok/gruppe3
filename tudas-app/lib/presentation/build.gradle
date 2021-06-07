@@ -36,6 +36,12 @@ android {
         dataBinding true
     }
 
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
 }
 
 dependencies {
@@ -54,7 +60,8 @@ dependencies {
 
     implementation project(':lib:http-client')
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "io.kotest:kotest-runner-junit5"
+    testImplementation "io.insert-koin:koin-test"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

@@ -9,9 +9,10 @@ import org.koin.dsl.module
 object AuthenticationTestModule {
 
 
-    internal fun init() {
-        startKoin { modules(withDependencies.toList()) }
-    }
+    /**
+     * Noop method to force the one-off call to the init block of this object.
+     */
+    internal fun init() {}
 
     private val module = module {
         single<RegistrationService> { DefaultRegistrationService(get(), get()) }
@@ -20,4 +21,8 @@ object AuthenticationTestModule {
     }
 
     val withDependencies = setOf(module) + HttpClientModule.withDependencies
+
+    init {
+        startKoin { modules(withDependencies.toList()) }
+    }
 }
