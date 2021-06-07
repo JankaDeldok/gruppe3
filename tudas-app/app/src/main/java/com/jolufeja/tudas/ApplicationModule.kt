@@ -24,8 +24,8 @@ object ApplicationModule {
         fragment { LoginFragment() }
         fragment { RegistrationFragment() }
 
-        viewModel { LoginViewModel(get(), get()) }
-        viewModel { RegistrationViewModel(get(), get()) }
+        viewModel { LoginViewModel(get()) }
+        viewModel { RegistrationViewModel(get()) }
     }
 
     private val dependencies
