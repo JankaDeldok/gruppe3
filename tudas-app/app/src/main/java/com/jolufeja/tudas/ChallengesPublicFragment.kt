@@ -1,4 +1,6 @@
 package com.jolufeja.tudas
 
-class ChallengesPublicFragment {
+import androidx.fragment.app.Fragment
+
+class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
 }

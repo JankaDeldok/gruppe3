@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>\
+    <style name="ConcertOneTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/concert_one</item>
+    </style>
+
+    <style name="ConcertOneButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/concert_one</item>
+    </style>
+</resources>

@@ -1,4 +1,6 @@
 package com.jolufeja.tudas
 
-class ChallengesReceviedFragment {
+import androidx.fragment.app.Fragment
+
+class ChallengesReceivedFragment : Fragment(R.layout.fragment_challenges_received) {
 }

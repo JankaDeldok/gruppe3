@@ -16,4 +16,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- Challenges Fragments -->
+    <string name="fragment_challeneges_sent_name">Challeneges Sent</string>
+    <string name="fragment_challeneges_received_name">Challenges Received</string>
+    <string name="fragment_challeneges_public_name">Challenges Public</string>
 </resources>
