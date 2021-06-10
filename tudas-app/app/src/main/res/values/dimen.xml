@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+
+    <dimen name="font_size_large">32sp</dimen>
+    <dimen name="font_size_medium">24sp</dimen>
+    <dimen name="font_size_small">16sp</dimen>
+
+    <dimen name="info_box_margin">20dp</dimen>
+    <dimen name="info_box_margin_2">12dp</dimen>
+    <dimen name="info_box_text_margin">12dp</dimen>
+    <dimen name="info_box_text_input_padding">8dp</dimen>
+    <dimen name="info_box_text_padding">12dp</dimen>
+
+    <dimen name="icon_padding">8dp</dimen>
+
+    <dimen name="card_radius">15dp</dimen>
+    <dimen name="button_radius">15dp</dimen>
+    <dimen name="circle_button_radius">250dp</dimen>
+    <dimen name="circle_button_padding">12dp</dimen>
+</resources>

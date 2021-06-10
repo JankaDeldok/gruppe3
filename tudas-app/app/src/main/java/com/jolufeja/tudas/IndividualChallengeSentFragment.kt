@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
-class IndividualChallengeReceivedFragment : Fragment(R.layout.fragment_challenge_received_info) {
+class IndividualChallengeSentFragment : Fragment(R.layout.fragment_challenge_sent_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 

@@ -13,45 +13,76 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/secondary"
-        android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
+        android:title="@string/app_name"
         app:layout_constraintBottom_toTopOf="@id/nav_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/font_color_dark">
 
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="108dp">
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
-            <TextView
-                android:id="@+id/toolbar_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/font_size_large" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/user_points"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
 
-            <TextView
-                android:id="@+id/user_points_tag"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Points" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="end|center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_coins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end|center_vertical"
+                    android:drawablePadding="@dimen/icon_padding"
+                    android:text="@string/coin_value"
+                    app:drawableEndCompat="@drawable/ic_coin" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="end|center_vertical"
+                android:layout_marginRight="@dimen/info_box_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_points"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end|center_vertical"
+                    android:drawablePadding="@dimen/icon_padding"
+                    android:text="@string/points_value"
+                    app:drawableEndCompat="@drawable/ic_ruby" />
+
+
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -83,6 +114,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_fragment"
         app:menu="@menu/bottom_nav">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

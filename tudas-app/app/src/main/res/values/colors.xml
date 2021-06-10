@@ -15,6 +15,10 @@
     <color name="red">#E06666</color>
     <color name="yellow">#E0C566</color>
     <color name="purple">#8783D1</color>
+    <color name="green_light">#C6FFD2</color>
+    <color name="red_light">#F3AAAA</color>
+    <color name="yellow_light">#F6FFDE</color>
+    <color name="purple_light">#C6DDFF</color>
     <color name="black">#FF000000</color>
     <color name="white">#F9FCFF</color>
 

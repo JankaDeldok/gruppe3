@@ -3,7 +3,9 @@ package com.jolufeja.tudas
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -27,11 +29,28 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
 
+        // toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar);
+        val toolbarTitle: TextView = findViewById(R.id.toolbar_title);
+        toolbarTitle.text = "TUDAS";
+
         val navController = findNavController(R.id.nav_fragment).also {
             it.addOnDestinationChangedListener { _, dest, _ ->
                 if (dest.id == R.id.loginFragment || dest.id == R.id.registrationFragment ) {
                     bottomNavigationView.visibility = View.GONE
                 } else {
+
+                    // Change App Title on Toolbar according to current fragment
+                    when (dest.id ) {
+                        R.id.challengesFragment ->  toolbarTitle.text = "Challenges";
+                        R.id.homeFragment ->  toolbarTitle.text = "Home";
+                        R.id.feedFragment ->  toolbarTitle.text = "Feed";
+                        R.id.rankingsFragment ->  toolbarTitle.text = "Rankings";
+                        R.id.profileFragment ->  toolbarTitle.text = "Profile";
+                        else -> { toolbarTitle.text = "TUDAS";
+                        }
+                    }
+
                     bottomNavigationView.visibility = View.VISIBLE
                 }
             }
@@ -42,6 +61,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         lifecycleScope.launch {
             navigationEventBus.subscribe { navigationSubscriptions(navController)(it) }
         }
+
     }
 
     private fun navigationSubscriptions(navController: NavController) = eventDrivenNavigation(navController) {

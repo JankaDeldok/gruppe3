@@ -3,8 +3,8 @@ package com.jolufeja.tudas
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-
-class ViewPagerFragmentAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+// Adapter to create the three challenge fragments
+class ChallengesViewPagerFragmentAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 3;
 

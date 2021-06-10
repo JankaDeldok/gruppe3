@@ -3,6 +3,6 @@
     android:shape="rectangle"
     android:padding="10dp">
 
-    <solid android:color="@color/green_light"> </solid>
+    <solid android:color="@color/purple_light"> </solid>
     <corners android:radius="@dimen/card_radius"/>
 </shape>

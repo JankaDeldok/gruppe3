@@ -1,8 +1,6 @@
 package com.jolufeja.tudas
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -20,12 +18,14 @@ class ChallengesFragment : Fragment(R.layout.fragment_challenges) {
         tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
         viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
 
+        // create a new tab for each challenge fragment
         for (item in tabTitles)
             tabLayout!!.addTab(tabLayout!!.newTab().setText(item))
 
         tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
 
-        val adapter = ViewPagerFragmentAdapter(this)
+        // create adapter
+        val adapter = ChallengesViewPagerFragmentAdapter(this)
         viewPager!!.adapter = adapter
 
         TabLayoutMediator(tabLayout!!, viewPager!!) { tab, position ->

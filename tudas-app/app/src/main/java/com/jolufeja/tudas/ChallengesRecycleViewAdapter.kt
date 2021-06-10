@@ -10,12 +10,17 @@ import java.util.*
 
 
 // Adapter to create a challenge card
-class ChallengesReceivedRecycleViewAdapter(private val mDataList: ArrayList<Challenges>,  private val listener: (Challenges) -> Unit) :
-    RecyclerView.Adapter<ChallengesReceivedRecycleViewAdapter.MyViewHolder>() {
+class ChallengesRecycleViewAdapter(
+    private val mDataList: ArrayList<Challenges>,
+    val layout: Int,
+    private val listener: (Challenges) -> Unit
+
+) :
+    RecyclerView.Adapter<ChallengesRecycleViewAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.card_challenges_received,
+            layout,
             parent,
             false
         )
@@ -40,11 +45,16 @@ class ChallengesReceivedRecycleViewAdapter(private val mDataList: ArrayList<Chal
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal var title: TextView = itemView.findViewById<View>(R.id.challenge_title) as TextView
-        internal var author: TextView = itemView.findViewById<View>(R.id.challenge_author) as TextView
-        internal var timeLeft: TextView = itemView.findViewById<View>(R.id.challenge_time_left) as TextView
-        internal var description: TextView = itemView.findViewById<View>(R.id.challenge_description) as TextView
-        internal var reward: TextView = itemView.findViewById<View>(R.id.challenge_reward) as TextView
-        internal var points: TextView = itemView.findViewById<View>(R.id.challenge_points) as TextView
+        internal var author: TextView =
+            itemView.findViewById<View>(R.id.challenge_author) as TextView
+        internal var timeLeft: TextView =
+            itemView.findViewById<View>(R.id.challenge_time_left) as TextView
+        internal var description: TextView =
+            itemView.findViewById<View>(R.id.challenge_description) as TextView
+        internal var reward: TextView =
+            itemView.findViewById<View>(R.id.challenge_reward) as TextView
+        internal var points: TextView =
+            itemView.findViewById<View>(R.id.challenge_points) as TextView
         internal var button: Button = itemView.findViewById<View>(R.id.challenge_button) as Button
     }
 

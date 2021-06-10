@@ -10,6 +10,8 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/secondary"
+        app:tabTextColor="@color/font_color_dark"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/viewPager">
     </com.google.android.material.tabs.TabLayout>

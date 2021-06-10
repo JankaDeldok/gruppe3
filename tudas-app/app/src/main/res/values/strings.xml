@@ -21,4 +21,27 @@
     <string name="fragment_challeneges_sent_name">Challeneges Sent</string>
     <string name="fragment_challeneges_received_name">Challenges Received</string>
     <string name="fragment_challeneges_public_name">Challenges Public</string>
+
+
+    <string name="button_to_attach_file">Button to attach file</string>
+    <string name="challenge_time_left">Time Left</string>
+    <string name="give_up">Give up</string>
+    <string name="button_to_open_camera">Button to open Camera</string>
+    <string name="button_to_share_the_challenge">Button to share the challenge</string>
+    <string name="completed">Completed</string>
+    <string name="add_proof">Add Proof</string>
+    <string name="back">Back</string>
+    <string name="challenge_title">Title</string>
+    <string name="challenge_name">Name</string>
+    <string name="challenge_description">Description</string>
+    <string name="challenge_duration">Duration</string>
+    <string name="challenge_difficulty">Difficulty</string>
+    <string name="challenge_location">Location</string>
+    <string name="challenge_reward">Reward</string>
+    <string name="from">From</string>
+    <string name="profile_picture">profile_picture</string>
+    <string name="points_value">200</string>
+    <string name="coin_value">1000</string>
+    <string name="challenge_received_button_text">OPEN</string>
+    <string name="challenge_sent_button_text">New Challenge</string>
 </resources>
