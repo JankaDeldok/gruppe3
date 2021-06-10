@@ -44,4 +44,8 @@
     <string name="coin_value">1000</string>
     <string name="challenge_received_button_text">OPEN</string>
     <string name="challenge_sent_button_text">New Challenge</string>
+    <string name="challenges_sent">Challenges Sent</string>
+    <string name="create">Create</string>
+    <string name="challenge_received">Challenge Received</string>
+    <string name="public_challenges">Public Challenges</string>
 </resources>

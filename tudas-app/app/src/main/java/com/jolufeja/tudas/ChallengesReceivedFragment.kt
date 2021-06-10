@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 class ChallengesReceivedFragment : Fragment(R.layout.fragment_challenges_received) {
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
-    var listOfChallenges: ArrayList<Challenges> = ArrayList()
+    private var listOfChallenges: ArrayList<Challenges> = ArrayList()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -23,7 +23,11 @@ class ChallengesReceivedFragment : Fragment(R.layout.fragment_challenges_receive
             val challenges = Challenges()
             challenges.id = i
             challenges.title = "Challenge $i"
+            challenges.author = "Max Mustermann"
             challenges.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis at justo a volutpat. In sed leo vel ipsum egestas mattis vitae eget lorem."
+            challenges.reward = "5 Kugeln Eis"
+            challenges.points = 100
+            challenges.timeLeft = 200
             listOfChallenges!!.add(challenges)
         }
         mRecyclerView = view.findViewById(R.id.challenges_received_recycler_view)

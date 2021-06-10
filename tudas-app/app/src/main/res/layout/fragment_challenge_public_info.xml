@@ -19,7 +19,7 @@
             android:layout_marginTop="@dimen/info_box_margin"
             android:layout_marginRight="@dimen/info_box_margin"
             android:layout_marginBottom="80dp"
-            app:cardBackgroundColor="@color/purple"
+            app:cardBackgroundColor="@color/orange"
             app:cardCornerRadius="@dimen/card_radius"
             app:contentPadding="10dp">
 
@@ -65,63 +65,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/info_box_text_margin"
-                        android:background="@drawable/edit_text_box_rounded_corners_purple"
+                        android:background="@drawable/edit_text_box_rounded_corners_orange"
                         android:padding="@dimen/info_box_text_input_padding"
                         android:text="@string/challenge_title"
                         android:textColor="@color/font_color_light"
                         tools:cornerRadius="@dimen/button_radius" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/info_box_text_margin"
-                    android:baselineAligned="false"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Receiver"
-                            android:textColor="@color/secondary"
-                            android:textSize="@dimen/font_size_medium" />
-
-                        <Spinner
-                            android:id="@+id/spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:background="@drawable/edit_text_box_rounded_corners_purple"
-                            android:text="@string/challenge_name"
-                            android:textColor="@color/font_color_light" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Public"
-                            android:textColor="@color/secondary"
-                            android:textSize="@dimen/font_size_small" />
-                        <Switch
-                            android:id="@+id/switch1"
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="bottom|center"/>
-                    </LinearLayout>
-
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -140,8 +90,8 @@
                     <EditText
                         android:id="@+id/editTextTextPersonName2"
                         android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:background="@drawable/edit_text_box_rounded_corners_purple"
+                        android:layout_height="160dp"
+                        android:background="@drawable/edit_text_box_rounded_corners_orange"
                         android:ems="10"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
@@ -153,64 +103,7 @@
                 </LinearLayout>
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/info_box_text_margin"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/challenge_reward"
-                            android:textColor="@color/secondary"
-                            android:textSize="@dimen/font_size_medium" />
-
-                        <EditText
-                            android:id="@+id/challenge_reward"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/info_box_text_margin"
-                            android:background="@drawable/edit_text_box_rounded_corners_purple"
-                            android:ems="10"
-                            android:padding="@dimen/info_box_text_input_padding"
-                            android:text="@string/challenge_reward"
-                            android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/challenge_difficulty"
-                            android:textColor="@color/secondary"
-                            android:textSize="@dimen/font_size_medium" />
-
-                        <EditText
-                            android:id="@+id/challenge_difficulty"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/edit_text_box_rounded_corners_purple"
-                            android:ems="10"
-                            android:padding="@dimen/info_box_text_input_padding"
-                            android:text="@string/challenge_difficulty"
-                            android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
-                    </LinearLayout>
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -237,7 +130,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/info_box_text_margin"
-                            android:background="@drawable/edit_text_box_rounded_corners_purple"
+                            android:background="@drawable/edit_text_box_rounded_corners_orange"
                             android:padding="@dimen/info_box_text_input_padding"
                             android:text="@string/challenge_duration"
                             android:textColor="@color/font_color_light"
@@ -253,22 +146,21 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/challenge_location"
+                            android:text="@string/challenge_difficulty"
                             android:textColor="@color/secondary"
                             android:textSize="@dimen/font_size_medium" />
 
                         <EditText
-                            android:id="@+id/challenge_location"
+                            android:id="@+id/challenge_difficulty"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/edit_text_box_rounded_corners_purple"
+                            android:background="@drawable/edit_text_box_rounded_corners_orange"
                             android:ems="10"
                             android:padding="@dimen/info_box_text_input_padding"
-                            android:text="@string/challenge_location"
+                            android:text="@string/challenge_difficulty"
                             android:textColor="@color/font_color_light"
                             tools:cornerRadius="@dimen/button_radius" />
                     </LinearLayout>
-
                 </LinearLayout>
 
 
