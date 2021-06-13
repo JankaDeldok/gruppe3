@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var app = express();
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const auth = require('./middleware/auth');
 
 // setup db connection
 const mongoose = require('mongoose');
@@ -33,11 +35,11 @@ db.once('open', function () {
 // setup corresponding routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/userIO');
-// var challengeRouter = require('./routes/challengeIO');
+var challengeRouter = require('./routes/challengeIO');
 var authRouter = require('./routes/auth');
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
-// app.use('/challenge', challengeRouter);
+app.use('/challenge', challengeRouter);
 app.use('/auth', authRouter);
 
 
