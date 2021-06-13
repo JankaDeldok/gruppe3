@@ -41,7 +41,7 @@ challengeIO.use(function (req, res, next) {
 
 // Work in Progress, only serves as a template
 /* POST /user/upload-picture */
-challengeIO.post('/upload-picture', storageProofImg.single("file"), async (req, res) => {
+challengeIO.post('/upload-picture', proofImg.single("file"), async (req, res) => {
     //get the user from the db
     let user = await User.findById(req.user.id);
 });
@@ -49,26 +49,35 @@ challengeIO.post('/upload-picture', storageProofImg.single("file"), async (req, 
 /* POST /user/addchallenge */
 /* adds a friend to a user if they are not already friends */
 challengeIO.post('/addchallenge', async (req, res) => {
-    User.findOne({ name: req.body.userName }, { friends: 1 }).then(user => {
-        let alreadyFriends = false;
-        user.friends.some(element => {
-            if (element.name === req.body.friendName) {
-                return alreadyFriends = true;
-            }
-        });
+    let { challengeName, creatorName, description, dueDate, reward, isPublic } = req.body;
 
-        if (alreadyFriends) {
-            res.status(409).send("User is already befriended.")
+    let creator = await User.findOne({ name: creatorName })
+
+    const newChallenge = {
+        name: challengeName,
+        description: description,
+        creator: creator._id,
+        creationDate: Date.now(),
+        dueDate: dueDate,
+        reward: reward,
+        isPublic: isPublic
+    }
+
+    Challenge.create(newChallenge, (err, item) => {
+        if (err) {
+            res.status(500).send("Challenge could not be created.");
         } else {
-            User.updateOne({ name: req.body.userName }, { $push: { friends: { name: req.body.friendName, streak: 0 } } }).then(user => res.status(200).json(user));
+            item.save();
+            res.status(200).send(item)
         }
     })
+    console.log(creator)
 });
 
-/* GET /user/getuser */
-/* get user by name */
-challengeIO.get('/getuser', (req, res) => {
-    User.findOne({ name: req.body.userName }, { password: 0, __v: 0 }).then(user => res.status(200).json(user));
+/* GET /challenge/getchallenge */
+/* get challenge by name */
+challengeIO.get('/getchallenge', (req, res) => {
+    Challenge.findOne({ name: req.body.challengeName }).then(challenge => res.status(200).json(challenge));
 });
 
-module.exports = userIO;
+module.exports = challengeIO;
