@@ -32,7 +32,7 @@ class ChallengesSentFragment : Fragment(R.layout.fragment_challenges_sent) {
             challenges.reward = "5 Kugeln Eis"
             challenges.points = 100
             challenges.timeLeft = 200
-            listOfChallenges!!.add(challenges)
+            listOfChallenges.add(challenges)
         }
         mRecyclerView = view.findViewById(R.id.challenges_sent_recycler_view)
         var mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -50,7 +50,7 @@ class ChallengesSentFragment : Fragment(R.layout.fragment_challenges_sent) {
                 )
                 transaction.addToBackStack("challenge_sent_info")
                 transaction.commit()
-                item.id?.let { Log.d("TAG", it.toString()) }
+                item.id.let { Log.d("TAG", it.toString()) }
             }
         mRecyclerView!!.adapter = mAdapter
 

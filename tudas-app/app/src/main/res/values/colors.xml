@@ -22,6 +22,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#F9FCFF</color>
 
+    <integer-array name="colorarray">
+        <item>@color/green</item>
+        <item>@color/orange</item>
+        <item>@color/purple</item>
+        <item>@color/red</item>
+    </integer-array>
 
 
 </resources>

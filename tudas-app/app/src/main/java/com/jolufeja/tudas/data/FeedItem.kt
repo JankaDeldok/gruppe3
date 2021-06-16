@@ -1,7 +1,12 @@
 package com.jolufeja.tudas.data
 
-class FeedItem {
+class FeedItem : ListItem() {
     var id: Int = 0
-    var text: String? = null
+    override var text: String? = null
     var type: String? = null
+    var date: String? = null
+
+    override fun getType(): Int {
+        return 0;
+    }
 }

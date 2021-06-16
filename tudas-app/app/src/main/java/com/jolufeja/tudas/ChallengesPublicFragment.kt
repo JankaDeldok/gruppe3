@@ -31,7 +31,7 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis at justo a volutpat. In sed leo vel ipsum egestas mattis vitae eget lorem."
             challenges.points = 100
             challenges.timeLeft = 200
-            listOfChallenges!!.add(challenges)
+            listOfChallenges.add(challenges)
         }
         mRecyclerView = view.findViewById(R.id.challenges_public_recycler_view)
         var mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -51,7 +51,7 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
             )
             transaction.addToBackStack("challenge_sent_info")
             transaction.commit()
-            item.id?.let { Log.d("TAG", it.toString()) }
+            item.id.let { Log.d("TAG", it.toString()) }
         }
         mRecyclerView!!.adapter = mAdapter
 
