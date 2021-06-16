@@ -1,6 +1,6 @@
 package com.jolufeja.tudas.data
 
-class Challenges {
+class ChallengesItem {
     var id: Int = 0
     var title: String? = null
     var author: String? = null

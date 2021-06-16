@@ -8,19 +8,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jolufeja.tudas.adapters.ChallengesRecycleViewAdapter
+import com.jolufeja.tudas.data.ChallengesItem
 
 
 class ChallengesReceivedFragment : Fragment(R.layout.fragment_challenges_received) {
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
-    private var listOfChallenges: ArrayList<Challenges> = ArrayList()
+    private var listOfChallenges: ArrayList<ChallengesItem> = ArrayList()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //adding items in list
         for (i in 0..10) {
-            val challenges = Challenges()
+            val challenges = ChallengesItem()
             challenges.id = i
             challenges.title = "Challenge $i"
             challenges.author = "Max Mustermann"

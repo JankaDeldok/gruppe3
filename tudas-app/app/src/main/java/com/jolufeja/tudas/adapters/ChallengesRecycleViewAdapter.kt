@@ -1,4 +1,4 @@
-package com.jolufeja.tudas
+package com.jolufeja.tudas.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,15 +6,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.jolufeja.tudas.data.Challenges
+import com.jolufeja.tudas.R
+import com.jolufeja.tudas.data.ChallengesItem
 import java.util.*
 
 
 // Adapter to create a challenge card
 class ChallengesRecycleViewAdapter(
-    private val mDataList: ArrayList<Challenges>,
+    private val mDataList: ArrayList<ChallengesItem>,
     val layout: Int,
-    private val listener: (Challenges) -> Unit
+    private val listener: (ChallengesItem) -> Unit
 
 ) :
     RecyclerView.Adapter<ChallengesRecycleViewAdapter.MyViewHolder>() {
