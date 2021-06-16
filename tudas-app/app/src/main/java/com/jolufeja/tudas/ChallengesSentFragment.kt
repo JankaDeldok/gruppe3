@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jolufeja.tudas.adapters.ChallengesRecycleViewAdapter
+import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ChallengesItem
+import com.jolufeja.tudas.data.HeaderItem
+import com.jolufeja.tudas.data.ListItem
 
 
 class ChallengesSentFragment : Fragment(R.layout.fragment_challenges_sent) {
@@ -18,6 +20,7 @@ class ChallengesSentFragment : Fragment(R.layout.fragment_challenges_sent) {
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfChallenges: ArrayList<ChallengesItem> = ArrayList()
     private var createChallengeButton: Button? = null
+    private var finalList: ArrayList<ListItem> = ArrayList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -34,24 +37,50 @@ class ChallengesSentFragment : Fragment(R.layout.fragment_challenges_sent) {
             challenges.timeLeft = 200
             listOfChallenges.add(challenges)
         }
+
+        val header = HeaderItem()
+        header.text = "Open"
+        finalList.add(header)
+
+        listOfChallenges.forEach {
+            finalList.add(it)
+        }
+
+        val header1 = HeaderItem()
+        header1.text = "Completed"
+        finalList.add(header1)
+
+        listOfChallenges.forEach {
+            finalList.add(it)
+        }
+
         mRecyclerView = view.findViewById(R.id.challenges_sent_recycler_view)
         var mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView!!.layoutManager = mLayoutManager
         // Add Adapter so cards will be displayed
         mAdapter =
-            ChallengesRecycleViewAdapter(listOfChallenges, R.layout.card_challenges_sent) { item ->
-                // Open New Fragment
-                val individualChallengeSentFragment = IndividualChallengeSentFragment()
-                val transaction: FragmentTransaction =
-                    requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(
-                    ((view as ViewGroup).parent as View).id,
-                    individualChallengeSentFragment
-                )
-                transaction.addToBackStack("challenge_sent_info")
-                transaction.commit()
-                item.id.let { Log.d("TAG", it.toString()) }
+            context?.let {
+                RecycleViewAdapter(
+                    it,
+                    finalList,
+                    R.layout.card_challenges_sent,
+                    R.layout.card_header,
+                    0
+                ) { item ->
+                    // Open New Fragment
+                    val individualChallengeSentFragment = IndividualChallengeSentFragment()
+                    val transaction: FragmentTransaction =
+                        requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(
+                        ((view as ViewGroup).parent as View).id,
+                        individualChallengeSentFragment
+                    )
+                    transaction.addToBackStack("challenge_sent_info")
+                    transaction.commit()
+                    item.id.let { Log.d("TAG", it.toString()) }
+                }
             }
+
         mRecyclerView!!.adapter = mAdapter
 
         // Handle Create Challenge Button

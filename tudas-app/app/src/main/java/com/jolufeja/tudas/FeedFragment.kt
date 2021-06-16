@@ -5,23 +5,19 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jolufeja.tudas.adapters.FeedRecycleViewAdapter
+import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
-import java.text.SimpleDateFormat
 import java.util.*
 
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
-    private var listOfActivites: ArrayList<FeedItem> = ArrayList()
-    private var listOfHeaders: ArrayList<HeaderItem> = ArrayList()
+    private var listOfActivities: ArrayList<FeedItem> = ArrayList()
     private var finalList: ArrayList<ListItem> = ArrayList()
 
-    val format = SimpleDateFormat("hh:mm aa")
-    val calendar = GregorianCalendar.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -32,14 +28,14 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
             feed.text = "Felix sent Laura a Challenge"
             feed.type = "Sent Challenge"
             feed.date = "2020-06-21"
-            listOfActivites.add(feed)
+            listOfActivities.add(feed)
         }
 
         val header = HeaderItem()
         header.text = "Today"
         finalList.add(header)
 
-        listOfActivites.forEach {
+        listOfActivities.forEach {
             finalList.add(it)
         }
 
@@ -47,7 +43,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
         header1.text = "Yesterday"
         finalList.add(header1)
 
-        listOfActivites.forEach {
+        listOfActivities.forEach {
             finalList.add(it)
         }
 
@@ -61,12 +57,15 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
         // Add Adapter so cards will be displayed
         mAdapter =
             context?.let {
-                FeedRecycleViewAdapter(
+                RecycleViewAdapter(
                     it,
                     finalList,
+                    0,
+                    R.layout.card_feed_header,
                     R.layout.card_feed,
-                    R.layout.card_header
-                )
+                ) {
+                    null
+                }
             }
         mRecyclerView!!.adapter = mAdapter
     }

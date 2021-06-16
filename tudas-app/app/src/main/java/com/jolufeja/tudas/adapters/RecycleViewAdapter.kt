@@ -9,17 +9,17 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jolufeja.tudas.R
-import com.jolufeja.tudas.data.ChallengesItem
 import com.jolufeja.tudas.data.ListItem
 import java.util.*
 
 
 // Adapter to create a challenge card
-class ChallengesRecycleViewAdapter(
+class RecycleViewAdapter(
     private val context: Context,
     private val mDataList: ArrayList<ListItem>,
     val layoutCard: Int,
     val layoutHeader: Int,
+    val layoutFeedCard: Int,
     private val listener: (ListItem) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -33,6 +33,9 @@ class ChallengesRecycleViewAdapter(
             0 -> return CardViewHolder(
                 LayoutInflater.from(context).inflate(layoutCard, parent, false)
             )
+            2 -> return FeedViewHolder(
+                LayoutInflater.from(context).inflate(layoutFeedCard, parent, false)
+            )
         }
         return HeaderViewHolder(
             LayoutInflater.from(context).inflate(layoutHeader, parent, false)
@@ -42,10 +45,13 @@ class ChallengesRecycleViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (mDataList[position].getType()) {
             0 -> {
-                (holder as ChallengesRecycleViewAdapter.CardViewHolder).bind(position)
+                (holder as RecycleViewAdapter.CardViewHolder).bind(position)
             }
             1 -> {
-                (holder as ChallengesRecycleViewAdapter.HeaderViewHolder).bind(position)
+                (holder as RecycleViewAdapter.HeaderViewHolder).bind(position)
+            }
+            2 -> {
+                (holder as RecycleViewAdapter.FeedViewHolder).bind(position)
             }
         }
     }
@@ -95,6 +101,20 @@ class ChallengesRecycleViewAdapter(
         fun bind(position: Int) {
             val recyclerViewModel = mDataList[position]
             text.text = recyclerViewModel.text
+        }
+    }
+
+    private inner class FeedViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        var text: TextView = itemView.findViewById(R.id.feed_text) as TextView
+        var cardFrameLayout: FrameLayout = itemView.findViewById(R.id.card_feed) as FrameLayout
+
+        fun bind(position: Int) {
+            val recyclerViewModel = mDataList[position]
+            text.text = recyclerViewModel.text
+            val androidColors : IntArray = context.resources.getIntArray(R.array.colorarray)
+            val randomAndroidColor: Int = androidColors[Random().nextInt(androidColors.size)]
+            cardFrameLayout.background.setTint(randomAndroidColor)
         }
     }
 

@@ -1,11 +1,15 @@
 package com.jolufeja.tudas.data
 
-class ChallengesItem {
-    var id: Int = 0
-    var title: String? = null
-    var author: String? = null
-    var timeLeft: Int = 0
-    var description: String? = null
-    var reward: String? = null
-    var points: Int = 0
+class ChallengesItem : ListItem() {
+    override var id: Int = 0
+    override var title: String? = null
+    override var author: String? = null
+    override var timeLeft: Int = 0
+    override var description: String? = null
+    override var reward: String? = null
+    override var points: Int = 0
+
+    override fun getType(): Int {
+        return 0;
+    }
 }
