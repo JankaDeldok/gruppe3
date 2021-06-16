@@ -1,7 +1,6 @@
-package com.jolufeja.tudas
+package com.jolufeja.tudas.data
 
 class Challenges {
-
     var id: Int = 0
     var title: String? = null
     var author: String? = null
@@ -9,7 +8,4 @@ class Challenges {
     var description: String? = null
     var reward: String? = null
     var points: Int = 0
-
-
-
 }
