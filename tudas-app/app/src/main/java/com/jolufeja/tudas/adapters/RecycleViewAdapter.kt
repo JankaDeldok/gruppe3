@@ -17,9 +17,9 @@ import java.util.*
 class RecycleViewAdapter(
     private val context: Context,
     private val mDataList: ArrayList<ListItem>,
-    val layoutCard: Int,
-    val layoutHeader: Int,
-    val layoutFeedCard: Int,
+    private val layoutCard: Int,
+    private val layoutHeader: Int,
+    private val layoutFeedCard: Int,
     private val listener: (ListItem) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -63,7 +63,6 @@ class RecycleViewAdapter(
     override fun getItemViewType(position: Int): Int {
         return mDataList[position].getType()
     }
-
 
     private inner class CardViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {

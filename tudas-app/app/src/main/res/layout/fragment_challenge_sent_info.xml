@@ -93,7 +93,7 @@
                             android:textSize="@dimen/font_size_medium" />
 
                         <Spinner
-                            android:id="@+id/spinner"
+                            android:id="@+id/challenge_receiver"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@drawable/edit_text_box_rounded_corners_purple"
