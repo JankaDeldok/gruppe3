@@ -40,6 +40,11 @@ const challengeSchema = new Schema({
         type: String,
         required: true,
     },
+    // the visibility of the challenge: true if public, otherwise false
+    isPublic: {
+        type: Boolean,
+        required: true
+    },
     // the points a number is worth, depending on the difficulty
     worth: Number,
 });
