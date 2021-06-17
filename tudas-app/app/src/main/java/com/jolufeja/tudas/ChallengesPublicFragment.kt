@@ -61,7 +61,7 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
             RecycleViewAdapter(
                 it,
                 finalList,
-                R.layout.card_challenges_received,
+                R.layout.card_challenges_public,
                 R.layout.card_header,
                 0
             ) { item ->
