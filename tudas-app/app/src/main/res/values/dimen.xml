@@ -6,6 +6,11 @@
     <dimen name="font_size_medium">24sp</dimen>
     <dimen name="font_size_small">16sp</dimen>
 
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_medium">12dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+
+
     <dimen name="info_box_margin">20dp</dimen>
     <dimen name="info_box_margin_2">12dp</dimen>
     <dimen name="info_box_margin_3">8dp</dimen>
@@ -14,6 +19,9 @@
     <dimen name="info_box_text_padding">12dp</dimen>
 
     <dimen name="icon_padding">8dp</dimen>
+
+    <dimen name="tab_inset">8dp</dimen>
+    <dimen name="tab_radius">18dp</dimen>
 
     <dimen name="card_radius">15dp</dimen>
     <dimen name="button_radius">15dp</dimen>

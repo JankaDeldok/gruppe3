@@ -62,6 +62,7 @@ class ChallengesReceivedFragment : Fragment(R.layout.fragment_challenges_receive
                 finalList,
                 R.layout.card_challenges_received,
                 R.layout.card_header,
+                0,
                 0
             ) { item ->
                 // Open New Fragment
