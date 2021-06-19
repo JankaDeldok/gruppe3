@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/secondary"
+    android:background="#D5D0D0"
     tools:context=".ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,7 +66,7 @@
             app:layout_constraintTop_toBottomOf="@+id/userPoints" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/friendsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
@@ -79,75 +79,73 @@
             app:layout_constraintStart_toEndOf="@+id/userName"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="380dp"
-            android:layout_height="77dp"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#E87C7C"
-            android:text="Change Name"
-            android:textSize="20sp"
-            app:cornerRadius="@android:dimen/app_icon_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.45"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userName" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="170dp"
+            android:layout_marginBottom="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/userName">
 
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="380dp"
-            android:layout_height="77dp"
-            android:layout_marginTop="92dp"
-            android:backgroundTint="#E87C7C"
-            android:text="Change Password"
-            android:textSize="20sp"
-            app:cornerRadius="@android:dimen/app_icon_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.45"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userName" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button9"
-            android:layout_width="380dp"
-            android:layout_height="77dp"
-            android:layout_marginTop="168dp"
-            android:backgroundTint="#E87C7C"
-            android:text="Notifications"
-            android:textSize="20sp"
-            app:cornerRadius="@android:dimen/app_icon_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.45"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userName" />
+                <Button
+                    android:id="@+id/changeEmail"
+                    android:layout_width="380dp"
+                    android:layout_height="77dp"
+                    android:backgroundTint="#E87C7C"
+                    android:text="Change Email"
+                    android:textSize="20sp"
+                    app:cornerRadius="@android:dimen/app_icon_size"
+                    />
 
-        <Button
-            android:id="@+id/button11"
-            android:layout_width="380dp"
-            android:layout_height="77dp"
-            android:layout_marginTop="244dp"
-            android:backgroundTint="#E87C7C"
-            android:text="Log out"
-            android:textSize="20sp"
-            app:cornerRadius="@android:dimen/app_icon_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.45"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userName" />
+                <Button
+                    android:id="@+id/changePassword"
+                    android:layout_width="380dp"
+                    android:layout_height="77dp"
+                    android:backgroundTint="#E87C7C"
+                    android:text="Change Password"
+                    android:textSize="20sp"
+                    app:cornerRadius="@android:dimen/app_icon_size"
+                    />
 
-        <Button
-            android:id="@+id/button12"
-            android:layout_width="380dp"
-            android:layout_height="77dp"
-            android:layout_marginTop="320dp"
-            android:backgroundTint="#000000"
-            android:text="More"
-            android:textSize="20sp"
-            app:cornerRadius="@android:dimen/app_icon_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.45"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userName" />
+                <Button
+                    android:id="@+id/notificationButton"
+                    android:layout_width="380dp"
+                    android:layout_height="77dp"
+                    android:backgroundTint="#E87C7C"
+                    android:text="Notifications"
+                    android:textSize="20sp"
+                    app:cornerRadius="@android:dimen/app_icon_size"
+                    />
+
+                <Button
+                    android:id="@+id/logOutButton"
+                    android:layout_width="380dp"
+                    android:layout_height="77dp"
+                    android:backgroundTint="#E87C7C"
+                    android:text="Log out"
+                    android:textSize="20sp"
+                    app:cornerRadius="@android:dimen/app_icon_size"
+                    />
+
+                <Button
+                    android:id="@+id/button12"
+                    android:layout_width="380dp"
+                    android:layout_height="77dp"
+                    android:backgroundTint="#000000"
+                    android:text="More"
+                    android:textSize="20sp"
+                    app:cornerRadius="@android:dimen/app_icon_size"
+                    />
+
+            </LinearLayout>
+        </ScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
