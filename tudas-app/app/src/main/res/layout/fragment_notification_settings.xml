@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CHANGE PASSWORD"
+        android:text="NOTIFICATIONS"
         android:layout_marginBottom="20dp"
         android:textSize="15pt"/>
 
@@ -28,41 +28,53 @@
             android:orientation="vertical"
             android:layout_margin="15dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PASSWORD"
-                android:textColor="@color/secondary"
-                android:textSize="10pt"/>
+                <Switch
+                    android:id="@+id/switchChallengeReceived"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Notification when new challenge received"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" />
 
-            <EditText
-                android:id="@+id/newPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:textSize="12pt"
-                android:background="@color/white"
-                android:layout_marginTop="5dp"/>
-
-            <TextView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:text="CONFIRM NEW PASSWORD"
-                android:textColor="@color/secondary"
-                android:textSize="10pt"/>
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
-            <EditText
-                android:id="@+id/confirmNewPassword"
-                android:layout_width="wrap_content"
+            <Switch
+                android:id="@+id/switchFriendChallengeCompleted"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:textSize="12pt"
-                android:background="@color/white"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"/>
+                android:text="Notification when friend completes challenge"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <Switch
+                android:id="@+id/switchFriendRequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Notification when new friends request"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <Switch
+                android:id="@+id/switchChallengeEnds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Notification 6 hours before challenge ends"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
+
 
         </LinearLayout>
 
@@ -80,7 +92,6 @@
             android:layout_height="wrap_content"
             android:text="CANCEL"
             android:layout_gravity="start"
-            android:textColor="@color/secondary"
             android:textSize="10pt"
             android:layout_weight="1"
             android:layout_marginRight="100dp"
@@ -95,7 +106,7 @@
             android:text="SAVE"
             app:cornerRadius="@android:dimen/app_icon_size"
             android:backgroundTint="@color/green"
-            android:textColor="@color/secondary"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="10pt"
             android:layout_weight="1"

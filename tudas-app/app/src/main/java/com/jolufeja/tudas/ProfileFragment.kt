@@ -14,19 +14,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val profileFragment = ProfileFragment()
+
         // Friends Button
         var friendsButton: Button = view.findViewById<View>(R.id.friendsButton) as Button
 
-        // Friends Button
+        // change mail Button
         var changeEmailButton: Button = view.findViewById<View>(R.id.changeEmail) as Button
 
-        // Friends Button
+        // change password Button
         var changePasswordButton: Button = view.findViewById<View>(R.id.changePassword) as Button
 
-        // Friends Button
+        // notification Button
         var notificationButton: Button = view.findViewById<View>(R.id.notificationButton) as Button
 
-        // Friends Button
+        // log out Button
         var logOutButton: Button = view.findViewById<View>(R.id.logOutButton) as Button
 
         //opens FriendsSettingsFragment when clicked, but no layout yet
@@ -67,16 +69,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             transaction.commit()
         }
 
-        //opens Password Fragment when clicked, cause notification fragment not yet implemented
+        //opens notification menu
         notificationButton.setOnClickListener{
-            val changePasswordFragment = ChangePasswordFragment()
+            val notificationSettingsFragment = NotificationSettingsFragment()
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(
                 ((view as ViewGroup).parent as View).id,
-                changePasswordFragment
+                notificationSettingsFragment
             )
-            transaction.addToBackStack("change_password")
+            transaction.addToBackStack("notification")
             transaction.commit()
         }
 

@@ -12,32 +12,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <ImageView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/profile"
-            android:textColor="#4B4C4E"
-            android:textSize="42sp"
-            android:textStyle="bold"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/profile_pic"
+            android:src="@drawable/ic_baseline_person_24"
+            app:layout_constraintBottom_toTopOf="@+id/userName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.071" />
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity=""
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="128dp"
             android:text="@string/jonathan"
             android:textColor="#4B4C4E"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/userPoints"
@@ -69,7 +69,7 @@
             android:id="@+id/friendsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="40dp"
             android:backgroundTint="#000000"
             android:text="@string/friends"
             android:textSize="20sp"
@@ -82,8 +82,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="170dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginTop="200dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/userName">
@@ -101,8 +100,7 @@
                     android:backgroundTint="#E87C7C"
                     android:text="Change Email"
                     android:textSize="20sp"
-                    app:cornerRadius="@android:dimen/app_icon_size"
-                    />
+                    app:cornerRadius="@android:dimen/app_icon_size" />
 
                 <Button
                     android:id="@+id/changePassword"
@@ -111,8 +109,7 @@
                     android:backgroundTint="#E87C7C"
                     android:text="Change Password"
                     android:textSize="20sp"
-                    app:cornerRadius="@android:dimen/app_icon_size"
-                    />
+                    app:cornerRadius="@android:dimen/app_icon_size" />
 
                 <Button
                     android:id="@+id/notificationButton"
@@ -121,8 +118,7 @@
                     android:backgroundTint="#E87C7C"
                     android:text="Notifications"
                     android:textSize="20sp"
-                    app:cornerRadius="@android:dimen/app_icon_size"
-                    />
+                    app:cornerRadius="@android:dimen/app_icon_size" />
 
                 <Button
                     android:id="@+id/logOutButton"
@@ -131,8 +127,7 @@
                     android:backgroundTint="#E87C7C"
                     android:text="Log out"
                     android:textSize="20sp"
-                    app:cornerRadius="@android:dimen/app_icon_size"
-                    />
+                    app:cornerRadius="@android:dimen/app_icon_size" />
 
                 <Button
                     android:id="@+id/button12"
@@ -141,8 +136,7 @@
                     android:backgroundTint="#000000"
                     android:text="More"
                     android:textSize="20sp"
-                    app:cornerRadius="@android:dimen/app_icon_size"
-                    />
+                    app:cornerRadius="@android:dimen/app_icon_size" />
 
             </LinearLayout>
         </ScrollView>
