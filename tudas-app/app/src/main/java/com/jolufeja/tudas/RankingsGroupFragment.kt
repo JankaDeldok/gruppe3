@@ -11,7 +11,7 @@ import com.jolufeja.tudas.data.RankingItem
 import java.util.ArrayList
 
 
-class RankingsWorldFragment : Fragment(R.layout.fragment_rankings_world){
+class RankingsGroupFragment : Fragment(R.layout.fragment_rankings_group){
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfRankings: ArrayList<RankingItem> = ArrayList()
@@ -54,7 +54,7 @@ class RankingsWorldFragment : Fragment(R.layout.fragment_rankings_world){
                     0,
                     0,
                     R.layout.card_rankings_friends,
-                    0,
+                    0
                 ) {
                     null
                 }

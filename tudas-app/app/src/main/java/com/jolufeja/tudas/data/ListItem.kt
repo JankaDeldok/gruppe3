@@ -19,4 +19,6 @@ open class ListItem {
     open fun getType(): Int {
         return -1
     }
+
+    open var size: Int = 0
 }

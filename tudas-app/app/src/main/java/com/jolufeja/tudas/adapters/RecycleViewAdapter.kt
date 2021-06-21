@@ -22,6 +22,7 @@ class RecycleViewAdapter(
     private val layoutHeader: Int,
     private val layoutFeedCard: Int,
     private val layoutRankingCard: Int,
+    private val layoutGroupsRankingCard: Int,
     private val listener: (ListItem) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,6 +41,9 @@ class RecycleViewAdapter(
             )
             3 -> return RankingViewHolder(
                 LayoutInflater.from(context).inflate(layoutRankingCard, parent, false)
+            )
+            4 -> return GroupsViewHolder (
+                LayoutInflater.from(context).inflate(layoutGroupsRankingCard, parent, false)
             )
         }
         return HeaderViewHolder(
@@ -60,6 +64,9 @@ class RecycleViewAdapter(
             }
             3 -> {
                 (holder as RecycleViewAdapter.RankingViewHolder).bind(position)
+            }
+            4 -> {
+                (holder as RecycleViewAdapter.GroupsViewHolder).bind(position)
             }
         }
     }
@@ -146,6 +153,25 @@ class RecycleViewAdapter(
           //  val randomAndroidColor: Int = androidColors[Random().nextInt(androidColors.size)]
 
            // cardFrameLayout.background.setTint(randomAndroidColor)
+        }
+    }
+
+    private inner class GroupsViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        var groupName: TextView = itemView.findViewById<View>(R.id.group_name) as TextView
+        var groupSize: TextView =
+            itemView.findViewById<View>(R.id.group_size) as TextView
+        var openGroupButton: Button = itemView.findViewById<View>(R.id.open_group_button) as Button
+
+        fun bind(position: Int) {
+            val recyclerViewModel = mDataList[position]
+
+            groupName.text = recyclerViewModel.name
+            groupSize.text = recyclerViewModel.size.toString();
+
+            // OnClick Listener on Button
+            openGroupButton.setOnClickListener { listener(recyclerViewModel) }
+
         }
     }
 

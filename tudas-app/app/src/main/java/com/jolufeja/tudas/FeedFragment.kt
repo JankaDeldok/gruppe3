@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import arrow.core.computations.nullable
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.data.HeaderItem
@@ -63,7 +64,8 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                     0,
                     R.layout.card_feed_header,
                     R.layout.card_feed,
-                    0
+                    0,
+                    0,
                 ) {
                     null
                 }

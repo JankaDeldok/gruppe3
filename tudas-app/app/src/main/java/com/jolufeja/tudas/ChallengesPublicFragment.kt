@@ -64,6 +64,7 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
                 R.layout.card_challenges_public,
                 R.layout.card_header,
                 0,
+                0,
                 0
             ) { item ->
                 // Open New Fragment

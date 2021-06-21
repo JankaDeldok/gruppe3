@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
-import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.data.RankingItem
 import java.util.ArrayList
@@ -55,6 +54,7 @@ class RankingsFriendsFragment : Fragment(R.layout.fragment_rankings_friends) {
                     0,
                     0,
                     R.layout.card_rankings_friends,
+                    0,
                 ) {
                     null
                 }
