@@ -29,6 +29,8 @@ const userSchema = new Schema({
     },
     // total challenge points of the user 
     points: Number,
+    // total credit points of the user 
+    credit: Number,
     // friends of the user, one-to-few relationship. name = friend name, streak = number of days challenging each other in a row
     friends: [{ name: String, streak: Number }],
     // challenges the user created, many-to-many relationship. References a challenge

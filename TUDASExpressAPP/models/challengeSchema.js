@@ -32,9 +32,7 @@ const challengeSchema = new Schema({
         type: Date,
     },
     // the URI of a picture or video as proof for succeeding in a challenge
-    proofMedia: {
-        type: String
-    },
+    proofMedia: [{ user: String, location: String }],
     // the reward for finishing a challenge
     reward: {
         type: String,
@@ -45,7 +43,7 @@ const challengeSchema = new Schema({
         type: Boolean,
         required: true
     },
-    // the points a number is worth, depending on the difficulty
+    // the points a challenge is worth, depending on the difficulty
     worth: Number,
 });
 
