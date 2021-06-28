@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/secondary"
         app:tabTextColor="@color/font_color_dark"
+        app:tabIndicatorColor="@color/primary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/viewPager">
     </com.google.android.material.tabs.TabLayout>

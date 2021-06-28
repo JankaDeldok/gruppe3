@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="left"
         android:orientation="vertical">
 
             <TextView
@@ -23,6 +23,6 @@
                 android:textAllCaps="true"
                 android:text="Feed text"
                 android:textColor="@color/font_color_light"
-                android:textSize="@dimen/font_size_medium" />
+                android:textSize="@dimen/font_size_small" />
     </LinearLayout>
 </FrameLayout>

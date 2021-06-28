@@ -14,7 +14,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/card_challenge_received"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/info_box_margin"
             android:layout_marginTop="@dimen/info_box_margin"
             android:layout_marginRight="@dimen/info_box_margin"
@@ -69,7 +69,10 @@
                         android:padding="@dimen/info_box_text_input_padding"
                         android:text="@string/challenge_title"
                         android:textColor="@color/font_color_light"
-                        tools:cornerRadius="@dimen/button_radius" />
+                        tools:cornerRadius="@dimen/button_radius"
+                        android:hint="@string/challenge_title"
+                        android:inputType="text"
+                        android:autofillHints="" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -88,7 +91,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Receiver"
+                            android:text="@string/receiver"
                             android:textColor="@color/secondary"
                             android:textSize="@dimen/font_size_medium" />
 
@@ -110,10 +113,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Groups"
+                            android:text="@string/groups"
                             android:textColor="@color/secondary"
                             android:textSize="@dimen/font_size_small" />
-                        <Switch
+                        <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/show_groups_only_switch"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
@@ -138,7 +141,7 @@
                         android:textSize="@dimen/font_size_medium" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName2"
+                        android:id="@+id/challenge_description"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:background="@drawable/edit_text_box_rounded_corners_purple"
@@ -148,7 +151,9 @@
                         android:padding="@dimen/info_box_text_input_padding"
                         android:text="@string/challenge_name"
                         android:textColor="@color/font_color_light"
-                        tools:cornerRadius="@dimen/button_radius" />
+                        android:hint="@string/challenge_description"
+                        tools:cornerRadius="@dimen/button_radius"
+                        android:importantForAutofill="no" />
 
                 </LinearLayout>
 
@@ -183,7 +188,10 @@
                             android:padding="@dimen/info_box_text_input_padding"
                             android:text="@string/challenge_reward"
                             android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
+                            android:hint="@string/challenge_reward"
+                            android:inputType="text"
+                            tools:cornerRadius="@dimen/button_radius"
+                            android:autofillHints="" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -208,7 +216,10 @@
                             android:padding="@dimen/info_box_text_input_padding"
                             android:text="@string/challenge_difficulty"
                             android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
+                            tools:cornerRadius="@dimen/button_radius"
+                            android:hint="@string/challenge_difficulty"
+                            android:inputType="text"
+                            android:autofillHints="" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -241,7 +252,10 @@
                             android:padding="@dimen/info_box_text_input_padding"
                             android:text="@string/challenge_duration"
                             android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
+                            tools:cornerRadius="@dimen/button_radius"
+                            android:hint="@string/challenge_time_left"
+                            android:autofillHints=""
+                            android:inputType="text" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -266,7 +280,10 @@
                             android:padding="@dimen/info_box_text_input_padding"
                             android:text="@string/challenge_location"
                             android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
+                            tools:cornerRadius="@dimen/button_radius"
+                            android:hint="@string/challenge_location"
+                            android:inputType="text"
+                            android:autofillHints="" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -294,10 +311,10 @@
 
 
                     <Button
-                        android:id="@+id/completed"
+                        android:id="@+id/challenge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Challenge"
+                        android:text="@string/challenge"
                         app:cornerRadius="@dimen/button_radius" />
 
                 </LinearLayout>

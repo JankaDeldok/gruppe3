@@ -7,22 +7,22 @@ import com.jolufeja.tudas.ChallengesReceivedFragment
 import com.jolufeja.tudas.ChallengesSentFragment
 
 // Adapter to create the three challenge fragments
-class ChallengesViewPagerFragmentAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class ViewPagerFragmentAdapter(fragment: Fragment, private val firstPage: Fragment, private val secondPage: Fragment, private val thirdPage: Fragment, private val defaultPage: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 3;
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> {
-                ChallengesReceivedFragment()
+                firstPage;
             }
             1 -> {
-                ChallengesSentFragment()
+                secondPage;
             }
             2 -> {
-                ChallengesPublicFragment()
+                thirdPage;
             }
-            else -> ChallengesReceivedFragment()
+            else -> defaultPage;
         }
     }
 }

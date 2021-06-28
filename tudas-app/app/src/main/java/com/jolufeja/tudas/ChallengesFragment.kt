@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.jolufeja.tudas.adapters.ChallengesViewPagerFragmentAdapter
+import com.jolufeja.tudas.adapters.ViewPagerFragmentAdapter
 
 class ChallengesFragment : Fragment(R.layout.fragment_challenges) {
 
@@ -26,7 +26,13 @@ class ChallengesFragment : Fragment(R.layout.fragment_challenges) {
         tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
 
         // create adapter
-        val adapter = ChallengesViewPagerFragmentAdapter(this)
+        val adapter = ViewPagerFragmentAdapter(
+            this,
+            ChallengesReceivedFragment(),
+            ChallengesSentFragment(),
+            ChallengesPublicFragment(),
+            ChallengesReceivedFragment()
+        )
         viewPager!!.adapter = adapter
 
         TabLayoutMediator(tabLayout!!, viewPager!!) { tab, position ->

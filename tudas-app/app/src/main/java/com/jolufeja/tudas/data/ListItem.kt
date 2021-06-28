@@ -10,9 +10,15 @@ open class ListItem {
     open var reward: String? = null
     open var points: Int = 0
     open var type: String? = null
+    open var rankingType: Int = 0
     open var date: String? = null
+    open var name: String? = null
+    open var ranking: Int = 0
+
 
     open fun getType(): Int {
         return -1
     }
+
+    open var size: Int = 0
 }
