@@ -37,15 +37,14 @@ userIO.use(function (req, res, next) {
 });
 
 
-/* POST /user/upload-picture */
+/* POST /user/uploadpicture */
 /* adds a profile picture to a user and returns the updated user with the picture link */
-userIO.post('/upload-picture', profileImg.single("file"), async (req, res) => {
-    //get the user from the db
+userIO.post('/uploadpicture', profileImg.single("file"), async (req, res) => {
     let url = "http://localhost:3030/images/profiles/" + req.file.originalname;
     User.findOneAndUpdate({ name: req.body.userName },
         { profilepicture: url },
         { fields: { password: 0 }, new: true })
-        .then(user => res.status(200).json(user))
+        .then(user => res.status(200).json(user));
 });
 
 /* POST /user/addfriend */
@@ -91,16 +90,51 @@ userIO.post('/removefriend', async (req, res) => {
     })
 });
 
+/* GET /user/getfriends */
+/* get friends by userName */
+userIO.get('/getfriends', (req, res) => {
+    User.findOne({ name: req.body.userName }, { friends: 1 }).then(friends => res.status(200).json(friends));
+});
+
+userIO.post('/updateSettings', async (req, res) => {
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+
+    //encrypt the password
+    const salt = await bcrypt.genSalt(10);
+    if (!salt) throw Error('Something went wrong with bcrypt');
+    const hash = await bcrypt.hash(password, salt);
+    if (!hash) throw Error('Something went wrong hashing the password');
+
+    const newUserSettings = {
+        $set: {
+            emailAddress: email,
+            password: hash
+        }
+    }
+
+    //save the user to the db
+    User.findOneAndUpdate({ "name": name }, newUserSettings).then(updatedDocument => {
+        if (updatedDocument) {
+            res.status(200).json(updatedDocument);
+        } else {
+            res.status(409).send("No matched user found!")
+        }
+    }).catch(err => res.status(409).send(`Failed to find and update user! ${err}`))
+})
+
 /* GET /user/getuser */
 /* get user by name */
 userIO.get('/getuser', (req, res) => {
     User.findOne({ name: req.body.userName }, { password: 0, __v: 0 }).then(user => res.status(200).json(user));
 });
 
-/* GET /user/getfriends */
-/* get user by name */
-userIO.get('/getfriends', (req, res) => {
-    User.findOne({ name: req.body.userName }, { friends: 1 }).then(friends => res.status(200).json(friends));
+/* GET /user/getpointsofuser */
+/* get points for a user by name */
+userIO.get('/getpointsofuser', (req, res) => {
+    User.findOne({ name: req.body.userName }, { name: 0, points }).then(user => res.status(200).json(user));
 });
+
 
 module.exports = userIO;

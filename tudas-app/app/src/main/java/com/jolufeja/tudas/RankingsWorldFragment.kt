@@ -5,52 +5,41 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import arrow.core.computations.nullable
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
-import com.jolufeja.tudas.data.FeedItem
-import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
-import java.util.*
+import com.jolufeja.tudas.data.RankingItem
+import java.util.ArrayList
 
 
-class FeedFragment : Fragment(R.layout.fragment_feed) {
+class RankingsWorldFragment : Fragment(R.layout.fragment_rankings_world){
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
-    private var listOfActivities: ArrayList<FeedItem> = ArrayList()
+    private var listOfRankings: ArrayList<RankingItem> = ArrayList()
     private var finalList: ArrayList<ListItem> = ArrayList()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //adding items in list
-        for (i in 0..10) {
-            val feed = FeedItem()
-            feed.id = i
-            feed.text = "Felix sent Laura a Challenge"
-            feed.type = "Sent Challenge"
-            feed.date = "2020-06-21"
-            listOfActivities.add(feed)
+        for (i in 0..20) {
+            val rank = RankingItem()
+            rank.id = i
+            rank.ranking = i + 1
+            rank.name = "Marc"
+            rank.points = 100000 / (i+1)
+            if(i === 5){
+                rank.rankingType = 1
+            } else {
+                rank.rankingType = 0
+            }
+            listOfRankings.add(rank)
         }
 
-        val header = HeaderItem()
-        header.text = "Today"
-        finalList.add(header)
-
-        listOfActivities.forEach {
+        listOfRankings.forEach {
             finalList.add(it)
         }
 
-        val header1 = HeaderItem()
-        header1.text = "Yesterday"
-        finalList.add(header1)
-
-        listOfActivities.forEach {
-            finalList.add(it)
-        }
-
-
-
-        mRecyclerView = view.findViewById(R.id.feed_recycler_view)
+        mRecyclerView = view.findViewById(R.id.rankings_recycler_view)
         var mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView!!.layoutManager = mLayoutManager
 
@@ -62,9 +51,9 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                     it,
                     finalList,
                     0,
-                    R.layout.card_feed_header,
-                    R.layout.card_feed,
                     0,
+                    0,
+                    R.layout.card_rankings_friends,
                     0,
                 ) {
                     null

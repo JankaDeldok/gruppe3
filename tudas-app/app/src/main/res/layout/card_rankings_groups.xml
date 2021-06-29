@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_ranking_groups"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="16dp"
+    android:clickable="false"
+    android:foreground="?selectableItemBackground"
+    card_view:cardBackgroundColor="@color/purple"
+    card_view:cardCornerRadius="@dimen/card_radius"
+    card_view:contentPadding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_margin="@dimen/margin_medium"
+            android:gravity="start"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/group_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="12"
+                    android:text="@string/group_name"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/font_size_medium" />
+
+                <TextView
+                    android:id="@+id/group_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_12"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/open_group_button"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:layout_marginEnd="@dimen/info_box_text_margin"
+                android:text="@string/open"
+                app:cornerRadius="@dimen/button_radius" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

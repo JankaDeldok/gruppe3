@@ -39,14 +39,34 @@ challengeIO.use(function (req, res, next) {
 });
 
 
-// Work in Progress, only serves as a template
-/* POST /user/upload-picture */
-challengeIO.post('/upload-picture', proofImg.single("file"), async (req, res) => {
-    //get the user from the db
-    let user = await User.findById(req.user.id);
+/* POST /challenge/uploadpicture */
+/* adds a proof picture to a challenge and returns the updated challenge with the picture link */
+challengeIO.post('/uploadpicture', proofImg.single("file"), async (req, res) => {
+    let url = "http://localhost:3030/images/challenges/" + req.file.originalname;
+    Challenge.findOne({ name: req.body.challengeName }).then(challenge => {
+        if (challenge.dueDate == null || challenge.dueDate <= Date.now()) {
+            Challenge.findOneAndUpdate(challenge,
+                { $push: { proofmedia: { user: req.body.userName, location: url } } },
+                { new: true })
+                .then(challenge => res.status(200).json(challenge))
+        }
+    })
 });
 
-/* POST /user/addchallenge */
+/* POST /challenge/uploadsocialmedia */
+/* adds a proof picture to a challenge and returns the updated challenge with the picture link */
+challengeIO.post('/uploadsocialmedia', async (req, res) => {
+    Challenge.findOne({ name: req.body.challengeName }).then(challenge => {
+        if (challenge.dueDate == null || challenge.dueDate <= Date.now()) {
+            Challenge.findOneAndUpdate({ name: req.body.challengeName },
+                { $push: { proofMedia: { user: req.body.userName, location: req.body.url } } },
+                { new: true })
+                .then(challenge => res.status(200).json(challenge))
+        }
+    }).catch(err => res.send(err));
+});
+
+/* POST /challenge/addchallenge */
 /* adds a friend to a user if they are not already friends */
 challengeIO.post('/addchallenge', async (req, res) => {
     let { challengeName, creatorName, description, dueDate, reward, isPublic } = req.body;
@@ -72,6 +92,14 @@ challengeIO.post('/addchallenge', async (req, res) => {
         }
     })
     console.log(creator)
+});
+
+/* POST /challenge/addchallenge */
+/* adds a friend to a user if they are not already friends */
+challengeIO.post('/editchallenge', async (req, res) => {
+    Challenge.findOne({ name: req.body.challengName }).then(challenge => {
+        Challenge
+    })
 });
 
 /* GET /challenge/getchallenge */

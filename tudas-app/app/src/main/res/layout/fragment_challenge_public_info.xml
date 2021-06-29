@@ -14,7 +14,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/card_challenge_received"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/info_box_margin"
             android:layout_marginTop="@dimen/info_box_margin"
             android:layout_marginRight="@dimen/info_box_margin"
@@ -69,7 +69,10 @@
                         android:padding="@dimen/info_box_text_input_padding"
                         android:text="@string/challenge_title"
                         android:textColor="@color/font_color_light"
-                        tools:cornerRadius="@dimen/button_radius" />
+                        tools:cornerRadius="@dimen/button_radius"
+                        android:hint="@string/challenge_title"
+                        android:autofillHints=""
+                        android:inputType="text" />
                 </LinearLayout>
 
 
@@ -98,7 +101,9 @@
                         android:padding="@dimen/info_box_text_input_padding"
                         android:text="@string/challenge_name"
                         android:textColor="@color/font_color_light"
-                        tools:cornerRadius="@dimen/button_radius" />
+                        tools:cornerRadius="@dimen/button_radius"
+                        android:hint="@string/challenge_description"
+                        android:autofillHints="" />
 
                 </LinearLayout>
 
@@ -134,7 +139,10 @@
                             android:padding="@dimen/info_box_text_input_padding"
                             android:text="@string/challenge_duration"
                             android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
+                            tools:cornerRadius="@dimen/button_radius"
+                            android:hint="@string/challenge_duration"
+                            android:inputType="text"
+                            android:autofillHints="" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -159,7 +167,10 @@
                             android:padding="@dimen/info_box_text_input_padding"
                             android:text="@string/challenge_difficulty"
                             android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
+                            tools:cornerRadius="@dimen/button_radius"
+                            android:hint="@string/challenge_difficulty"
+                            android:autofillHints=""
+                            android:inputType="text" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -189,7 +200,7 @@
                         android:id="@+id/challenge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Challenge"
+                        android:text="@string/challenge"
                         app:cornerRadius="@dimen/button_radius" />
 
                 </LinearLayout>

@@ -59,7 +59,8 @@ auth.post('/register', async (req, res) => {
         const newUser = new User({
             name: name,
             password: hash,
-            emailAddress: email
+            emailAddress: email,
+            credit: 1000
         });
 
         //save the user to the db
