@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/card_friends"
-    android:layout_marginLeft="16dp"
     android:layout_marginTop="16dp"
-    android:layout_marginRight="16dp"
     android:padding="@dimen/info_box_margin_3"
     android:background="@drawable/feed_card_box_purple"
     >
@@ -19,7 +17,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -28,9 +26,8 @@
                 android:id="@+id/friend_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="28dp"
+                android:layout_centerVertical="true"
                 android:text="Tinkerbell"
                 android:textColor="@color/secondary"
                 android:layout_weight="1"
@@ -38,14 +35,14 @@
 
             <Button
                 android:id="@+id/delete_button"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginLeft="130dp"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/ic_baseline_delete_24"/>
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </LinearLayout>

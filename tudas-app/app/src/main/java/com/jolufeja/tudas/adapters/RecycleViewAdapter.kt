@@ -23,6 +23,7 @@ class RecycleViewAdapter(
     private val layoutFeedCard: Int,
     private val layoutRankingCard: Int,
     private val layoutGroupsRankingCard: Int,
+    private val layoutFriendsCard: Int,
     private val listener: (ListItem) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -44,6 +45,9 @@ class RecycleViewAdapter(
             )
             4 -> return GroupsViewHolder (
                 LayoutInflater.from(context).inflate(layoutGroupsRankingCard, parent, false)
+            )
+            5 -> return FriendsViewHolder (
+                LayoutInflater.from(context).inflate(layoutFriendsCard, parent, false)
             )
         }
         return HeaderViewHolder(
@@ -67,6 +71,9 @@ class RecycleViewAdapter(
             }
             4 -> {
                 (holder as RecycleViewAdapter.GroupsViewHolder).bind(position)
+            }
+            5 -> {
+                (holder as RecycleViewAdapter.FriendsViewHolder).bind(position)
             }
         }
     }
@@ -171,6 +178,22 @@ class RecycleViewAdapter(
 
             // OnClick Listener on Button
             openGroupButton.setOnClickListener { listener(recyclerViewModel) }
+
+        }
+    }
+
+    private inner class FriendsViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        var username: TextView = itemView.findViewById(R.id.friend_username) as TextView
+        var deleteButton: Button = itemView.findViewById<View>(R.id.delete_button) as Button
+
+        fun bind(position: Int) {
+            val recyclerViewModel = mDataList[position]
+
+            username.text = recyclerViewModel.text
+
+            // OnClick Listener on Button
+            deleteButton.setOnClickListener { listener(recyclerViewModel) }
 
         }
     }
