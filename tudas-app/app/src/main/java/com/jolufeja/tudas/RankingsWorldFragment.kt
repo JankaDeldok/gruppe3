@@ -55,6 +55,7 @@ class RankingsWorldFragment : Fragment(R.layout.fragment_rankings_world){
                     0,
                     R.layout.card_rankings_friends,
                     0,
+                    0
                 ) {
                     null
                 }

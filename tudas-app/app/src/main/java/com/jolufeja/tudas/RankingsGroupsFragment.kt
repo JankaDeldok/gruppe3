@@ -52,6 +52,7 @@ class RankingsGroupsFragment : Fragment(R.layout.fragment_rankings_groups) {
                     0,
                     0,
                     R.layout.card_rankings_groups,
+                    0
                 ) { item ->
                     // Open New Fragment
                     val rankingsGroupFragment = RankingsGroupFragment()
