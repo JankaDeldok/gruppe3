@@ -98,7 +98,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         testNotificationsButton.setOnClickListener {
-            (activity as MainActivity).sendNotification("Test Notification", "Click me to open TUDAS")
+            if ((activity as MainActivity).notificationsAllowed) {
+                (activity as MainActivity).sendNotification(
+                    "Test Notification",
+                    "Click me to open TUDAS"
+                )
+            }
         }
     }
 }

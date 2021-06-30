@@ -29,6 +29,11 @@ import org.koin.core.KoinExperimentalAPI
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
+    var notificationsAllowed = false
+    var challengeReceivedNotificationAllowed = false
+    var friendsRequestNotificationAllowed = false
+    var challengeEndsNotificationAllowed = false
+
     private val CHANNEL_ID = "channel_id_test_01"
     private val notificationId = 101
 
