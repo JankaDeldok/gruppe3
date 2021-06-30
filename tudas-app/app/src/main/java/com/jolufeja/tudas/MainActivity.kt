@@ -45,6 +45,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val toolbarTitle: TextView = findViewById(R.id.toolbar_title);
         toolbarTitle.text = "TUDAS";
 
+        createNotificationChannel()
+
         val navController = findNavController(R.id.nav_fragment).also {
             it.addOnDestinationChangedListener { _, dest, _ ->
                 if (dest.id == R.id.loginFragment || dest.id == R.id.registrationFragment ) {

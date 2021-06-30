@@ -22,8 +22,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        (activity as MainActivity).createNotificationChannel()
-
         val profileFragment = ProfileFragment()
 
         // Friends Button
@@ -100,7 +98,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         testNotificationsButton.setOnClickListener {
-            (activity as MainActivity).sendNotification("Test Notification", "This is a test notification")
+            (activity as MainActivity).sendNotification("Test Notification", "Click me to open TUDAS")
         }
     }
 }
