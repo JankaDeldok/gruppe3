@@ -1,5 +1,6 @@
 package com.jolufeja.tudas
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.jolufeja.authentication.UserAuthenticationService
 import com.jolufeja.authentication.UserCredentials
@@ -44,7 +45,7 @@ class LoginViewModel(
             val credentials = UserCredentials(userNameState.value, passwordState.value)
 
             authenticationService.login(credentials).fold(
-                ifLeft = { error(it) },
+                ifLeft = { Log.d("LoginViewModel", "Login failed. $it") },
                 ifRight = { navigator.publish(LoginNavigationEvents.PROCEED_TO_HOME) }
             )
         }

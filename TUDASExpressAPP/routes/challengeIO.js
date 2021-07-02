@@ -65,6 +65,7 @@ challengeIO.post('/addchallenge', async (req, res) => {
 
     Challenge.create(newChallenge, (err, item) => {
         if (err) {
+            console.log(err)
             res.status(500).send("Challenge could not be created.");
         } else {
             item.save();

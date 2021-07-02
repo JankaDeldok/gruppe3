@@ -38,9 +38,13 @@ internal object HttpMapDomain :
 
     override suspend fun HttpClientResponse.toDomain(): Either<CommonErrors, HttpClientResponse> =
         when (statusCode) {
-            500 -> CommonErrors.InternalServerError.left()
-            400 -> readErrorBody(CommonErrors::BadRequest).left()
-            200 -> this.right()
+            in 500..600 -> CommonErrors.InternalServerError.left()
+            in 400..410 -> try {
+                readErrorBody(CommonErrors::BadRequest)
+            } catch (err: Throwable) {
+                CommonErrors.GenericError("Request failed with $statusCode, but cant read error body.")
+            }.left()
+            in 200..305 -> this.right()
             else -> CommonErrors.GenericError("Request successful, but response has unrecognisable status code.")
                 .left()
         }

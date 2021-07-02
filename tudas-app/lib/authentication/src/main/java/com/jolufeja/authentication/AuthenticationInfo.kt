@@ -6,4 +6,4 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 data class AuthenticationInfo(
     val token: String,
     val user: UserInfo
-    )
+)

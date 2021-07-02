@@ -75,6 +75,7 @@ auth.post('/register', async (req, res) => {
             user: {
                 id: savedUser.id,
                 name: savedUser.name,
+                email: savedUser.email
             }
         });
     } catch (e) {

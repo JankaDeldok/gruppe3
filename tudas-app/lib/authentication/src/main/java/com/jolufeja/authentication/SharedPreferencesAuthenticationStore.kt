@@ -23,6 +23,7 @@ class SharedPreferencesAuthenticationStore(context: Context) : AuthenticationSto
         val TokenKey = stringPreferencesKey("authToken")
         val UserNameKey = stringPreferencesKey("userName")
         val UserIdKey = stringPreferencesKey("userId")
+        val EmailKey = stringPreferencesKey("emailAddress")
     }
 
     private val dataStore by lazy { context.dataStore }
@@ -36,6 +37,7 @@ class SharedPreferencesAuthenticationStore(context: Context) : AuthenticationSto
                     user = UserInfo(
                         id = store[UserIdKey].bind(),
                         name = store[UserNameKey].bind(),
+                        email = store[EmailKey].bind()
                     )
                 )
             }
@@ -49,6 +51,7 @@ class SharedPreferencesAuthenticationStore(context: Context) : AuthenticationSto
                 it[TokenKey] = authInfo.token
                 it[UserIdKey] = authInfo.user.id
                 it[UserNameKey] = authInfo.user.name
+                it[EmailKey] = authInfo.user.email
             }
     }
 

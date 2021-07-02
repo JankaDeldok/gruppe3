@@ -1,6 +1,5 @@
 package com.jolufeja.tudas.service.user
 
-import com.jolufeja.tudas.service.FriendEntry
 import com.jolufeja.tudas.service.challenges.Challenge
 
 data class User(

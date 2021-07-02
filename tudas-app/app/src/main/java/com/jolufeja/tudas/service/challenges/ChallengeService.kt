@@ -24,7 +24,7 @@ class DefaultChallengeService(
         challenge: InitialChallenge
     ): Either<CommonErrors, Challenge> =
         httpClient
-            .post("/user/addchallenge")
+            .post("/challenge/addchallenge")
             .jsonBody(challenge)
             .tryExecute()
             .awaitJsonBody()
@@ -33,7 +33,7 @@ class DefaultChallengeService(
         name: String
     ): Either<CommonErrors, Challenge?> =
         httpClient
-            .get("/user/getchallenge")
+            .get("/challenge/getchallenge")
             .jsonBody("""{ "challengeName": "$name" } """)
             .tryExecute()
             .awaitJsonBodyOrNull()

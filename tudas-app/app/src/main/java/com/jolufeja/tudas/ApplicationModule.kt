@@ -26,9 +26,11 @@ object ApplicationModule {
         fragment { RankingsFragment() }
         fragment { LoginFragment() }
         fragment { RegistrationFragment() }
+        fragment { IndividualChallengeSentFragment() }
 
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegistrationViewModel(get(), get()) }
+        viewModel { IndividualChallengeSentViewModel(get(), get()) }
 
         single<UserService> {
             DefaultUserService(
