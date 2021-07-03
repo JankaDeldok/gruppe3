@@ -146,4 +146,20 @@ userIO.get('/getcreatedchallenges', (req, res) => {
             Challenge.find({ _id: { $in: challenges.createdChallenges } }).then(challenges => res.status(200).json(challenges)))
 });
 
+/* GET /user/getopenchallenges */
+/* get challenges for the user which are still open */
+userIO.get('/getopenchallenges', (req, res) => {
+    User.findOne({ name: req.body.userName }, { openChallenges: 1 })
+        .then(challenges =>
+            Challenge.find({ _id: { $in: challenges.openChallenges } }).then(challenges => res.status(200).json(challenges)))
+});
+
+/* GET /user/getfinishedchallenges */
+/* get challenges the user finished */
+userIO.get('/getfinishedchallenges', (req, res) => {
+    User.findOne({ name: req.body.userName }, { finishedChallenges: 1 })
+        .then(challenges =>
+            Challenge.find({ _id: { $in: challenges.finishedChallenges } }).then(challenges => res.status(200).json(challenges)))
+});
+
 module.exports = userIO;
