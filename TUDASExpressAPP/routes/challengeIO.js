@@ -42,57 +42,97 @@ challengeIO.use(function (req, res, next) {
 /* POST /challenge/uploadpicture */
 /* adds a proof picture to a challenge and returns the updated challenge with the picture link */
 challengeIO.post('/uploadpicture', proofImg.single("file"), async (req, res) => {
+    const { challengeName, userName } = req.body;
     let url = "http://localhost:3030/images/challenges/" + req.file.originalname;
-    Challenge.findOne({ name: req.body.challengeName }).then(challenge => {
+    Challenge.findOne({ name: challengeName }).then(challenge => {
         if (challenge.dueDate == null || challenge.dueDate <= Date.now()) {
-            Challenge.findOneAndUpdate(challenge,
-                { $push: { proofmedia: { user: req.body.userName, location: url } } },
+            Challenge.findOneAndUpdate({ name: challengeName },
+                { $push: { proofMedia: { user: userName, location: url } } },
                 { new: true })
-                .then(challenge => res.status(200).json(challenge))
+                .then(challenge => finishedChallenge(challenge._id, userName))
+                .then(user => res.status(200).json(user))
         }
-    })
+    }).catch(err => res.status(409).send("Could not find Challenge"));
 });
 
 /* POST /challenge/uploadsocialmedia */
 /* adds a proof picture to a challenge and returns the updated challenge with the picture link */
 challengeIO.post('/uploadsocialmedia', async (req, res) => {
-    Challenge.findOne({ name: req.body.challengeName }).then(challenge => {
+    const { challengeName, userName, url } = req.body;
+    Challenge.findOne({ name: challengeName }).then(challenge => {
         if (challenge.dueDate == null || challenge.dueDate <= Date.now()) {
-            Challenge.findOneAndUpdate({ name: req.body.challengeName },
-                { $push: { proofMedia: { user: req.body.userName, location: req.body.url } } },
+            Challenge.findOneAndUpdate({ name: challengeName },
+                { $push: { proofMedia: { user: userName, location: url } } },
                 { new: true })
-                .then(challenge => res.status(200).json(challenge))
+                .then(challenge => finishedChallenge(challenge._id, userName))
+                .then(user => res.status(200).json(user))
         }
-    }).catch(err => res.send(err));
+    }).catch(err => res.status(409).send("Could not find Challenge"));
 });
 
+/* adds a challenge to a users finished challenges */
+const finishedChallenge = async (challengeId, userName) => {
+    return User.findOneAndUpdate({ name: userName },
+        { $push: { finishedChallenge: challengeId } },
+        { new: true })
+}
+
 /* POST /challenge/addchallenge */
-/* adds a friend to a user if they are not already friends */
+/* adds a challenge to a user, a users friendsgroup or to the public */
 challengeIO.post('/addchallenge', async (req, res) => {
-    let { challengeName, creatorName, description, dueDate, reward, isPublic } = req.body;
+    let { challengeName, creatorName, description, dueDate, reward, addressedTo } = req.body;
 
     let creator = await User.findOne({ name: creatorName })
 
     const newChallenge = {
         name: challengeName,
         description: description,
-        creator: creator._id,
+        creator: creator.name,
         creationDate: Date.now(),
         dueDate: dueDate,
         reward: reward,
-        isPublic: isPublic
+        addressedTo: addressedTo
     }
 
     Challenge.create(newChallenge, (err, item) => {
         if (err) {
             res.status(500).send("Challenge could not be created.");
         } else {
-            item.save();
-            res.status(200).send(item)
+            item.save(async (err, createdChallenge) => {
+                await creator.updateOne({ $push: { createdChallenges: createdChallenge._id } }, { new: true });
+                if (addressedTo === "public") {
+                    res.status(200).send("Public challenge succesfully created")
+                } else if (addressedTo === "friends") {
+                    friendChallenge(createdChallenge._id, creatorName);
+                } else {
+                    userChallenge(createdChallenge._id, addressedTo)
+                }
+            })
         }
     })
-    console.log(creator)
 });
+
+/* adds a challenge to a users finished challenges */
+const friendChallenge = async (challengeId, userName) => {
+    User.findOne({ name: userName }, { friends: 1, _id: 0 })
+        .then(async (friends) => {
+            let friendNames = [];
+            friends.friends.forEach(element => {
+                friendNames.push(element.name);
+            });
+            await User.updateMany({ name: { $in: friendNames } },
+                { $push: { openChallenges: challengeId } },
+                { multi: true });
+        })
+
+}
+
+/* adds a challenge to a users finished challenges */
+const userChallenge = async (challengeId, friendName) => {
+    User.findOneAndUpdate({ name: friendName },
+        { $push: { openChallenges: challengeId } },
+        { new: true })
+}
 
 /* POST /challenge/addchallenge */
 /* adds a friend to a user if they are not already friends */
@@ -106,6 +146,27 @@ challengeIO.post('/editchallenge', async (req, res) => {
 /* get challenge by name */
 challengeIO.get('/getchallenge', (req, res) => {
     Challenge.findOne({ name: req.body.challengeName }).then(challenge => res.status(200).json(challenge));
+});
+
+/* GET /challenge/getpublicchallenges */
+/* get challenges which are public */
+challengeIO.get('/getpublicchallenges', (req, res) => {
+    Challenge.find({ addressedTo: "public" }).then(challenges => res.status(200).json(challenges));
+});
+
+/* GET /challenge/getchallengesfromfriends */
+/* get challenges which are from friends */
+challengeIO.get('/getchallengesfromfriends', (req, res) => {
+    let { userName } = req.body;
+    User.findOne({ name: userName }, { friends: 1, _id: 0 })
+        .then(async (friends) => {
+            let friendNames = [];
+            friends.friends.forEach(element => {
+                friendNames.push(element.name);
+            });
+            Challenge.find({ addressedTo: "friends", creator: { $in: friendNames } })
+                .then(challenges => res.status(200).json(challenges));
+        })
 });
 
 module.exports = challengeIO;

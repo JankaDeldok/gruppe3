@@ -6,6 +6,7 @@ var fs = require('fs');
 
 
 const User = require('../models/userSchema');
+const Challenge = require('../models/challengeSchema');
 
 
 // Storage for saving pictures on the server.
@@ -40,8 +41,9 @@ userIO.use(function (req, res, next) {
 /* POST /user/uploadpicture */
 /* adds a profile picture to a user and returns the updated user with the picture link */
 userIO.post('/uploadpicture', profileImg.single("file"), async (req, res) => {
+    let { userName } = req.body;
     let url = "http://localhost:3030/images/profiles/" + req.file.originalname;
-    User.findOneAndUpdate({ name: req.body.userName },
+    User.findOneAndUpdate({ name: userName },
         { profilepicture: url },
         { fields: { password: 0 }, new: true })
         .then(user => res.status(200).json(user));
@@ -50,10 +52,11 @@ userIO.post('/uploadpicture', profileImg.single("file"), async (req, res) => {
 /* POST /user/addfriend */
 /* adds a friend to a user if they are not already friends */
 userIO.post('/addfriend', async (req, res) => {
-    User.findOne({ name: req.body.userName }, { friends: 1 }).then(user => {
+    let { userName, friendName } = req.body;
+    User.findOne({ name: userName }, { friends: 1 }).then(user => {
         let alreadyFriends = false;
         user.friends.some(element => {
-            if (element.name === req.body.friendName) {
+            if (element.name === friendName) {
                 return alreadyFriends = true;
             }
         });
@@ -61,8 +64,8 @@ userIO.post('/addfriend', async (req, res) => {
         if (alreadyFriends) {
             res.status(409).send("Users are already befriended.")
         } else {
-            User.findOneAndUpdate({ name: req.body.userName },
-                { $push: { friends: { name: req.body.friendName, streak: 0 } } },
+            User.findOneAndUpdate({ name: userName },
+                { $push: { friends: { name: friendName, streak: 0 } } },
                 { fields: { name: 1, friends: 1 }, new: true })
                 .then(user => res.status(200).json(user));
         }
@@ -72,11 +75,12 @@ userIO.post('/addfriend', async (req, res) => {
 /* POST /user/removefriend */
 /* removes the friend of a user if they were friends */
 userIO.post('/removefriend', async (req, res) => {
-    User.findOne({ name: req.body.userName }, { friends: 1 }).then(user => {
+    let { userName, friendName } = req.body;
+    User.findOne({ name: userName }, { friends: 1 }).then(user => {
         let wereFriends = false;
         user.friends.some(element => {
-            if (element.name === req.body.friendName) {
-                User.findOneAndUpdate({ name: req.body.userName },
+            if (element.name === friendName) {
+                User.findOneAndUpdate({ name: userName },
                     { $pull: { friends: element } },
                     { fields: { name: 1, friends: 1 }, new: true })
                     .then(user => res.status(200).json(user));
@@ -97,9 +101,7 @@ userIO.get('/getfriends', (req, res) => {
 });
 
 userIO.post('/updateSettings', async (req, res) => {
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
+    let { name, email, password } = req.body;
 
     //encrypt the password
     const salt = await bcrypt.genSalt(10);
@@ -136,5 +138,12 @@ userIO.get('/getpointsofuser', (req, res) => {
     User.findOne({ name: req.body.userName }, { name: 0, points }).then(user => res.status(200).json(user));
 });
 
+/* GET /user/getcreatedchallenges */
+/* get challenges where the user is the creator of */
+userIO.get('/getcreatedchallenges', (req, res) => {
+    User.findOne({ name: req.body.userName }, { createdChallenges: 1 })
+        .then(challenges =>
+            Challenge.find({ _id: { $in: challenges.createdChallenges } }).then(challenges => res.status(200).json(challenges)))
+});
 
 module.exports = userIO;

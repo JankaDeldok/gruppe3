@@ -18,8 +18,7 @@ const challengeSchema = new Schema({
     },
     // the user who created the challenge
     creator: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
         required: true,
     },
     // the creation date of the challenge
@@ -38,9 +37,9 @@ const challengeSchema = new Schema({
         type: String,
         required: true,
     },
-    // the visibility of the challenge: true if public, otherwise false
-    isPublic: {
-        type: Boolean,
+    // the visibility of the challenge
+    addressedTo: {
+        type: String,
         required: true
     },
     // the points a challenge is worth, depending on the difficulty
