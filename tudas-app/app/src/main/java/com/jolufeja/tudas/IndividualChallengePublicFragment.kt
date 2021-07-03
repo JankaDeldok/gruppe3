@@ -28,9 +28,6 @@ class IndividualChallengePublicFragment : Fragment(R.layout.fragment_challenge_p
         // Duration
         var time: EditText = view.findViewById<View>(R.id.challenge_time) as EditText
 
-        // Open Camera Button
-        var openCamera: ImageView = view.findViewById<View>(R.id.open_camera) as ImageView
-
         // Send challenge Button
         var challengeButton: Button = view.findViewById<View>(R.id.challenge) as Button
 
@@ -39,10 +36,7 @@ class IndividualChallengePublicFragment : Fragment(R.layout.fragment_challenge_p
             requireActivity().supportFragmentManager.popBackStack();
         }
 
-        // Listener for opening camera button
-        openCamera.setOnClickListener {
-            // TO DO
-        }
+
 
         // Listener for challenge completed button
         challengeButton.setOnClickListener {
