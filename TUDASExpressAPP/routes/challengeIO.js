@@ -129,18 +129,9 @@ const friendChallenge = async (challengeId, userName) => {
 
 /* adds a challenge to a users finished challenges */
 const userChallenge = async (challengeId, friendName) => {
-    User.findOneAndUpdate({ name: friendName },
-        { $push: { openChallenges: challengeId } },
-        { new: true })
+    await User.findOneAndUpdate({ name: friendName },
+        { $push: { openChallenges: challengeId } })
 }
-
-/* POST /challenge/addchallenge */
-/* adds a friend to a user if they are not already friends */
-challengeIO.post('/editchallenge', async (req, res) => {
-    Challenge.findOne({ name: req.body.challengName }).then(challenge => {
-        Challenge
-    })
-});
 
 /* GET /challenge/getchallenge */
 /* get challenge by name */
