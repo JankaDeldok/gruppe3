@@ -17,7 +17,7 @@ import java.util.*
 // Adapter to create a challenge card
 class RecycleViewAdapter(
     private val context: Context,
-    private val mDataList: List<ListItem>,
+    private var mDataList: List<ListItem>,
     private val layoutCard: Int,
     private val layoutHeader: Int,
     private val layoutFeedCard: Int,
@@ -27,6 +27,10 @@ class RecycleViewAdapter(
     private val listener: (ListItem) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    fun refreshData(items: List<ListItem>) {
+        mDataList = items
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

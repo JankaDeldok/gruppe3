@@ -49,7 +49,6 @@ class DefaultChallengeService(
 
     override suspend fun getPublicChallenges(): Either<CommonErrors, List<Challenge>> =
         httpClient.get("challenge/getpublicchallenges")
-            .emptyBody()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())
 

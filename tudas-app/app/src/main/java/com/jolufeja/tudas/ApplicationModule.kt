@@ -29,10 +29,12 @@ object ApplicationModule {
         fragment { LoginFragment() }
         fragment { RegistrationFragment() }
         fragment { IndividualChallengeSentFragment() }
+        fragment { ChallengesPublicFragment(get()) }
 
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegistrationViewModel(get(), get()) }
         viewModel { IndividualChallengeSentViewModel(get(), get()) }
+        viewModel { ChallengesPublicViewModel(get()) }
 
         single<UserService> {
             DefaultUserService(

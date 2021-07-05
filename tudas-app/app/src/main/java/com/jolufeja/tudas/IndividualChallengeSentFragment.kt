@@ -40,9 +40,9 @@ class IndividualChallengeSentViewModel(
                     challengeName.value.bind(),
                     creatorName.value.bind(),
                     description.value.bind(),
-                    LocalDate.parse(dueDate.value).bind(),
+                    LocalDate.now().plusDays(3),
                     reward.value.bind(),
-                    isPublic.value.bind()
+                    "public"
                 )
 
                 challengeService.createChallenge(initialChallenge).fold(

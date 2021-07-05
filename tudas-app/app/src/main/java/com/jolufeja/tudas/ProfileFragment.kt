@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.jolufeja.authentication.UserAuthenticationService
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.get
 
 
@@ -22,6 +24,12 @@ class ProfileFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 //        val profileFragment = ProfileFragment(get())
+
+        val userName = view.findViewById<TextView>(R.id.userName).let {
+            runBlocking {
+                it.text = authenticationService.authentication.await().user.name
+            }
+        }
 
         // Friends Button
         var friendsButton: Button = view.findViewById<View>(R.id.friendsButton) as Button

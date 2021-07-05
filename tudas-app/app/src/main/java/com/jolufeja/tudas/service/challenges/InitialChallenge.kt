@@ -8,5 +8,5 @@ data class InitialChallenge(
     val description: String,
     val dueDate: LocalDate,
     val reward: String,
-    val isPublic: Boolean
+    val addressedTo: String
 )

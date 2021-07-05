@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import arrow.core.Either
+import arrow.core.computations.either
 import com.jolufeja.httpclient.HttpClient
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.httpclient.error.ErrorHandler
@@ -24,7 +25,9 @@ import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.Challenge
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
@@ -43,7 +46,9 @@ class ChallengesPublicViewModel(
 
 }
 
-class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
+class ChallengesPublicFragment(
+    private val challengeService: ChallengeService
+) : Fragment(R.layout.fragment_challenges_public) {
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfChallenges: ArrayList<ChallengesItem> = ArrayList()
@@ -56,21 +61,38 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         // Need to figure out a way to integrate asynchronous loading into all of this ... :/
-        lifecycleScope.launchWhenCreated {
-            viewModel.fetchStatus.collect {
-                when(val state = it) {
-                    is DataSource.State.Empty -> {}
-                    is DataSource.State.Error -> {}
-                    is DataSource.State.Loading -> {
-                        // TODO: Display loading animation
-                    }
-                    is DataSource.State.Success -> {
-                        val newItems = state.data.toChallengeListItems()
-                        finalList = newItems.toMutableList()
-                        mAdapter?.notifyDataSetChanged()
-                    }
-                }
-            }
+        lifecycleScope.launch {
+            val result = either<CommonErrors, Unit> {
+                val challenges = challengeService.getPublicChallenges().bind()
+                val newItems = challenges.toChallengeListItems()
+                finalList = newItems.toMutableList()
+                (mAdapter as? RecycleViewAdapter)?.refreshData(newItems)
+                mAdapter?.notifyDataSetChanged()
+            }.fold(
+                ifLeft = {
+                    Log.d("ChallengesPublicFragment","Something went wrong while fetching public Challenges $it")
+                },
+                ifRight = {}
+            )
+
+
+
+
+//            viewModel.fetchStatus.collect {
+//                when(val state = it) {
+//                    is DataSource.State.Empty -> {}
+//                    is DataSource.State.Error -> {}
+//                    is DataSource.State.Loading -> {
+//                        // TODO: Display loading animation
+//                    }
+//                    is DataSource.State.Success -> {
+//                        val newItems = state.data.toChallengeListItems()
+//                        finalList = newItems.toMutableList()
+//                        mAdapter?.notifyDataSetChanged()
+//                    }
+//                }
+//            }
+//            viewModel.refresh()
         }
 
 
@@ -151,14 +173,14 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
 }
 
 private fun  List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
-    val item = ListItem()
+    val item = ChallengesItem()
 
     item.id = i
-    item.title = challenge.challengeName
-    item.author = challenge.creatorName
+    item.title = challenge.name
+    item.author = challenge.creator
     item.description = challenge.description
-    item.points = challenge.points
-    item.timeLeft = LocalTime.now().until(challenge.dueDate, ChronoUnit.DAYS).toInt()
+    item.points = challenge.worth
+    item.timeLeft = LocalDate.now().until(challenge.dueDate, ChronoUnit.DAYS).toInt()
 
     item
 }
