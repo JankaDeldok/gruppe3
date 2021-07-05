@@ -34,7 +34,7 @@ class DefaultChallengeService(
     override suspend fun createChallenge(
         challenge: InitialChallenge
     ): Either<CommonErrors, Challenge> =
-        httpClient.post("/challenge/addchallenge")
+        httpClient.post("challenge/addchallenge")
             .jsonBody(challenge)
             .tryExecute()
             .awaitJsonBody()
@@ -42,31 +42,31 @@ class DefaultChallengeService(
     override suspend fun getChallenge(
         name: String
     ): Either<CommonErrors, Challenge?> =
-        httpClient.get("/challenge/getchallenge")
+        httpClient.get("challenge/getchallenge")
             .jsonBody(ChallengeName(name))
             .tryExecute()
             .awaitJsonBodyOrNull()
 
     override suspend fun getPublicChallenges(): Either<CommonErrors, List<Challenge>> =
-        httpClient.get("/challenge/getpublicchallenges")
+        httpClient.get("challenge/getpublicchallenges")
             .emptyBody()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())
 
     override suspend fun getFriendChallenges(): Either<CommonErrors, List<Challenge>> =
-        httpClient.get("/challenge/getchallengesfromfriends")
+        httpClient.get("challenge/getchallengesfromfriends")
             .jsonBodyOfCurrentUser()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())
 
     override suspend fun getOwnCreatedChallenges(): Either<CommonErrors, List<Challenge>> =
-        httpClient.get("/user/getcreatedchallenges")
+        httpClient.get("user/getcreatedchallenges")
             .jsonBodyOfCurrentUser()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())
 
     override suspend fun getFinishedChallenges(): Either<CommonErrors, List<Challenge>> =
-        httpClient.get("/user/getfinishedchallenges")
+        httpClient.get("user/getfinishedchallenges")
             .jsonBodyOfCurrentUser()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())

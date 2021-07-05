@@ -53,7 +53,7 @@ class ProfileFragment(
 
         //opens ChangeEmailFragment when clicked
         changeEmailButton.setOnClickListener{
-            val changeEmailFragment = ChangeEmailFragment()
+            val changeEmailFragment = ChangeEmailFragment(get(), get())
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(

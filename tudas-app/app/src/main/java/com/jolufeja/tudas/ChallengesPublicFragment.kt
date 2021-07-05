@@ -9,10 +9,33 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import arrow.core.Either
+import com.jolufeja.httpclient.HttpClient
+import com.jolufeja.httpclient.error.CommonErrors
+import com.jolufeja.httpclient.error.ErrorHandler
+import com.jolufeja.httpclient.error.HttpErrorHandler
+import com.jolufeja.presentation.viewmodel.FetcherViewModel
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ChallengesItem
 import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
+import com.jolufeja.tudas.service.challenges.Challenge
+import com.jolufeja.tudas.service.challenges.ChallengeService
+import org.koin.android.ext.android.inject
+
+private val ChallengeErrorHandler = ErrorHandler(CommonErrors::GenericError)
+
+
+class ChallengesPublicViewModel(
+    private val challengeService: ChallengeService
+) : FetcherViewModel<CommonErrors, List<Challenge>>(ChallengeErrorHandler) {
+    override suspend fun fetchData(): List<Challenge> =
+        when(val challenges = challengeService.getPublicChallenges()) {
+            is Either.Right -> challenges.value
+            is Either.Left -> throw Throwable("Unable to fetch public challenges ${challenges.value}")
+        }
+
+}
 
 class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
     private var mRecyclerView: RecyclerView? = null
@@ -20,6 +43,8 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
     private var listOfChallenges: ArrayList<ChallengesItem> = ArrayList()
     private var createChallengeButton: Button? = null
     private var finalList: ArrayList<ListItem> = ArrayList()
+
+    private val viewModel: ChallengesPublicViewModel by inject()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

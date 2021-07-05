@@ -30,7 +30,7 @@ suspend fun HttpClientResponse.readErrorBody(ctor: ErrorConstructor): CommonErro
         ?: CommonErrors.GenericError("Response body is empty - can't construct specific error instance.")
 
 
-internal val HttpErrorHandler = ErrorHandler<CommonErrors>(CommonErrors::GenericError)
+val HttpErrorHandler = ErrorHandler<CommonErrors>(CommonErrors::GenericError)
 
 internal object HttpMapDomain :
     MapDomain<HttpClientResponse, CommonErrors>,

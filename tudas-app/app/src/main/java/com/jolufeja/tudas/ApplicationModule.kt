@@ -4,6 +4,8 @@ import com.jolufeja.authentication.AuthenticationModule
 import com.jolufeja.authentication.AuthenticationQualifiers
 import com.jolufeja.httpclient.HttpClientModule
 import com.jolufeja.navigation.EventDrivenNavigationModule
+import com.jolufeja.tudas.service.DefaultSettingsService
+import com.jolufeja.tudas.service.SettingsService
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import com.jolufeja.tudas.service.challenges.DefaultChallengeService
 import com.jolufeja.tudas.service.user.DefaultUserService
@@ -42,7 +44,12 @@ object ApplicationModule {
         single<ChallengeService> {
             DefaultChallengeService(
                 get(qualifier(AuthenticationQualifiers.WithUserAuthentication)),
+                get()
             )
+        }
+
+        single<SettingsService> {
+            DefaultSettingsService(get(qualifier(AuthenticationQualifiers.WithUserAuthentication)))
         }
     }
 
