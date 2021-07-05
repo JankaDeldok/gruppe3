@@ -32,6 +32,7 @@ class IndividualChallengeSentViewModel(
     val reward: MutableLiveData<String> = MutableLiveData("")
     val isPublic: MutableLiveData<Boolean> = MutableLiveData(false)
 
+
     fun createChallenge() {
         viewModelScope.launch {
             nullable {
@@ -66,6 +67,18 @@ class IndividualChallengeSentFragment :
 
     override fun createBinding(view: View): FragmentChallengeSentInfoBinding =
         FragmentChallengeSentInfoBinding.bind(view)
+
+    override fun onViewAndBindingCreated(
+        view: View,
+        binding: FragmentChallengeSentInfoBinding,
+        savedInstanceState: Bundle?
+    ) {
+        view.findViewById<TextView>(R.id.back_button)?.let {
+            it.setOnClickListener {
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+    }
 }
 
 class IndividualChallengeSentFragment2 : Fragment(R.layout.fragment_challenge_sent_info) {

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.jolufeja.authentication.UserAuthenticationService
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
 
 
 class ProfileFragment(
@@ -20,7 +21,7 @@ class ProfileFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val profileFragment = ProfileFragment()
+//        val profileFragment = ProfileFragment(get())
 
         // Friends Button
         var friendsButton: Button = view.findViewById<View>(R.id.friendsButton) as Button
