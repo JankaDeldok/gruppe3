@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".IndividualChallengeSentFragment2">
+    tools:context=".IndividualChallengeSentFragment">
 
     <data>
         <variable
@@ -75,7 +75,7 @@
                         android:layout_marginEnd="@dimen/info_box_text_margin"
                         android:background="@drawable/edit_text_box_rounded_corners_purple"
                         android:padding="@dimen/info_box_text_input_padding"
-                        android:text="@string/challenge_title"
+                        android:text="@={challengeSentViewModel.challengeName}"
                         android:textColor="@color/font_color_light"
                         tools:cornerRadius="@dimen/button_radius"
                         android:hint="@string/challenge_title"
@@ -157,7 +157,7 @@
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
                         android:padding="@dimen/info_box_text_input_padding"
-                        android:text="@string/challenge_name"
+                        android:text="@={challengeSentViewModel.description}"
                         android:textColor="@color/font_color_light"
                         android:hint="@string/challenge_description"
                         tools:cornerRadius="@dimen/button_radius"
@@ -194,7 +194,7 @@
                             android:background="@drawable/edit_text_box_rounded_corners_purple"
                             android:ems="10"
                             android:padding="@dimen/info_box_text_input_padding"
-                            android:text="@string/challenge_reward"
+                            android:text="@={challengeSentViewModel.reward}"
                             android:textColor="@color/font_color_light"
                             android:hint="@string/challenge_reward"
                             android:inputType="text"
@@ -221,7 +221,7 @@
                             android:layout_marginEnd="@dimen/info_box_text_margin"
                             android:background="@drawable/edit_text_box_rounded_corners_purple"
                             android:padding="@dimen/info_box_text_input_padding"
-                            android:text="@string/challenge_duration"
+                            android:text="@={challengeSentViewModel.dueDate}"
                             android:textColor="@color/font_color_light"
                             tools:cornerRadius="@dimen/button_radius"
                             android:hint="@string/challenge_time_left"

@@ -17,7 +17,7 @@ import java.util.*
 // Adapter to create a challenge card
 class RecycleViewAdapter(
     private val context: Context,
-    private val mDataList: ArrayList<ListItem>,
+    private val mDataList: List<ListItem>,
     private val layoutCard: Int,
     private val layoutHeader: Int,
     private val layoutFeedCard: Int,

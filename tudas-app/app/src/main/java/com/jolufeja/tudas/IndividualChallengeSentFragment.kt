@@ -28,7 +28,7 @@ class IndividualChallengeSentViewModel(
     val challengeName: MutableLiveData<String> = MutableLiveData("")
     val creatorName: MutableLiveData<String> = MutableLiveData("Peter")
     val description: MutableLiveData<String> = MutableLiveData("")
-    val dueDate: MutableLiveData<LocalDate> = MutableLiveData(DefaultDueDate)
+    val dueDate: MutableLiveData<String> = MutableLiveData("")
     val reward: MutableLiveData<String> = MutableLiveData("")
     val isPublic: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -40,7 +40,7 @@ class IndividualChallengeSentViewModel(
                     challengeName.value.bind(),
                     creatorName.value.bind(),
                     description.value.bind(),
-                    dueDate.value.bind(),
+                    LocalDate.parse(dueDate.value).bind(),
                     reward.value.bind(),
                     isPublic.value.bind()
                 )

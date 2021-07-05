@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import arrow.core.Either
@@ -14,6 +15,7 @@ import com.jolufeja.httpclient.HttpClient
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.httpclient.error.ErrorHandler
 import com.jolufeja.httpclient.error.HttpErrorHandler
+import com.jolufeja.presentation.viewmodel.DataSource
 import com.jolufeja.presentation.viewmodel.FetcherViewModel
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ChallengesItem
@@ -21,7 +23,11 @@ import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.Challenge
 import com.jolufeja.tudas.service.challenges.ChallengeService
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 
 private val ChallengeErrorHandler = ErrorHandler(CommonErrors::GenericError)
 
@@ -42,12 +48,31 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfChallenges: ArrayList<ChallengesItem> = ArrayList()
     private var createChallengeButton: Button? = null
-    private var finalList: ArrayList<ListItem> = ArrayList()
+    private var finalList: MutableList<ListItem> = ArrayList()
 
     private val viewModel: ChallengesPublicViewModel by inject()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        // Need to figure out a way to integrate asynchronous loading into all of this ... :/
+        lifecycleScope.launchWhenCreated {
+            viewModel.fetchStatus.collect {
+                when(val state = it) {
+                    is DataSource.State.Empty -> {}
+                    is DataSource.State.Error -> {}
+                    is DataSource.State.Loading -> {
+                        // TODO: Display loading animation
+                    }
+                    is DataSource.State.Success -> {
+                        val newItems = state.data.toChallengeListItems()
+                        finalList = newItems.toMutableList()
+                        mAdapter?.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+
 
         //adding items in list
         for (i in 0..10) {
@@ -123,4 +148,17 @@ class ChallengesPublicFragment : Fragment(R.layout.fragment_challenges_public) {
             transaction.commit()
         }
     }
+}
+
+private fun  List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
+    val item = ListItem()
+
+    item.id = i
+    item.title = challenge.challengeName
+    item.author = challenge.creatorName
+    item.description = challenge.description
+    item.points = challenge.points
+    item.timeLeft = LocalTime.now().until(challenge.dueDate, ChronoUnit.DAYS).toInt()
+
+    item
 }

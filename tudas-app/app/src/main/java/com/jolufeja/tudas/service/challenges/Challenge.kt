@@ -9,5 +9,6 @@ data class Challenge(
     val description: String,
     val dueDate: LocalDate,
     val reward: String,
+    val points: Int,
     val isPublic: Boolean
 )
