@@ -26,7 +26,8 @@ interface MapDomain<T, E> : ErrorHandler<E> {
 suspend fun HttpClientResponse.readErrorBody(ctor: ErrorConstructor): CommonErrors =
     awaitJsonBodyOrNull<ErrorBody>()?.let { err ->
         ctor(err.msg)
-    } ?: CommonErrors.GenericError("Response body is empty - can't construct specific error instance.")
+    }
+        ?: CommonErrors.GenericError("Response body is empty - can't construct specific error instance.")
 
 
 internal val HttpErrorHandler = ErrorHandler<CommonErrors>(CommonErrors::GenericError)
@@ -35,20 +36,27 @@ internal object HttpMapDomain :
     MapDomain<HttpClientResponse, CommonErrors>,
     ErrorHandler<CommonErrors> by HttpErrorHandler {
 
-    override suspend fun HttpClientResponse.toDomain(): Either<CommonErrors, HttpClientResponse> = when(statusCode) {
-        500 -> CommonErrors.InternalServerError.left()
-        400 -> readErrorBody(CommonErrors::BadRequest).left()
-        200 -> this.right()
-        else -> CommonErrors.GenericError("Request successful, but response has unrecognisable status code.").left()
-    }
+    override suspend fun HttpClientResponse.toDomain(): Either<CommonErrors, HttpClientResponse> =
+        when (statusCode) {
+            in 500..600 -> CommonErrors.InternalServerError.left()
+            in 400..410 -> try {
+                readErrorBody(CommonErrors::BadRequest)
+            } catch (err: Throwable) {
+                CommonErrors.GenericError("Request failed with $statusCode, but cant read error body.")
+            }.left()
+            in 200..305 -> this.right()
+            else -> CommonErrors.GenericError("Request successful, but response has unrecognisable status code.")
+                .left()
+        }
 }
 
-suspend fun HttpClientRequest.tryExecute(): Either<CommonErrors, HttpClientResponse> = with(CommonErrors.Companion) {
-    Either
-        .catch { awaitExecute() }
-        .mapLeft(this)
-        .flatMap { it.toDomain() }
-}
+suspend fun HttpClientRequest.tryExecute(): Either<CommonErrors, HttpClientResponse> =
+    with(CommonErrors.Companion) {
+        Either
+            .catch { awaitExecute() }
+            .mapLeft(this)
+            .flatMap { it.toDomain() }
+    }
 
 suspend fun HttpClientRequest.Builder.tryExecute(): Either<CommonErrors, HttpClientResponse> =
     build().tryExecute()
@@ -61,15 +69,21 @@ suspend inline fun <reified T : Any> Either<CommonErrors, HttpClientResponse>.aw
     flatMap { response -> catchError { response.awaitJsonBody<T>() } }
 
 
+suspend inline fun <reified T : Any> Either<CommonErrors, HttpClientResponse>.awaitJsonBodyOrNull(): Either<CommonErrors, T?> =
+    flatMap { response -> catchError { response.awaitJsonBodyOrNull<T>() } }
+
+
 sealed interface CommonErrors {
     companion object : MapDomain<HttpClientResponse, CommonErrors> by HttpMapDomain
 
     val message: String
 
-    data class GenericError(override val message: String, val cause: Throwable? = null) : CommonErrors {
+    data class GenericError(override val message: String, val cause: Throwable? = null) :
+        CommonErrors {
         constructor(message: String) : this(message, null)
         constructor(error: Throwable) : this(error.message ?: "Unknown error.")
     }
+
     data class BadRequest(override val message: String) : CommonErrors
 
     object InternalServerError : CommonErrors {

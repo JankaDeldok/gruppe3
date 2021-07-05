@@ -6,7 +6,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.first
+import arrow.core.computations.nullable
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 
@@ -20,20 +21,37 @@ class SharedPreferencesAuthenticationStore(context: Context) : AuthenticationSto
         const val SharedPreferencesName = "com.jolufeja.authentication"
 
         val TokenKey = stringPreferencesKey("authToken")
+        val UserNameKey = stringPreferencesKey("userName")
+        val UserIdKey = stringPreferencesKey("userId")
+        val EmailKey = stringPreferencesKey("emailAddress")
     }
 
     private val dataStore by lazy { context.dataStore }
 
+
     override suspend fun retrieve(): AuthenticationInfo? = dataStore.data
         .map { store ->
-            AuthenticationInfo(token = store[TokenKey] ?: return@map null)
-        }.first()
+            nullable {
+                AuthenticationInfo(
+                    token = store[TokenKey].bind(),
+                    user = UserInfo(
+                        id = store[UserIdKey].bind(),
+                        name = store[UserNameKey].bind(),
+                        email = store[EmailKey].bind()
+                    )
+                )
+            }
+
+        }.firstOrNull()
 
     override suspend fun store(authInfo: AuthenticationInfo) {
         dataStore
             .edit {
                 it.clear()
                 it[TokenKey] = authInfo.token
+                it[UserIdKey] = authInfo.user.id
+                it[UserNameKey] = authInfo.user.name
+                it[EmailKey] = authInfo.user.email
             }
     }
 

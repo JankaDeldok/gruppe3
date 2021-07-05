@@ -8,9 +8,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.jolufeja.authentication.UserAuthenticationService
+import kotlinx.coroutines.launch
 
 
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
+class ProfileFragment(
+    private val authenticationService: UserAuthenticationService
+) : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -83,7 +89,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         logOutButton.setOnClickListener {
-            //logging out
+            lifecycleScope.launch {
+                authenticationService.logout()
+                findNavController().navigate(R.id.nav_graph_unauthenticated)
+            }
         }
     }
 }
