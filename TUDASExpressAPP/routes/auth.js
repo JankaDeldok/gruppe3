@@ -72,11 +72,14 @@ auth.post('/register', async (req, res) => {
         const token = jwt.sign({ id: savedUser._id }, config.get('jwtSecret'));
 
         //return the token and the user as JSON
+        console.log(savedUser.emailAddress)
+        console.log("---")
         res.status(200).json({
             token,
             user: {
                 id: savedUser.id,
                 name: savedUser.name,
+                email: savedUser.emailAddress
             }
         });
     } catch (e) {

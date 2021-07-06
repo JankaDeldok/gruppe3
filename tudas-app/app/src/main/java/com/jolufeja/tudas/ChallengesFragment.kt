@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jolufeja.tudas.adapters.ViewPagerFragmentAdapter
+import org.koin.android.ext.android.get
 
 class ChallengesFragment : Fragment(R.layout.fragment_challenges) {
 
@@ -30,7 +31,7 @@ class ChallengesFragment : Fragment(R.layout.fragment_challenges) {
             this,
             ChallengesReceivedFragment(),
             ChallengesSentFragment(),
-            ChallengesPublicFragment(),
+            ChallengesPublicFragment(get()),
             ChallengesReceivedFragment()
         )
         viewPager!!.adapter = adapter

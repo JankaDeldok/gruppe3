@@ -17,6 +17,7 @@ interface UserAuthenticationService {
 
     val authentication: Deferred<AuthenticationInfo>
 
+
 }
 
 
@@ -63,10 +64,7 @@ class DefaultUserAuthenticationService(
         credentials: UserCredentials
     ): Either<AuthenticationError.LoginFailed, AuthenticationInfo> =
         post(LoginUrl)
-            .formBody { form ->
-                form.add("username", credentials.username)
-                form.add("password", credentials.password)
-            }
+            .jsonBody(credentials)
             .tryExecute()
             .awaitJsonBody<AuthenticationInfo>()
             .mapLeft { AuthenticationError.LoginFailed(it.message) }

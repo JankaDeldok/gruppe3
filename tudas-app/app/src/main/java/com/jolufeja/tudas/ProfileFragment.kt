@@ -4,17 +4,32 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.jolufeja.authentication.UserAuthenticationService
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.koin.android.ext.android.get
 
 
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
+class ProfileFragment(
+    private val authenticationService: UserAuthenticationService
+) : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val profileFragment = ProfileFragment()
+//        val profileFragment = ProfileFragment(get())
+
+        val userName = view.findViewById<TextView>(R.id.userName).let {
+            runBlocking {
+                it.text = authenticationService.authentication.await().user.name
+            }
+        }
 
         // Friends Button
         var friendsButton: Button = view.findViewById<View>(R.id.friendsButton) as Button
@@ -46,7 +61,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         //opens ChangeEmailFragment when clicked
         changeEmailButton.setOnClickListener{
-            val changeEmailFragment = ChangeEmailFragment()
+            val changeEmailFragment = ChangeEmailFragment(get(), get())
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(
@@ -83,7 +98,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         logOutButton.setOnClickListener {
-            //logging out
+            lifecycleScope.launch {
+                authenticationService.logout()
+                findNavController().navigate(R.id.nav_graph_unauthenticated)
+            }
         }
     }
 }
