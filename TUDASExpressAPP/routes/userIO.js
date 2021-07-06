@@ -159,7 +159,6 @@ userIO.get('/getcreatedchallenges', (req, res) => {
             Challenge.find({ _id: { $in: challenges.createdChallenges } }).then(challenges => res.status(200).json(challenges)))
 });
 
-// TODO
 /* GET /user/getopenchallenges */
 /* get challenges for the user which are still open */
 userIO.get('/getopenchallenges', (req, res) => {
