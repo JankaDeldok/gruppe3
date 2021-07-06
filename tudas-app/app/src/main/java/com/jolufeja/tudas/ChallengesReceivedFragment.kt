@@ -65,6 +65,7 @@ class ChallengesReceivedFragment : Fragment(R.layout.fragment_challenges_receive
                 0,
                 0,
                 0,
+                0,
                 0
             ) { item ->
                 // Open New Fragment

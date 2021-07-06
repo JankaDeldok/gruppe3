@@ -66,6 +66,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                     R.layout.card_feed,
                     0,
                     0,
+                    0,
                     0
                 ) {
                     null
