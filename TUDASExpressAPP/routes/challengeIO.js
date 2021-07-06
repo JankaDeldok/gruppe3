@@ -45,7 +45,7 @@ challengeIO.post('/uploadpicture', proofImg.single("file"), async (req, res) => 
     const { challengeName, userName } = req.body;
     let url = "http://localhost:3030/images/challenges/" + req.file.originalname;
     Challenge.findOne({ name: challengeName }).then(challenge => {
-        if (challenge.dueDate == null || challenge.dueDate <= Date.now()) {
+        if (challenge.dueDate == null || challenge.dueDate >= Date.now()) {
             Challenge.findOneAndUpdate({ name: challengeName },
                 { $push: { proofMedia: { user: userName, location: url } } },
                 { new: true })
@@ -60,7 +60,7 @@ challengeIO.post('/uploadpicture', proofImg.single("file"), async (req, res) => 
 challengeIO.post('/uploadsocialmedia', async (req, res) => {
     const { challengeName, userName, url } = req.body;
     Challenge.findOne({ name: challengeName }).then(challenge => {
-        if (challenge.dueDate == null || challenge.dueDate <= Date.now()) {
+        if (challenge.dueDate === null || challenge.dueDate >= Date.now()) {
             Challenge.findOneAndUpdate({ name: challengeName },
                 { $push: { proofMedia: { user: userName, location: url } } },
                 { new: true })
@@ -73,7 +73,7 @@ challengeIO.post('/uploadsocialmedia', async (req, res) => {
 /* adds a challenge to a users finished challenges */
 const finishedChallenge = async (challengeId, userName) => {
     return User.findOneAndUpdate({ name: userName },
-        { $push: { finishedChallenge: challengeId } },
+        { $push: { finishedChallenges: challengeId }, $pull: { openChallenges: challengeId } },
         { new: true })
 }
 

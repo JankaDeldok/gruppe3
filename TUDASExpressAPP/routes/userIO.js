@@ -4,6 +4,10 @@ var userIO = express.Router();
 var multer = require("multer");
 var fs = require('fs');
 
+const bcrypt = require('bcryptjs');
+const config = require('config');
+const jwt = require('jsonwebtoken')
+
 
 const User = require('../models/userSchema');
 const Challenge = require('../models/challengeSchema');
@@ -44,7 +48,7 @@ userIO.post('/uploadpicture', profileImg.single("file"), async (req, res) => {
     let { userName } = req.body;
     let url = "http://localhost:3030/images/profiles/" + req.file.originalname;
     User.findOneAndUpdate({ name: userName },
-        { profilepicture: url },
+        { profilePicture: url },
         { fields: { password: 0 }, new: true })
         .then(user => res.status(200).json(user));
 });
@@ -135,7 +139,7 @@ userIO.get('/getuser', (req, res) => {
 /* GET /user/getpointsofuser */
 /* get points for a user by name */
 userIO.get('/getpointsofuser', (req, res) => {
-    User.findOne({ name: req.body.userName }, { name: 0, points }).then(user => res.status(200).json(user));
+    User.findOne({ name: req.body.userName }, { name: 1, points: 1 }).then(user => res.status(200).json(user));
 });
 
 /* GET /user/getcreatedchallenges */
