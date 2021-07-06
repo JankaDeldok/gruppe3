@@ -28,14 +28,16 @@ auth.post('/login', async (req, res) => {
         if (!token) throw Error('Couldnt sign the token');
 
         //return the token and user as JSON
-        res.status(200).json({
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.emailAddress
-            }
-        });
+        User.findOneAndUpdate({ name: name }, { $set: { 'feed.$[].new': false } }).then(
+            res.status(200).json({
+                token,
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.emailAddress,
+                    feed: user.feed
+                }
+            }));
     } catch (e) {
         res.status(400).json({ msg: e.message });
     }
@@ -61,7 +63,7 @@ auth.post('/register', async (req, res) => {
             password: hash,
             emailAddress: email,
             credit: 1000,
-            points: 0
+            points: 0,
         });
 
         //save the user to the db

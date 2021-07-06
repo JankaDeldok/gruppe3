@@ -106,18 +106,27 @@ userIO.get('/getfriends', (req, res) => {
 
 userIO.post('/updateSettings', async (req, res) => {
     let { name, email, password } = req.body;
+    let newUserSettings;
+    if (password !== null) {
+        //encrypt the password
+        const salt = await bcrypt.genSalt(10);
+        if (!salt) throw Error('Something went wrong with bcrypt');
+        const hash = await bcrypt.hash(password, salt);
+        if (!hash) throw Error('Something went wrong hashing the password');
 
-    //encrypt the password
-    const salt = await bcrypt.genSalt(10);
-    if (!salt) throw Error('Something went wrong with bcrypt');
-    const hash = await bcrypt.hash(password, salt);
-    if (!hash) throw Error('Something went wrong hashing the password');
-
-    const newUserSettings = {
-        $set: {
-            emailAddress: email,
-            password: hash
+        newUserSettings = {
+            $set: {
+                password: hash
+            }
         }
+    } else if (email !== null) {
+        newUserSettings = {
+            $set: {
+                emailAddress: email,
+            }
+        }
+    } else {
+        res.status(409).send("No user settings found!")
     }
 
     //save the user to the db
@@ -166,5 +175,46 @@ userIO.get('/getfinishedchallenges', (req, res) => {
         .then(challenges =>
             Challenge.find({ _id: { $in: challenges.finishedChallenges } }).then(challenges => res.status(200).json(challenges)))
 });
+
+/* GET /user/getfeed */
+/* get feed of the user */
+userIO.get('/getfeed', (req, res) => {
+    User.findOneAndUpdate({ name: req.body.userName }, { $set: { 'feed.$[].new': false } }, { fields: { name: 1, feed: 1 } })
+        .then(feed => res.status(200).json(feed))
+});
+
+/* GET /user/getnewinfo */
+/* get new feed info of the user */
+userIO.get('/getnewinfo', (req, res) => {
+    User.findOneAndUpdate({ name: req.body.userName, feed: { new: true } }, { $set: { 'feed.$[].new': false } }, { fields: { name: 1, feed: 1 } })
+        .then(feed => res.status(200).json(feed))
+});
+
+/* GET /user/getfriendranking */
+/* get the ranking of a users friends */
+userIO.get('/getfriendranking', (req, res) => {
+    User.findOne({ name: req.body.userName }, { friends: 1 }).then(friends => {
+        console.log(friends)
+        let friendNames = [];
+        friends.friends.forEach(element => {
+            friendNames.push(element.name);
+        });
+        console.log(friendNames)
+        return User.find({ name: { $in: friendNames } }).select({ name: 1, points: 1 })
+    }).then(friends => {
+        res.status(200).send((friends.sort((a, b) => {
+            return b.points - a.points;
+        })))
+    })
+})
+
+/* GET /user/getpublicranking */
+/* get the ranking of all users */
+userIO.get('/getpublicranking', (req, res) => {
+    User.find({}).select({ name: 1, points: 1 }).sort({ points: -1 }).limit(20).then(users => {
+        res.status(200).send(users);
+    })
+})
+
 
 module.exports = userIO;
