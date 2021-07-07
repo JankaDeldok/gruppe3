@@ -27,7 +27,7 @@ class RankingsFriendsFragment : Fragment(R.layout.fragment_rankings_friends) {
             rank.ranking = i + 1
             rank.name = "Marc"
             rank.points = 100000 / (i+1)
-            if(i === 5){
+            if(i == 5){
                 rank.rankingType = 1
             } else {
                 rank.rankingType = 0

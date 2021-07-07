@@ -47,7 +47,11 @@ class RegistrationViewModel(
 
     fun performRegistration() {
         viewModelScope.launch {
-            val credentials = RegistrationCredentials(userNameState.value, passwordState.value, emailAddressState.value)
+            val credentials = RegistrationCredentials(
+                name = userNameState.value,
+                password = passwordState.value,
+                email = emailAddressState.value
+            )
 
             registrationService.registerUser(credentials).fold(
                 ifLeft = { Log.d("RegistrationViewModel", "Registration failed. $it") },

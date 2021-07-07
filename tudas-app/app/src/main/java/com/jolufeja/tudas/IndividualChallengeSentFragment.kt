@@ -1,12 +1,87 @@
 package com.jolufeja.tudas
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import arrow.core.computations.nullable
+import com.jolufeja.navigation.NavigationEventPublisher
+import com.jolufeja.presentation.fragment.DataBoundFragment
+import com.jolufeja.tudas.databinding.FragmentChallengeSentInfoBinding
+import com.jolufeja.tudas.service.challenges.ChallengeService
+import com.jolufeja.tudas.service.challenges.InitialChallenge
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 
-class IndividualChallengeSentFragment : Fragment(R.layout.fragment_challenge_sent_info) {
+private val DefaultDueDate = LocalDate.now().plusDays(1)
+
+class IndividualChallengeSentViewModel(
+    private val navigator: NavigationEventPublisher,
+    private val challengeService: ChallengeService
+) : ViewModel() {
+
+    val challengeName: MutableLiveData<String> = MutableLiveData("")
+    val creatorName: MutableLiveData<String> = MutableLiveData("Peter")
+    val description: MutableLiveData<String> = MutableLiveData("")
+    val dueDate: MutableLiveData<String> = MutableLiveData("")
+    val reward: MutableLiveData<String> = MutableLiveData("")
+    val isPublic: MutableLiveData<Boolean> = MutableLiveData(false)
+
+
+    fun createChallenge() {
+        viewModelScope.launch {
+            nullable {
+                val initialChallenge = InitialChallenge(
+                    challengeName.value.bind(),
+                    creatorName.value.bind(),
+                    description.value.bind(),
+                    LocalDate.now().plusDays(3),
+                    reward.value.bind(),
+                    "public"
+                )
+
+                challengeService.createChallenge(initialChallenge).fold(
+                    ifLeft = {
+                        Log.d("IndividualChallengeSentViewModel", "Challenge creation failed: $it")
+                    },
+                    ifRight = { /* TODO: where to go from here? */ }
+                )
+            }
+
+        }
+    }
+
+}
+
+class IndividualChallengeSentFragment :
+    DataBoundFragment<IndividualChallengeSentViewModel, FragmentChallengeSentInfoBinding>(
+        R.layout.fragment_challenge_sent_info,
+        IndividualChallengeSentViewModel::class,
+        BR.challengeSentViewModel
+    ) {
+
+    override fun createBinding(view: View): FragmentChallengeSentInfoBinding =
+        FragmentChallengeSentInfoBinding.bind(view)
+
+    override fun onViewAndBindingCreated(
+        view: View,
+        binding: FragmentChallengeSentInfoBinding,
+        savedInstanceState: Bundle?
+    ) {
+        view.findViewById<TextView>(R.id.back_button)?.let {
+            it.setOnClickListener {
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+    }
+}
+
+class IndividualChallengeSentFragment2 : Fragment(R.layout.fragment_challenge_sent_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -20,7 +95,7 @@ class IndividualChallengeSentFragment : Fragment(R.layout.fragment_challenge_sen
         var receiver: Spinner = view.findViewById<View>(R.id.challenge_receiver) as Spinner
 
         // toggle Show groups only
-        var groupsOnlyToggle: Switch = view.findViewById<View>(R.id.show_groups_only_switch) as Switch
+        var groupsOnlyToggle: SwitchCompat = view.findViewById<View>(R.id.show_groups_only_switch) as SwitchCompat
 
         // Challenge description
         var description: EditText = view.findViewById<View>(R.id.challenge_description) as EditText
@@ -28,18 +103,9 @@ class IndividualChallengeSentFragment : Fragment(R.layout.fragment_challenge_sen
         // Reward
         var reward: EditText = view.findViewById<View>(R.id.challenge_reward) as EditText
 
-        // Difficulty
-        var difficulty: EditText = view.findViewById<View>(R.id.challenge_difficulty) as EditText
-
 
         // Difficulty
         var time: EditText = view.findViewById<View>(R.id.challenge_time) as EditText
-
-        // Duration
-        var location: EditText = view.findViewById<View>(R.id.challenge_location) as EditText
-
-        // Open Camera Button
-        var openCamera: ImageView = view.findViewById<View>(R.id.open_camera) as ImageView
 
         // Send challenge Button
         var challengeButton: Button = view.findViewById<View>(R.id.challenge) as Button
@@ -47,11 +113,6 @@ class IndividualChallengeSentFragment : Fragment(R.layout.fragment_challenge_sen
         // Listener for Back Button to close fragment
         backButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack();
-        }
-
-        // Listener for opening camera button
-        openCamera.setOnClickListener {
-            // TO DO
         }
 
         // Listener for challenge completed button

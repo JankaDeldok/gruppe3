@@ -1,17 +1,33 @@
 package com.jolufeja.tudas
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import java.io.File
+import java.io.IOException
+
 
 class IndividualChallengeReceivedFragment : Fragment(R.layout.fragment_challenge_received_info) {
 
+    private lateinit var filePhoto: File
+    private val REQUEST_CODE_CAMERA = 1
+    private val REQUEST_CODE_IMAGE = 2
+    private lateinit var takenImage: Bitmap;
+    private lateinit var viewImage: ImageView;
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        viewImage = view.findViewById<View>(R.id.imageView) as ImageView
         // Back Button
         var backButton: TextView = view.findViewById<View>(R.id.back_button) as TextView
 
@@ -58,12 +74,12 @@ class IndividualChallengeReceivedFragment : Fragment(R.layout.fragment_challenge
 
         // Listener for adding file button
         addFile.setOnClickListener {
-            // TO DO
+            getImage();
         }
 
         // Listener for opening camera button
         openCamera.setOnClickListener {
-            // TO DO
+            getCamera();
         }
 
         // Listener for challenge completed button
@@ -73,7 +89,7 @@ class IndividualChallengeReceivedFragment : Fragment(R.layout.fragment_challenge
 
         // Listener for challenge completed button
         challengeCompletedButton.setOnClickListener {
-           // TO DO
+            // TO DO
         }
 
         // Listener for challenge give up button
@@ -81,4 +97,41 @@ class IndividualChallengeReceivedFragment : Fragment(R.layout.fragment_challenge
             // TO DO
         }
     }
+
+    private fun getCamera(){
+        if ((activity as MainActivity?)!!.hasNoPermissions()) {
+            (activity as MainActivity?)!!.requestPermission()
+        }
+        val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(
+            takePhotoIntent,
+            REQUEST_CODE_CAMERA
+        );
+    }
+
+    private fun getImage(){
+        if ((activity as MainActivity?)!!.hasNoPermissions()) {
+            (activity as MainActivity?)!!.requestPermission()
+        }
+        val fileIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        fileIntent.type = "image/*";
+            startActivityForResult(fileIntent, REQUEST_CODE_IMAGE);
+    }
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK){
+            takenImage = data?.extras?.get("data") as Bitmap
+            viewImage.setImageBitmap(takenImage);
+        }
+        if(requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK) {
+            viewImage.setImageURI(data?.data)
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+
+
 }

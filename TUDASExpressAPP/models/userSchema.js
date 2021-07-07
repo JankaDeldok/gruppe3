@@ -39,6 +39,7 @@ const userSchema = new Schema({
     openChallenges: [{ type: Schema.Types.ObjectId, ref: 'Challenge' }],
     // challenges the user finished, many-to-many relationship. References a challenge
     finishedChallenges: [{ type: Schema.Types.ObjectId, ref: 'Challenge' }],
+    feed: [{ message: String, new: Boolean }]
 });
 
 
