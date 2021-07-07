@@ -1,5 +1,7 @@
 package com.jolufeja.tudas
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -11,27 +13,46 @@ class NotificationSettingsFragment  : Fragment(R.layout.fragment_notification_se
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        var anyNotification: Boolean = false
-        var challengeReceivedNotification: Boolean = false
-        var friendsRequestNotification: Boolean = false
-        var challengeEndsNotification: Boolean = false
+        var anyNotification: Boolean = (activity as MainActivity).notificationsAllowed
+        var challengeReceivedNotification: Boolean = (activity as MainActivity).challengeReceivedNotificationAllowed
+        var friendsRequestNotification: Boolean = (activity as MainActivity).friendsRequestNotificationAllowed
+        var challengeEndsNotification: Boolean = (activity as MainActivity).challengeEndsNotificationAllowed
 
-        // Allow any Notifications
         var switchNotifications: Switch = view.findViewById<View>(R.id.switchNotifications) as Switch
+        switchNotifications.isChecked = anyNotification
 
-        // "Challenge received" switch
         var switchChallengeReceived: Switch = view.findViewById<View>(R.id.switchChallengeReceived) as Switch
+        if (!anyNotification) {
+            switchChallengeReceived.isChecked = false
+            switchChallengeReceived.visibility = View.GONE
+        }
+        else{
+            switchChallengeReceived.visibility = View.VISIBLE
+            switchChallengeReceived.isChecked = challengeReceivedNotification
+        }
 
-        // "Challenge received" switch
         var switchFriendRequest: Switch = view.findViewById<View>(R.id.switchFriendRequest) as Switch
+        if (!anyNotification) {
+            switchFriendRequest.isChecked = false
+            switchFriendRequest.visibility = View.GONE
+        }
+        else{
+            switchFriendRequest.visibility = View.VISIBLE
+            switchFriendRequest.isChecked = friendsRequestNotification
+        }
 
-        // "Challenge received" switch
         var switchChallengeEnds: Switch = view.findViewById<View>(R.id.switchChallengeEnds) as Switch
+        if (!anyNotification) {
+            switchChallengeEnds.isChecked = false
+            switchChallengeEnds.visibility = View.GONE
+        }
+        else{
+            switchChallengeEnds.visibility = View.VISIBLE
+            switchChallengeEnds.isChecked = challengeEndsNotification
+        }
 
-        // Save Button
         var saveButton: Button = view.findViewById<View>(R.id.save) as Button
 
-        // Back Button
         var cancelButton: Button = view.findViewById<View>(R.id.cancel) as Button
 
         // Listener for any-Notifications-Button to close fragment
@@ -39,16 +60,22 @@ class NotificationSettingsFragment  : Fragment(R.layout.fragment_notification_se
             anyNotification = isChecked
             val message = if (isChecked) "Switch1:ON" else "Switch1:OFF"
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-            /*if (anyNotification){
-                switchChallengeReceived.visibility = View.VISIBLE
-                switchFriendRequest.visibility = View.VISIBLE
-                switchChallengeEnds.visibility = View.VISIBLE
+            if (!isChecked){
+                switchFriendRequest.isChecked = false
+                switchChallengeReceived.isChecked = false
+                switchChallengeEnds.isChecked = false
+                challengeReceivedNotification = false
+                friendsRequestNotification = false
+                challengeEndsNotification = false
+                switchFriendRequest.visibility = View.GONE
+                switchChallengeReceived.visibility = View.GONE
+                switchChallengeEnds.visibility = View.GONE
             }
             else{
-                switchChallengeReceived.visibility = View.INVISIBLE
-                switchFriendRequest.visibility = View.INVISIBLE
-                switchChallengeEnds.visibility = View.INVISIBLE
-            }*/
+                switchFriendRequest.visibility = View.VISIBLE
+                switchChallengeReceived.visibility = View.VISIBLE
+                switchChallengeEnds.visibility = View.VISIBLE
+            }
         }
 
         switchChallengeReceived.setOnCheckedChangeListener { _, isChecked ->
@@ -75,16 +102,17 @@ class NotificationSettingsFragment  : Fragment(R.layout.fragment_notification_se
             (activity as MainActivity).challengeReceivedNotificationAllowed = challengeReceivedNotification
             (activity as MainActivity).friendsRequestNotificationAllowed = friendsRequestNotification
             (activity as MainActivity).challengeEndsNotificationAllowed = challengeEndsNotification
+            //(activity as MainActivity).mySharedPreferences(anyNotification, friendsRequestNotification, challengeReceivedNotification, challengeEndsNotification)
             requireActivity().supportFragmentManager.popBackStack();
         }
 
         // Listener for Back Button to close fragment
         cancelButton.setOnClickListener {
             //setting switches back to last saved state
-            anyNotification = (activity as MainActivity).notificationsAllowed
+            /*anyNotification = (activity as MainActivity).notificationsAllowed
             challengeReceivedNotification = (activity as MainActivity).challengeReceivedNotificationAllowed
             friendsRequestNotification = (activity as MainActivity).friendsRequestNotificationAllowed
-            challengeEndsNotification = (activity as MainActivity).challengeEndsNotificationAllowed
+            challengeEndsNotification = (activity as MainActivity).challengeEndsNotificationAllowed*/
             requireActivity().supportFragmentManager.popBackStack();
         }
     }

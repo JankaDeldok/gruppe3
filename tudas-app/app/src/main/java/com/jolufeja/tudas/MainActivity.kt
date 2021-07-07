@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -29,10 +30,10 @@ import org.koin.core.KoinExperimentalAPI
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    var notificationsAllowed = false
-    var challengeReceivedNotificationAllowed = false
-    var friendsRequestNotificationAllowed = false
-    var challengeEndsNotificationAllowed = false
+    var notificationsAllowed = true
+    var challengeReceivedNotificationAllowed = true
+    var friendsRequestNotificationAllowed = true
+    var challengeEndsNotificationAllowed = true
 
     private val CHANNEL_ID = "channel_id_test_01"
     private val notificationId = 101
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         toolbarTitle.text = "TUDAS";
 
         createNotificationChannel()
+
 
         val navController = findNavController(R.id.nav_fragment).also {
             it.addOnDestinationChangedListener { _, dest, _ ->
@@ -90,7 +92,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         register(LoginNavigationEvents.PROCEED_TO_REGISTRATION, R.id.registrationFragment)
     }
 
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "TUDAS Notification Channel"
             val descriptionText = "This is the Channel for all TUDAS Notifications"
