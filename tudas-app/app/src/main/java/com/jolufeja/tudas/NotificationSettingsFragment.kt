@@ -1,5 +1,7 @@
 package com.jolufeja.tudas
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -7,13 +9,20 @@ import android.widget.Switch
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 
+
 class NotificationSettingsFragment  : Fragment(R.layout.fragment_notification_settings) {
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var anyNotification: Boolean = (activity as MainActivity).notificationsAllowed
-        var challengeReceivedNotification: Boolean = (activity as MainActivity).challengeReceivedNotificationAllowed
-        var friendsRequestNotification: Boolean = (activity as MainActivity).friendsRequestNotificationAllowed
-        var challengeEndsNotification: Boolean = (activity as MainActivity).challengeEndsNotificationAllowed
+
+        var preferences: SharedPreferences = this.requireActivity().getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var editor = preferences.edit()
+
+        var anyNotification: Boolean = preferences.getBoolean("anyNotification",true)
+        var challengeReceivedNotification: Boolean = preferences.getBoolean("challengeReceivedNotification",true)
+        var friendsRequestNotification: Boolean = preferences.getBoolean("friendsRequestNotification",true)
+        var challengeEndsNotification: Boolean = preferences.getBoolean("challengeEndsNotification",true)
+
 
         var switchNotifications: Switch = view.findViewById<View>(R.id.switchNotifications) as Switch
         switchNotifications.isChecked = anyNotification
@@ -99,8 +108,12 @@ class NotificationSettingsFragment  : Fragment(R.layout.fragment_notification_se
             (activity as MainActivity).challengeReceivedNotificationAllowed = challengeReceivedNotification
             (activity as MainActivity).friendsRequestNotificationAllowed = friendsRequestNotification
             (activity as MainActivity).challengeEndsNotificationAllowed = challengeEndsNotification
-            //(activity as MainActivity).mySharedPreferences(anyNotification, friendsRequestNotification, challengeReceivedNotification, challengeEndsNotification)
-            requireActivity().supportFragmentManager.popBackStack();
+            editor.putBoolean("anyNotification", anyNotification)
+            editor.putBoolean("challengeReceivedNotification", challengeReceivedNotification)
+            editor.putBoolean("friendsRequestNotification", friendsRequestNotification)
+            editor.putBoolean("challengeEndsNotification", challengeEndsNotification)
+            editor.apply()
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         // Listener for Back Button to close fragment
