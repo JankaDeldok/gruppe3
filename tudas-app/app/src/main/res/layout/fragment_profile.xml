@@ -130,11 +130,11 @@
                     app:cornerRadius="@android:dimen/app_icon_size" />
 
                 <Button
-                    android:id="@+id/button12"
+                    android:id="@+id/testNotificationsButton"
                     android:layout_width="380dp"
                     android:layout_height="77dp"
                     android:backgroundTint="#000000"
-                    android:text="More"
+                    android:text="Test Notifications"
                     android:textSize="20sp"
                     app:cornerRadius="@android:dimen/app_icon_size" />
 
