@@ -28,26 +28,27 @@
             android:orientation="vertical"
             android:layout_margin="15dp">
 
-                <Switch
-                    android:id="@+id/switchChallengeReceived"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Notification when new challenge received"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp" />
+            <Switch
+                android:id="@+id/switchNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Receive Notifications from TUDAS"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"/>
 
+
             <Switch
-                android:id="@+id/switchFriendChallengeCompleted"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Notification when friend completes challenge"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"/>
+                    android:id="@+id/switchChallengeReceived"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Notification when new challenge received"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" />
 
             <View
                 android:layout_width="match_parent"
