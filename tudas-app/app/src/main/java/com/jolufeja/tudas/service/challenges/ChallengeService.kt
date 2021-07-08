@@ -19,6 +19,8 @@ interface ChallengeService {
     suspend fun getOwnCreatedChallenges(): Either<CommonErrors, List<Challenge>>
 
     suspend fun getFinishedChallenges(): Either<CommonErrors, List<Challenge>>
+
+    suspend fun getOpenChallenges(): Either<CommonErrors, List<Challenge>>
 }
 
 data class UserName(val userName: String)
@@ -66,6 +68,12 @@ class DefaultChallengeService(
 
     override suspend fun getFinishedChallenges(): Either<CommonErrors, List<Challenge>> =
         httpClient.get("user/getfinishedchallenges")
+            .jsonBodyOfCurrentUser()
+            .tryExecute()
+            .awaitJsonBody(jsonListOf<Challenge>())
+
+    override suspend fun getOpenChallenges(): Either<CommonErrors, List<Challenge>> =
+        httpClient.get("user/getopenchallenges")
             .jsonBodyOfCurrentUser()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())

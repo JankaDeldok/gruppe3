@@ -10,6 +10,7 @@ import com.jolufeja.httpclient.error.awaitJsonBody
 import com.jolufeja.httpclient.error.catchError
 import com.jolufeja.httpclient.error.tryExecute
 import com.jolufeja.httpclient.jsonListOf
+import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.service.challenges.UserName
 import com.jolufeja.tudas.service.challenges.awaitJsonBody
 
@@ -17,8 +18,13 @@ data class FriendEntry(val friendName: String, val streak: Int)
 
 data class Friendship(val userName: String, val friendName: String)
 
+data class FeedEntry(val message: String, val new: Boolean)
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 private data class PointResult(val points: Int)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+private data class FeedResult(val name: String, val feed: List<FeedEntry>)
 
 
 interface UserService {
@@ -34,6 +40,10 @@ interface UserService {
     suspend fun getPointsOfUser(userName: String): Either<CommonErrors, Int>
 
     suspend fun getPointsOfCurrentUser(): Either<CommonErrors, Int>
+
+    suspend fun getFeed(): Either<CommonErrors, List<FeedEntry>>
+
+    suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendEntry>>
 
 }
 
@@ -91,5 +101,18 @@ class DefaultUserService(
             .tryExecute()
             .awaitJsonBody<PointResult>()
             .map { it.points }
+
+    override suspend fun getFeed(): Either<CommonErrors, List<FeedEntry>> =
+        httpClient.get("user/getfeed")
+            .jsonBody(UserName(authService.authentication.await().user.name))
+            .tryExecute()
+            .awaitJsonBody<FeedResult>()
+            .map { it.feed }
+
+    override suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendEntry>> =
+        httpClient.get("user/getfriends")
+            .jsonBody(UserName(authService.authentication.await().user.name))
+            .tryExecute()
+            .awaitJsonBody(jsonListOf<FriendEntry>())
 
 }

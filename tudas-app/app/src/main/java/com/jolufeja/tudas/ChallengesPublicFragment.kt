@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import arrow.core.Either
 import arrow.core.computations.either
+import arrow.core.identity
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.httpclient.error.ErrorHandler
 import com.jolufeja.presentation.viewmodel.FetcherViewModel
@@ -21,6 +22,7 @@ import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.Challenge
 import com.jolufeja.tudas.service.challenges.ChallengeService
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
@@ -50,6 +52,24 @@ class ChallengesPublicFragment(
     private var finalList: MutableList<ListItem> = ArrayList()
 
     private val viewModel: ChallengesPublicViewModel by inject()
+
+    private suspend fun buildChallengeList() = flow<List<ListItem>> {
+        either<CommonErrors, Unit> {
+            emit(emptyList())
+
+            val publicChallenges = challengeService
+                .getOpenChallenges()
+                .bind()
+                .toChallengeListItems()
+
+            val combined = listOf(HeaderItem("Public Challenges")) + publicChallenges
+
+            emit(combined)
+        }.fold(
+            ifLeft = { emit(emptyList()) },
+            ifRight = ::identity
+        )
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -167,7 +187,7 @@ class ChallengesPublicFragment(
     }
 }
 
-private fun List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
+fun List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
     val item = ChallengesItem()
 
     item.id = i

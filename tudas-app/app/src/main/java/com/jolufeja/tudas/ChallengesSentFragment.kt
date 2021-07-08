@@ -9,18 +9,44 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import arrow.core.computations.either
+import arrow.core.identity
+import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ChallengesItem
 import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
+import com.jolufeja.tudas.service.challenges.ChallengeService
+import kotlinx.coroutines.flow.flow
 
 
-class ChallengesSentFragment : Fragment(R.layout.fragment_challenges_sent) {
+class ChallengesSentFragment(
+    private val challengeService: ChallengeService
+) : Fragment(R.layout.fragment_challenges_sent) {
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfChallenges: ArrayList<ChallengesItem> = ArrayList()
     private var createChallengeButton: Button? = null
     private var finalList: ArrayList<ListItem> = ArrayList()
+
+    private suspend fun buildChallengeList() = flow<List<ListItem>> {
+        either<CommonErrors, Unit> {
+            emit(emptyList())
+
+            val sentChallenges = challengeService
+                .getOwnCreatedChallenges()
+                .bind()
+                .toChallengeListItems()
+
+            val combined = listOf(HeaderItem("Sent Challenges")) + sentChallenges
+
+            emit(combined)
+        }.fold(
+            ifLeft = { emit(emptyList()) },
+            ifRight = ::identity
+        )
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 

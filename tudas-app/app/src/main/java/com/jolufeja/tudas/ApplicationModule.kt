@@ -22,7 +22,7 @@ object ApplicationModule {
     private val module = module {
         fragment { MainFragment(get()) }
         fragment { ChallengesFragment() }
-        fragment { FeedFragment() }
+        fragment { FeedFragment(get()) }
         fragment { HomeFragment() }
         fragment { ProfileFragment(get()) }
         fragment { RankingsFragment() }
@@ -30,6 +30,8 @@ object ApplicationModule {
         fragment { RegistrationFragment() }
         fragment { IndividualChallengeSentFragment() }
         fragment { ChallengesPublicFragment(get()) }
+        fragment { ChallengesReceivedFragment(get()) }
+        fragment { ChallengesSentFragment(get()) }
 
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegistrationViewModel(get(), get()) }
