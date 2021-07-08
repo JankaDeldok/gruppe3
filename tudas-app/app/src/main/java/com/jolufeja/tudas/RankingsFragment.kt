@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jolufeja.tudas.adapters.ViewPagerFragmentAdapter
+import org.koin.android.ext.android.get
 
 
 class RankingsFragment : Fragment(R.layout.fragment_rankings) {
@@ -28,10 +29,10 @@ class RankingsFragment : Fragment(R.layout.fragment_rankings) {
         // create adapter
         val adapter = ViewPagerFragmentAdapter(
             this,
-            RankingsFriendsFragment(),
+            RankingsFriendsFragment(get()),
             RankingsGroupsFragment(),
-            RankingsWorldFragment(),
-            RankingsFriendsFragment()
+            RankingsWorldFragment(get()),
+            RankingsFriendsFragment(get())
         )
         viewPager!!.adapter = adapter
 

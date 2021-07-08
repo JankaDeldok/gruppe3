@@ -45,6 +45,8 @@ interface UserService {
 
     suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendEntry>>
 
+    suspend fun getPublicRanking(): Either<CommonErrors, List<User>>
+
 }
 
 
@@ -110,8 +112,13 @@ class DefaultUserService(
             .map { it.feed }
 
     override suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendEntry>> =
-        httpClient.get("user/getfriends")
+        httpClient.get("user/getfriendranking")
             .jsonBody(UserName(authService.authentication.await().user.name))
+            .tryExecute()
+            .awaitJsonBody(jsonListOf<FriendEntry>())
+
+    override suspend fun getPublicRanking(): Either<CommonErrors, List<User>> =
+        httpClient.get("user/getpublicranking")
             .tryExecute()
             .awaitJsonBody(jsonListOf<FriendEntry>())
 

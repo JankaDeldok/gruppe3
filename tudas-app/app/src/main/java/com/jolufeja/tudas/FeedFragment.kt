@@ -29,7 +29,7 @@ class FeedFragment(
     private var listOfActivities: ArrayList<FeedItem> = ArrayList()
     private var finalList: ArrayList<ListItem> = ArrayList()
 
-    private suspend fun buildChallengeList() = flow<List<ListItem>> {
+    private suspend fun buildFeedList() = flow<List<ListItem>> {
         either<CommonErrors, Unit> {
             emit(emptyList())
 
