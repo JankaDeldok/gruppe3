@@ -10,11 +10,11 @@ import arrow.core.computations.nullable
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
+data class UserInfo(val id: String, val name: String, val email: String)
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     SharedPreferencesAuthenticationStore.SharedPreferencesName
 )
-
 
 class SharedPreferencesAuthenticationStore(context: Context) : AuthenticationStore {
     companion object {

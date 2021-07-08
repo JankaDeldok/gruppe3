@@ -12,11 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import arrow.core.Either
 import arrow.core.computations.either
-import com.jolufeja.httpclient.HttpClient
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.httpclient.error.ErrorHandler
-import com.jolufeja.httpclient.error.HttpErrorHandler
-import com.jolufeja.presentation.viewmodel.DataSource
 import com.jolufeja.presentation.viewmodel.FetcherViewModel
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ChallengesItem
@@ -24,12 +21,9 @@ import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.Challenge
 import com.jolufeja.tudas.service.challenges.ChallengeService
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 
 private val ChallengeErrorHandler = ErrorHandler(CommonErrors::GenericError)
@@ -39,7 +33,7 @@ class ChallengesPublicViewModel(
     private val challengeService: ChallengeService
 ) : FetcherViewModel<CommonErrors, List<Challenge>>(ChallengeErrorHandler) {
     override suspend fun fetchData(): List<Challenge> =
-        when(val challenges = challengeService.getPublicChallenges()) {
+        when (val challenges = challengeService.getPublicChallenges()) {
             is Either.Right -> challenges.value
             is Either.Left -> throw Throwable("Unable to fetch public challenges ${challenges.value}")
         }
@@ -70,12 +64,13 @@ class ChallengesPublicFragment(
                 mAdapter?.notifyDataSetChanged()
             }.fold(
                 ifLeft = {
-                    Log.d("ChallengesPublicFragment","Something went wrong while fetching public Challenges $it")
+                    Log.d(
+                        "ChallengesPublicFragment",
+                        "Something went wrong while fetching public Challenges $it"
+                    )
                 },
                 ifRight = {}
             )
-
-
 
 
 //            viewModel.fetchStatus.collect {
@@ -172,7 +167,7 @@ class ChallengesPublicFragment(
     }
 }
 
-private fun  List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
+private fun List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
     val item = ChallengesItem()
 
     item.id = i
