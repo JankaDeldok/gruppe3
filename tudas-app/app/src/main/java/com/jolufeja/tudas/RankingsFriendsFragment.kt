@@ -11,6 +11,8 @@ import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.data.RankingItem
+import com.jolufeja.tudas.service.user.FriendEntry
+import com.jolufeja.tudas.service.user.FriendRanking
 import com.jolufeja.tudas.service.user.UserService
 import kotlinx.coroutines.flow.flow
 import java.util.ArrayList
@@ -29,7 +31,7 @@ class RankingsFriendsFragment(
             emit(emptyList())
 
             val feedElements = userService
-                .getPublicRanking()
+                .getFriendsRanking()
                 .bind()
                 .toRankingListItems()
 
@@ -84,5 +86,14 @@ class RankingsFriendsFragment(
                 }
             }
         mRecyclerView!!.adapter = mAdapter
+    }
+}
+
+private fun List<FriendRanking>.toRankingListItems(): List<ListItem> = mapIndexed { i, entry ->
+    RankingItem().apply {
+        id = i
+        ranking = i + 1
+        name = entry.name
+        points = entry.points
     }
 }

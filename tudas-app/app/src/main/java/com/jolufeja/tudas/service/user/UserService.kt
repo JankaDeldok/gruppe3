@@ -14,6 +14,8 @@ import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.service.challenges.UserName
 import com.jolufeja.tudas.service.challenges.awaitJsonBody
 
+data class FriendRanking(val name: String, val points: Int)
+
 data class FriendEntry(val friendName: String, val streak: Int)
 
 data class Friendship(val userName: String, val friendName: String)
@@ -43,7 +45,7 @@ interface UserService {
 
     suspend fun getFeed(): Either<CommonErrors, List<FeedEntry>>
 
-    suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendEntry>>
+    suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendRanking>>
 
     suspend fun getPublicRanking(): Either<CommonErrors, List<User>>
 
@@ -111,11 +113,11 @@ class DefaultUserService(
             .awaitJsonBody<FeedResult>()
             .map { it.feed }
 
-    override suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendEntry>> =
+    override suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendRanking>> =
         httpClient.get("user/getfriendranking")
             .jsonBody(UserName(authService.authentication.await().user.name))
             .tryExecute()
-            .awaitJsonBody(jsonListOf<FriendEntry>())
+            .awaitJsonBody(jsonListOf<FriendRanking>())
 
     override suspend fun getPublicRanking(): Either<CommonErrors, List<User>> =
         httpClient.get("user/getpublicranking")
