@@ -45,11 +45,11 @@ challengeIO.post('/uploadpicture', proofImg.single("file"), async (req, res) => 
     const { challengeName, userName } = req.body;
     let url = "http://localhost:3030/images/challenges/" + req.file.originalname;
     Challenge.findOne({ name: challengeName }).then(challenge => {
-        if (challenge.dueDate == null || challenge.dueDate <= Date.now()) {
+        if (challenge.dueDate == null || challenge.dueDate >= Date.now()) {
             Challenge.findOneAndUpdate({ name: challengeName },
                 { $push: { proofMedia: { user: userName, location: url } } },
                 { new: true })
-                .then(challenge => finishedChallenge(challenge._id, userName))
+                .then(challenge => finishedChallenge(challenge, userName))
                 .then(user => res.status(200).json(user))
         }
     }).catch(err => res.status(409).send("Could not find Challenge"));
@@ -60,27 +60,28 @@ challengeIO.post('/uploadpicture', proofImg.single("file"), async (req, res) => 
 challengeIO.post('/uploadsocialmedia', async (req, res) => {
     const { challengeName, userName, url } = req.body;
     Challenge.findOne({ name: challengeName }).then(challenge => {
-        if (challenge.dueDate == null || challenge.dueDate <= Date.now()) {
+        if (challenge.dueDate === null || challenge.dueDate >= Date.now()) {
             Challenge.findOneAndUpdate({ name: challengeName },
                 { $push: { proofMedia: { user: userName, location: url } } },
                 { new: true })
-                .then(challenge => finishedChallenge(challenge._id, userName))
+                .then(challenge => finishedChallenge(challenge, userName))
                 .then(user => res.status(200).json(user))
         }
     }).catch(err => res.status(409).send("Could not find Challenge"));
 });
 
 /* adds a challenge to a users finished challenges */
-const finishedChallenge = async (challengeId, userName) => {
+const finishedChallenge = async (challenge, userName) => {
+    await User.findOneAndUpdate({ name: challenge.creator }, { $push: { feed: { message: userName + " finished your challenge " + challenge.name, new: true } }, $inc: { points: challenge.worth / 4 } })
     return User.findOneAndUpdate({ name: userName },
-        { $push: { finishedChallenge: challengeId } },
+        { $push: { finishedChallenges: challenge._Id }, $pull: { openChallenges: challenge._Id }, $inc: { points: challenge.worth } },
         { new: true })
 }
 
 /* POST /challenge/addchallenge */
 /* adds a challenge to a user, a users friendsgroup or to the public */
 challengeIO.post('/addchallenge', async (req, res) => {
-    let { challengeName, creatorName, description, dueDate, reward, addressedTo } = req.body;
+    let { challengeName, creatorName, description, dueDate, reward, addressedTo, worth } = req.body;
 
     let creator = await User.findOne({ name: creatorName })
 
@@ -91,7 +92,8 @@ challengeIO.post('/addchallenge', async (req, res) => {
         creationDate: Date.now(),
         dueDate: dueDate,
         reward: reward,
-        addressedTo: addressedTo
+        addressedTo: addressedTo,
+        worth: worth
     }
 
     Challenge.create(newChallenge, (err, item) => {
@@ -104,9 +106,21 @@ challengeIO.post('/addchallenge', async (req, res) => {
                 if (addressedTo === "public") {
                     res.status(200).send("Public challenge succesfully created")
                 } else if (addressedTo === "friends") {
-                    friendChallenge(createdChallenge._id, creatorName);
+                    friendChallenge(createdChallenge._id, creatorName).then(err => {
+                        if (err) {
+                            res.status(409).send("Challenge could not be created!")
+                        } else {
+                            res.status(200).send("Challenge for your friends successfully created!")
+                        }
+                    })
                 } else {
-                    userChallenge(createdChallenge._id, addressedTo)
+                    userChallenge(createdChallenge._id, addressedTo, creatorName).then(err => {
+                        if (err) {
+                            res.status(409).send("Challenge could not be created!")
+                        } else {
+                            res.status(200).send("Challenge for " + addressedTo + " successfully created!")
+                        }
+                    })
                 }
             })
         }
@@ -122,16 +136,16 @@ const friendChallenge = async (challengeId, userName) => {
                 friendNames.push(element.name);
             });
             await User.updateMany({ name: { $in: friendNames } },
-                { $push: { openChallenges: challengeId } },
+                { $push: { openChallenges: challengeId }, $push: { feed: { message: userName + " sent you a challenge", new: true } } },
                 { multi: true });
         })
 
 }
 
 /* adds a challenge to a users finished challenges */
-const userChallenge = async (challengeId, friendName) => {
+const userChallenge = async (challengeId, friendName, userName) => {
     await User.findOneAndUpdate({ name: friendName },
-        { $push: { openChallenges: challengeId } })
+        { $push: { openChallenges: challengeId }, $push: { feed: { message: userName + " sent you a challenge", new: true } } })
 }
 
 /* GET /challenge/getchallenge */
