@@ -41,6 +41,9 @@ object ApplicationModule {
         viewModel { RegistrationViewModel(get(), get()) }
         viewModel { IndividualChallengeSentViewModel(get(), get()) }
         viewModel { ChallengesPublicViewModel(get()) }
+        viewModel { (challengeName: String) ->
+            IndividualChallengeReceivedViewModel(challengeName, get())
+        }
 
         single<UserService> {
             DefaultUserService(

@@ -28,7 +28,7 @@ abstract class DataBoundFragment<VM : ViewModel, B : ViewDataBinding>(
     private val viewModelPropertyId: Int
 ) : Fragment(layoutId) {
 
-    protected val viewModel: VM by viewModel(clazz = viewModelClass)
+    open val viewModel: VM by viewModel(clazz = viewModelClass)
 
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = createBinding(view)

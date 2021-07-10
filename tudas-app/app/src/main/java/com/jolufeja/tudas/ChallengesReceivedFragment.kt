@@ -17,6 +17,7 @@ import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import kotlinx.coroutines.flow.flow
+import org.koin.android.ext.android.get
 
 
 class ChallengesReceivedFragment(

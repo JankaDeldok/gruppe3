@@ -28,16 +28,18 @@ import org.koin.android.ext.android.inject
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-private val ChallengeErrorHandler = ErrorHandler(CommonErrors::GenericError)
+internal val ChallengeErrorHandler = ErrorHandler(CommonErrors::GenericError)
 
 
 class ChallengesPublicViewModel(
     private val challengeService: ChallengeService
-) : FetcherViewModel<CommonErrors, List<Challenge>>(ChallengeErrorHandler) {
-    override suspend fun fetchData(): List<Challenge> =
-        when (val challenges = challengeService.getPublicChallenges()) {
-            is Either.Right -> challenges.value
-            is Either.Left -> throw Throwable("Unable to fetch public challenges ${challenges.value}")
+) : FetcherViewModel<CommonErrors, List<ListItem>>(ChallengeErrorHandler) {
+    override suspend fun fetchData(): List<ListItem> =
+        when (val publicChallenges = challengeService.getPublicChallenges()) {
+            is Either.Right ->
+                listOf(HeaderItem("Public Challenges")) + publicChallenges.value.toChallengeListItems()
+            is Either.Left ->
+                throw Throwable("Unable to fetch public challenges ${publicChallenges.value}")
         }
 
 }
