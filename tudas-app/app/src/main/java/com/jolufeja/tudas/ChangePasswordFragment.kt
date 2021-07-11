@@ -11,13 +11,15 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        // Save Button
         var saveButton: Button = view.findViewById<View>(R.id.save) as Button
 
-        // Back Button
+        saveButton.setOnClickListener {
+            // save new password
+            requireActivity().supportFragmentManager.popBackStack();
+        }
+
         var cancelButton: Button = view.findViewById<View>(R.id.cancel) as Button
 
-        // Listener for Back Button to close fragment
         cancelButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack();
         }
