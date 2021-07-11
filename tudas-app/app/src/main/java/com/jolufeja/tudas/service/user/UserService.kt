@@ -3,6 +3,7 @@ package com.jolufeja.tudas.service.user
 import arrow.core.Either
 import arrow.core.flatMap
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.jolufeja.authentication.FeedEntry
 import com.jolufeja.authentication.UserAuthenticationService
 import com.jolufeja.httpclient.HttpClient
 import com.jolufeja.httpclient.error.CommonErrors
@@ -20,7 +21,7 @@ data class FriendEntry(val friendName: String, val streak: Int)
 
 data class Friendship(val userName: String, val friendName: String)
 
-data class FeedEntry(val message: String, val new: Boolean)
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 private data class PointResult(val points: Int)

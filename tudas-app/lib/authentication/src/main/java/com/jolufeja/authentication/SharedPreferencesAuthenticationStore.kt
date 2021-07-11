@@ -10,7 +10,9 @@ import arrow.core.computations.nullable
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
-data class UserInfo(val id: String, val name: String, val email: String)
+data class FeedEntry(val message: String, val new: Boolean)
+
+data class UserInfo(val id: String, val name: String, val email: String, val feed: List<FeedEntry>)
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     SharedPreferencesAuthenticationStore.SharedPreferencesName
@@ -28,7 +30,6 @@ class SharedPreferencesAuthenticationStore(context: Context) : AuthenticationSto
 
     private val dataStore by lazy { context.dataStore }
 
-
     override suspend fun retrieve(): AuthenticationInfo? = dataStore.data
         .map { store ->
             nullable {
@@ -37,7 +38,8 @@ class SharedPreferencesAuthenticationStore(context: Context) : AuthenticationSto
                     user = UserInfo(
                         id = store[UserIdKey].bind(),
                         name = store[UserNameKey].bind(),
-                        email = store[EmailKey].bind()
+                        email = store[EmailKey].bind(),
+                        feed = listOf()
                     )
                 )
             }

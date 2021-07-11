@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import arrow.core.computations.either
 import arrow.core.computations.nullable
 import arrow.core.identity
+import com.jolufeja.authentication.FeedEntry
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.ChallengeService
-import com.jolufeja.tudas.service.user.FeedEntry
 import com.jolufeja.tudas.service.user.UserService
 import kotlinx.coroutines.flow.flow
 import java.time.LocalDate

@@ -13,13 +13,10 @@ import org.koin.core.parameter.parametersOf
 import java.io.File
 
 
-
 sealed class ChallengeErrors(reason: String) : Throwable(reason) {
-
     object FailedToGetChallenge : ChallengeErrors("Couldn't retrieve challenge from backend.")
     object NonExistentChallenge : ChallengeErrors("No challenge associated with given name found.")
     object MissingChallengeName : ChallengeErrors("No challenge name passed to fragment.")
-
 }
 
 class IndividualChallengeReceivedFragment :

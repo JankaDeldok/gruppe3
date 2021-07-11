@@ -12,7 +12,6 @@ import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.data.RankingItem
-import com.jolufeja.tudas.service.user.FeedEntry
 import com.jolufeja.tudas.service.user.User
 import com.jolufeja.tudas.service.user.UserService
 import kotlinx.coroutines.flow.flow
