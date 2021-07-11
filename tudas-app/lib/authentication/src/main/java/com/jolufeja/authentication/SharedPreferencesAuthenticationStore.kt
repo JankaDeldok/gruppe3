@@ -7,11 +7,14 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import arrow.core.computations.nullable
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class FeedEntry(val message: String, val new: Boolean)
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class UserInfo(val id: String, val name: String, val email: String, val feed: List<FeedEntry> = listOf())
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(

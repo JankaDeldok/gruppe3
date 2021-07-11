@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import arrow.core.computations.either
 import arrow.core.computations.nullable
+import com.jolufeja.authentication.UserAuthenticationService
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.navigation.NavigationEventPublisher
 import com.jolufeja.presentation.fragment.DataBoundFragment
@@ -31,11 +32,12 @@ private val DefaultDueDate = LocalDate.now().plusDays(1)
 
 class IndividualChallengeSentViewModel(
     private val navigator: NavigationEventPublisher,
-    private val challengeService: ChallengeService
+    private val challengeService: ChallengeService,
+    private val authenticationService: UserAuthenticationService
 ) : ViewModel() {
 
     val challengeName: MutableLiveData<String> = MutableLiveData("")
-    val creatorName: MutableLiveData<String> = MutableLiveData("Peter")
+    val creatorName: MutableLiveData<String> = MutableLiveData("")
     val description: MutableLiveData<String> = MutableLiveData("")
     val dueDate: MutableLiveData<String> = MutableLiveData("")
     val reward: MutableLiveData<String> = MutableLiveData("")
@@ -52,7 +54,7 @@ class IndividualChallengeSentViewModel(
             nullable {
                 val initialChallenge = InitialChallenge(
                     challengeName.value.bind(),
-                    creatorName.value.bind(),
+                    authenticationService.authentication.await().user.name,
                     description.value.bind(),
                     LocalDate.now().plusDays(3),
                     reward.value.bind(),
@@ -101,8 +103,8 @@ class IndividualChallengeSentFragment(
             friends.collect { friendList ->
                 binding.challengeReceiver.adapter = ArrayAdapter(
                     requireContext(),
-                    R.layout.fragment_challenge_sent_info,
-                    friendList.map { it.friendName }
+                    R.layout.support_simple_spinner_dropdown_item,
+                    friendList.map { it.name }
                 )
             }
 
@@ -114,6 +116,16 @@ class IndividualChallengeSentFragment(
 
         binding.backButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        binding.showGroupsOnlySwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            binding.challengeReceiver.isEnabled = isChecked
+            when {
+                isChecked -> viewModel.recipient = "Friends"
+                binding.challengeReceiver.adapter.count > 0 -> {
+                    viewModel.recipient = binding.challengeReceiver.adapter.getItem(0).toString()
+                }
+            }
         }
 
         val itemListener = object : AdapterView.OnItemSelectedListener {

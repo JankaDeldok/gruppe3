@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import arrow.core.computations.either
@@ -17,7 +18,9 @@ import com.jolufeja.tudas.data.ChallengesItem
 import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.ChallengeService
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 
 
@@ -27,7 +30,7 @@ class ChallengesReceivedFragment(
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfChallenges: ArrayList<ChallengesItem> = ArrayList()
-    private var finalList: ArrayList<ListItem> = ArrayList()
+    private var finalList: MutableList<ListItem> = mutableListOf()
 
     private suspend fun buildChallengeList() = flow<List<ListItem>> {
         either<CommonErrors, Unit> {
@@ -43,7 +46,7 @@ class ChallengesReceivedFragment(
                 .bind()
                 .toChallengeListItems()
 
-            val combined = listOf(HeaderItem("Public Challenges")) + openChallenges +
+            val combined = listOf(HeaderItem("Open Challenges")) + openChallenges +
                     listOf(HeaderItem("Completed")) + completedChallenges
 
             emit(combined)
@@ -54,36 +57,6 @@ class ChallengesReceivedFragment(
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        //adding items in list
-        for (i in 0..10) {
-            val challenges = ChallengesItem()
-            challenges.id = i
-            challenges.title = "Challenge $i"
-            challenges.author = "Max Mustermann"
-            challenges.description =
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis at justo a volutpat. In sed leo vel ipsum egestas mattis vitae eget lorem."
-            challenges.reward = "5 Kugeln Eis"
-            challenges.points = 100
-            challenges.timeLeft = 200
-            listOfChallenges.add(challenges)
-        }
-        val header = HeaderItem()
-        header.text = "Open"
-        finalList.add(header)
-
-        listOfChallenges.forEach {
-            finalList.add(it)
-        }
-
-        val header1 = HeaderItem()
-        header1.text = "Completed"
-        finalList.add(header1)
-
-        listOfChallenges.forEach {
-            finalList.add(it)
-        }
-
 
         mRecyclerView = view.findViewById(R.id.challenges_received_recycler_view)
         var mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -119,5 +92,13 @@ class ChallengesReceivedFragment(
             }
         }
         mRecyclerView!!.adapter = mAdapter
+
+        lifecycleScope.launch {
+            buildChallengeList().collect { challenges ->
+                finalList = challenges.toMutableList()
+                (mAdapter as? RecycleViewAdapter)?.refreshData(challenges)
+                mAdapter?.notifyDataSetChanged()
+            }
+        }
     }
 }

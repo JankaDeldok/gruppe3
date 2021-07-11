@@ -61,7 +61,7 @@ class ProfileFragment(
 
         //opens FriendsSettingsFragment when clicked, but no layout yet
         friendsButton.setOnClickListener{
-            val friendsSettingsFragment = FriendsSettingsFragment()
+            val friendsSettingsFragment = FriendsSettingsFragment(get())
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(
@@ -113,6 +113,7 @@ class ProfileFragment(
         logOutButton.setOnClickListener {
             lifecycleScope.launch {
                 authenticationService.logout()
+                requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 findNavController().navigate(R.id.nav_graph_unauthenticated)
             }
         }

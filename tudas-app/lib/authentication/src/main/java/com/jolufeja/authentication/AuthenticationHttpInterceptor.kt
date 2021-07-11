@@ -10,7 +10,7 @@ class AuthenticationHttpInterceptor(private val authService: UserAuthenticationS
         authService.authentication.await().let { authInfo ->
             val newRequest = request.cloneWith {
                 headers { headers ->
-                    headers.add("Authorization", "Bearer ${authInfo.token}")
+                    headers.add("x-auth-token", authInfo.token)
                 }
             }
 

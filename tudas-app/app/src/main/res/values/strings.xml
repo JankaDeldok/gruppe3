@@ -59,4 +59,5 @@
     <string name="leave_group">Leave Group</string>
     <string name="receiver">Receiver</string>
     <string name="groups">Groups</string>
+    <string name="send_to_all">All</string>
 </resources>

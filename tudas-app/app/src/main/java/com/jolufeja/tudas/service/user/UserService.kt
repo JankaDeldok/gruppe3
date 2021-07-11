@@ -14,10 +14,13 @@ import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.service.challenges.UserName
 import com.jolufeja.tudas.service.challenges.awaitJsonBody
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class FriendRanking(val name: String, val points: Int)
 
-data class FriendEntry(val friendName: String, val streak: Int)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class FriendEntry(val name: String, val streak: Int)
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class Friendship(val userName: String, val friendName: String)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -29,14 +32,17 @@ private data class PointResult(val points: Int)
 @JsonIgnoreProperties(ignoreUnknown = true)
 private data class FeedResult(val name: String, val feed: List<FeedEntry>)
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class AddedFriendResult(val name: String, val friends: List<FriendEntry>)
+
 
 interface UserService {
 
     suspend fun getUser(userName: String): Either<CommonErrors, User?>
 
-    suspend fun addFriend(friendName: String): Either<CommonErrors, User>
+    suspend fun addFriend(friendName: String): Either<CommonErrors, AddedFriendResult>
 
-    suspend fun removeFriend(friendName: String): Either<CommonErrors, User>
+    suspend fun removeFriend(friendName: String): Either<CommonErrors, AddedFriendResult>
 
     suspend fun getFriends(userName: String): Either<CommonErrors, List<FriendEntry>>
 
@@ -67,7 +73,7 @@ class DefaultUserService(
             .awaitJsonBody()
 
 
-    override suspend fun addFriend(friendName: String): Either<CommonErrors, User> =
+    override suspend fun addFriend(friendName: String): Either<CommonErrors, AddedFriendResult> =
         httpClient.post("user/addfriend")
             .jsonBody(
                 Friendship(
@@ -78,7 +84,7 @@ class DefaultUserService(
             .tryExecute()
             .awaitJsonBody()
 
-    override suspend fun removeFriend(friendName: String): Either<CommonErrors, User> =
+    override suspend fun removeFriend(friendName: String): Either<CommonErrors, AddedFriendResult> =
         httpClient.post("user/removefriend")
             .jsonBody(
                 Friendship(

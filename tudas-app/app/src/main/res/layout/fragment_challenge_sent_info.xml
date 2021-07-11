@@ -121,7 +121,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/groups"
+                            android:text="@string/send_to_all"
                             android:textColor="@color/secondary"
                             android:textSize="@dimen/font_size_small" />
                         <androidx.appcompat.widget.SwitchCompat

@@ -36,10 +36,11 @@ object ApplicationModule {
         fragment { RankingsFriendsFragment(get()) }
         fragment { RankingsWorldFragment(get()) }
         fragment { IndividualChallengeReceivedFragment(get()) }
+        fragment { AddFriendFragment(get()) }
 
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegistrationViewModel(get(), get()) }
-        viewModel { IndividualChallengeSentViewModel(get(), get()) }
+        viewModel { IndividualChallengeSentViewModel(get(), get(), get()) }
         viewModel { ChallengesPublicViewModel(get()) }
         viewModel { (challenge: Challenge) ->
             IndividualChallengeReceivedViewModel(challenge)

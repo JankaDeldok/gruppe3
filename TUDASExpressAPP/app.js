@@ -38,8 +38,8 @@ var usersRouter = require('./routes/userIO');
 var challengeRouter = require('./routes/challengeIO');
 var authRouter = require('./routes/auth');
 app.use('/', indexRouter);
-app.use('/user', usersRouter);
-app.use('/challenge', challengeRouter);
+app.use('/user', auth, usersRouter);
+app.use('/challenge', auth, challengeRouter);
 app.use('/auth', authRouter);
 
 

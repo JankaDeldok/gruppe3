@@ -71,7 +71,10 @@ userIO.post('/addfriend', async (req, res) => {
             User.findOneAndUpdate({ name: userName },
                 { $push: { friends: { name: friendName, streak: 0 } } },
                 { fields: { name: 1, friends: 1 }, new: true })
-                .then(user => res.status(200).json(user));
+                .then(user => {
+                    console.log(user)
+                    return res.status(200).json(user);
+                });
         }
     })
 });
@@ -100,8 +103,11 @@ userIO.post('/removefriend', async (req, res) => {
 
 /* GET /user/getfriends */
 /* get friends by userName */
-userIO.get('/getfriends', (req, res) => {
-    User.findOne({ name: req.body.userName }, { friends: 1 }).then(friends => res.status(200).json(friends));
+userIO.post('/getfriends', (req, res) => {
+    User.findOne({ name: req.body.userName }, { friends: 1 }).then(friends => {
+        console.log(friends)
+        res.status(200).json(friends)
+    })      
 });
 
 userIO.post('/updateSettings', async (req, res) => {
@@ -141,19 +147,19 @@ userIO.post('/updateSettings', async (req, res) => {
 
 /* GET /user/getuser */
 /* get user by name */
-userIO.get('/getuser', (req, res) => {
+userIO.post('/getuser', (req, res) => {
     User.findOne({ name: req.body.userName }, { password: 0, __v: 0 }).then(user => res.status(200).json(user));
 });
 
 /* GET /user/getpointsofuser */
 /* get points for a user by name */
-userIO.get('/getpointsofuser', (req, res) => {
+userIO.post('/getpointsofuser', (req, res) => {
     User.findOne({ name: req.body.userName }, { name: 1, points: 1 }).then(user => res.status(200).json(user));
 });
 
 /* GET /user/getcreatedchallenges */
 /* get challenges where the user is the creator of */
-userIO.get('/getcreatedchallenges', (req, res) => {
+userIO.post('/getcreatedchallenges', (req, res) => {
     User.findOne({ name: req.body.userName }, { createdChallenges: 1 })
         .then(challenges =>
             Challenge.find({ _id: { $in: challenges.createdChallenges } }).then(challenges => res.status(200).json(challenges)))
@@ -161,15 +167,18 @@ userIO.get('/getcreatedchallenges', (req, res) => {
 
 /* GET /user/getopenchallenges */
 /* get challenges for the user which are still open */
-userIO.get('/getopenchallenges', (req, res) => {
+userIO.post('/getopenchallenges', (req, res) => {
     User.findOne({ name: req.body.userName }, { openChallenges: 1 })
         .then(challenges =>
-            Challenge.find({ _id: { $in: challenges.openChallenges }, dueDate: { $gt: Date.now() } }).then(challenges => res.status(200).json(challenges)))
+            {
+                console.log(challenges)
+                return Challenge.find({ _id: { $in: challenges.openChallenges }, dueDate: { $gt: Date.now() } }).then(challenges => res.status(200).json(challenges));
+            })
 });
 
 /* GET /user/getfinishedchallenges */
 /* get challenges the user finished */
-userIO.get('/getfinishedchallenges', (req, res) => {
+userIO.post('/getfinishedchallenges', (req, res) => {
     User.findOne({ name: req.body.userName }, { finishedChallenges: 1 })
         .then(challenges =>
             Challenge.find({ _id: { $in: challenges.finishedChallenges } }).then(challenges => res.status(200).json(challenges)))
@@ -177,21 +186,21 @@ userIO.get('/getfinishedchallenges', (req, res) => {
 
 /* GET /user/getfeed */
 /* get feed of the user */
-userIO.get('/getfeed', (req, res) => {
+userIO.post('/getfeed', (req, res) => {
     User.findOneAndUpdate({ name: req.body.userName }, { $set: { 'feed.$[].new': false } }, { fields: { name: 1, feed: 1 } })
         .then(feed => res.status(200).json(feed))
 });
 
 /* GET /user/getnewinfo */
 /* get new feed info of the user */
-userIO.get('/getnewinfo', (req, res) => {
+userIO.post('/getnewinfo', (req, res) => {
     User.findOneAndUpdate({ name: req.body.userName, feed: { new: true } }, { $set: { 'feed.$[].new': false } }, { fields: { name: 1, feed: 1 } })
         .then(feed => res.status(200).json(feed))
 });
 
 /* GET /user/getfriendranking */
 /* get the ranking of a users friends */
-userIO.get('/getfriendranking', (req, res) => {
+userIO.post('/getfriendranking', (req, res) => {
     User.findOne({ name: req.body.userName }, { friends: 1 }).then(friends => {
         console.log(friends)
         let friendNames = [];

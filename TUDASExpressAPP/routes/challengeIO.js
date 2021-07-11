@@ -104,12 +104,14 @@ challengeIO.post('/addchallenge', async (req, res) => {
             item.save(async (err, createdChallenge) => {
                 await creator.updateOne({ $push: { createdChallenges: createdChallenge._id } }, { new: true });
                 if (addressedTo === "public") {
+                    console.log("Public challenge succesfully created")
                     res.status(200).send("Public challenge succesfully created")
                 } else if (addressedTo === "friends") {
                     friendChallenge(createdChallenge._id, creatorName).then(err => {
                         if (err) {
                             res.status(409).send("Challenge could not be created!")
                         } else {
+                            console.log("Challenge for your friends successfully created!")
                             res.status(200).send("Challenge for your friends successfully created!")
                         }
                     })
@@ -118,6 +120,8 @@ challengeIO.post('/addchallenge', async (req, res) => {
                         if (err) {
                             res.status(409).send("Challenge could not be created!")
                         } else {
+                            console.log(err)
+                            console.log("Challenge for " + addressedTo + " successfully created!")
                             res.status(200).send("Challenge for " + addressedTo + " successfully created!")
                         }
                     })
@@ -142,15 +146,21 @@ const friendChallenge = async (challengeId, userName) => {
 
 }
 
+// /* adds a challenge to a users finished challenges */
+// const userChallenge = async (challengeId, friendName, userName) => {
+//     await User.findOneAndUpdate({ name: friendName },
+//         { $push: { openChallenges: challengeId }, $push: { feed: { message: userName + " sent you a challenge", new: true } } })
+// }
+
 /* adds a challenge to a users finished challenges */
 const userChallenge = async (challengeId, friendName, userName) => {
     await User.findOneAndUpdate({ name: friendName },
-        { $push: { openChallenges: challengeId }, $push: { feed: { message: userName + " sent you a challenge", new: true } } })
+        { $push: { openChallenges: challengeId, feed: { message: userName + " sent you a challenge", new: true } } })
 }
 
 /* GET /challenge/getchallenge */
 /* get challenge by name */
-challengeIO.get('/getchallenge', (req, res) => {
+challengeIO.post('/getchallenge', (req, res) => {
     Challenge.findOne({ name: req.body.challengeName }).then(challenge => res.status(200).json(challenge));
 });
 
@@ -162,7 +172,7 @@ challengeIO.get('/getpublicchallenges', (req, res) => {
 
 /* GET /challenge/getchallengesfromfriends */
 /* get challenges which are from friends */
-challengeIO.get('/getchallengesfromfriends', (req, res) => {
+challengeIO.post('/getchallengesfromfriends', (req, res) => {
     let { userName } = req.body;
     User.findOne({ name: userName }, { friends: 1, _id: 0 })
         .then(async (friends) => {

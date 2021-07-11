@@ -38,7 +38,7 @@ sealed interface ProofKind {
 
 interface ChallengeService {
 
-    suspend fun createChallenge(challenge: InitialChallenge): Either<CommonErrors, Challenge>
+    suspend fun createChallenge(challenge: InitialChallenge): Either<CommonErrors, Unit>
 
     suspend fun getChallenge(name: String): Either<CommonErrors, Challenge?>
 
@@ -71,11 +71,11 @@ class DefaultChallengeService(
 
     override suspend fun createChallenge(
         challenge: InitialChallenge
-    ): Either<CommonErrors, Challenge> =
+    ): Either<CommonErrors, Unit> =
         httpClient.post("challenge/addchallenge")
             .jsonBody(challenge)
             .tryExecute()
-            .awaitJsonBody()
+            .void()
 
     override suspend fun getChallenge(
         name: String
