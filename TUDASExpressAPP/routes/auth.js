@@ -62,6 +62,7 @@ auth.post('/register', async (req, res) => {
             name: name,
             password: hash,
             emailAddress: email,
+            feed: [],
             credit: 1000,
             points: 0,
         });
