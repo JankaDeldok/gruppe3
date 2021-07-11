@@ -24,7 +24,6 @@ object ApplicationModule {
         fragment { MainFragment(get()) }
         fragment { ChallengesFragment() }
         fragment { FeedFragment(get()) }
-        fragment { HomeFragment() }
         fragment { ProfileFragment(get()) }
         fragment { RankingsFragment() }
         fragment { LoginFragment() }
