@@ -2,9 +2,11 @@ package com.jolufeja.tudas
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
@@ -19,8 +21,7 @@ class FriendsSettingsFragment  : Fragment(R.layout.fragment_friends_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var friends = FriendsItem()
-        //adding items in list
-        for (i in 0..10) {
+        for (i in 0..50) {
             friends.id = i
             friends.text = "Tinkerbell"
             listOfFriends.add(friends)
@@ -35,7 +36,6 @@ class FriendsSettingsFragment  : Fragment(R.layout.fragment_friends_settings) {
         mRecyclerView!!.layoutManager = mLayoutManager
 
 
-        // Add Adapter so cards will be displayed
         mAdapter =
             context?.let {
                 RecycleViewAdapter(
@@ -58,10 +58,20 @@ class FriendsSettingsFragment  : Fragment(R.layout.fragment_friends_settings) {
         // Back Button
         var addNewFriendsButton: Button = view.findViewById<View>(R.id.add_friends_button) as Button
 
-        // Back Button
+        addNewFriendsButton.setOnClickListener {
+            val addFriendFragment = AddFriendFragment()
+            val transaction: FragmentTransaction =
+                requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(
+                ((view as ViewGroup).parent as View).id,
+                addFriendFragment
+            )
+            transaction.addToBackStack("friends_list")
+            transaction.commit()
+        }
+
         var cancelButton: TextView = view.findViewById<View>(R.id.back_button) as TextView
 
-        // Listener for Back Text View to close fragment
         cancelButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack();
         }
