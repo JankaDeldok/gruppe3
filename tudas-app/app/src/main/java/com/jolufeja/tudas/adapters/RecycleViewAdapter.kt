@@ -24,6 +24,7 @@ class RecycleViewAdapter(
     private val layoutRankingCard: Int,
     private val layoutGroupsRankingCard: Int,
     private val layoutFriendsCard: Int,
+    private val layoutCreateGroupCard: Int,
     private val listener: (ListItem) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -53,6 +54,9 @@ class RecycleViewAdapter(
             5 -> return FriendsViewHolder (
                 LayoutInflater.from(context).inflate(layoutFriendsCard, parent, false)
             )
+            6 -> return CreateGroupViewHolder(
+                LayoutInflater.from(context).inflate(layoutCreateGroupCard, parent, false)
+            )
         }
         return HeaderViewHolder(
             LayoutInflater.from(context).inflate(layoutHeader, parent, false)
@@ -78,6 +82,9 @@ class RecycleViewAdapter(
             }
             5 -> {
                 (holder as RecycleViewAdapter.FriendsViewHolder).bind(position)
+            }
+            6 -> {
+                (holder as RecycleViewAdapter.CreateGroupViewHolder).bind(position)
             }
         }
     }
@@ -202,4 +209,16 @@ class RecycleViewAdapter(
         }
     }
 
+    private inner class CreateGroupViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        var username: TextView = itemView.findViewById(R.id.friend_username) as TextView
+        var button: Button = itemView.findViewById<View>(R.id.add_friend_to_group) as Button
+
+        fun bind(position: Int) {
+            val recyclerViewModel = mDataList[position]
+            username.text = recyclerViewModel.text
+            // OnClick Listener on Button
+            button.setOnClickListener { listener(recyclerViewModel) }
+        }
+    }
 }

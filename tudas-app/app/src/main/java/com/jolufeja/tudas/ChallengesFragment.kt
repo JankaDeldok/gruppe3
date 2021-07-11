@@ -29,10 +29,10 @@ class ChallengesFragment : Fragment(R.layout.fragment_challenges) {
         // create adapter
         val adapter = ViewPagerFragmentAdapter(
             this,
-            ChallengesReceivedFragment(),
-            ChallengesSentFragment(),
+            ChallengesReceivedFragment(get()),
+            ChallengesSentFragment(get()),
             ChallengesPublicFragment(get()),
-            ChallengesReceivedFragment()
+            ChallengesReceivedFragment(get())
         )
         viewPager!!.adapter = adapter
 

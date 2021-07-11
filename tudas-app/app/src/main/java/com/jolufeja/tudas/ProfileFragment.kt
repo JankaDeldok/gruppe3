@@ -46,6 +46,10 @@ class ProfileFragment(
         // log out Button
         var logOutButton: Button = view.findViewById<View>(R.id.logOutButton) as Button
 
+        // test notifications Button
+        var testNotificationsButton: Button = view.findViewById<View>(R.id.testNotificationsButton) as Button
+
+
         //opens FriendsSettingsFragment when clicked, but no layout yet
         friendsButton.setOnClickListener{
             val friendsSettingsFragment = FriendsSettingsFragment()
@@ -103,5 +107,15 @@ class ProfileFragment(
                 findNavController().navigate(R.id.nav_graph_unauthenticated)
             }
         }
+
+        testNotificationsButton.setOnClickListener {
+            if ((activity as MainActivity).notificationsAllowed) {
+                (activity as MainActivity).sendNotification(
+                    "Test Notification",
+                    "Click me to open TUDAS"
+                )
+            }
+        }
+
     }
 }

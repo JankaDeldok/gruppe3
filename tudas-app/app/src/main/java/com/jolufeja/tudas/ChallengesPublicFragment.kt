@@ -12,11 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import arrow.core.Either
 import arrow.core.computations.either
-import com.jolufeja.httpclient.HttpClient
+import arrow.core.identity
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.httpclient.error.ErrorHandler
-import com.jolufeja.httpclient.error.HttpErrorHandler
-import com.jolufeja.presentation.viewmodel.DataSource
 import com.jolufeja.presentation.viewmodel.FetcherViewModel
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ChallengesItem
@@ -24,24 +22,24 @@ import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.Challenge
 import com.jolufeja.tudas.service.challenges.ChallengeService
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 
-private val ChallengeErrorHandler = ErrorHandler(CommonErrors::GenericError)
+internal val ChallengeErrorHandler = ErrorHandler(CommonErrors::GenericError)
 
 
 class ChallengesPublicViewModel(
     private val challengeService: ChallengeService
-) : FetcherViewModel<CommonErrors, List<Challenge>>(ChallengeErrorHandler) {
-    override suspend fun fetchData(): List<Challenge> =
-        when(val challenges = challengeService.getPublicChallenges()) {
-            is Either.Right -> challenges.value
-            is Either.Left -> throw Throwable("Unable to fetch public challenges ${challenges.value}")
+) : FetcherViewModel<CommonErrors, List<ListItem>>(ChallengeErrorHandler) {
+    override suspend fun fetchData(): List<ListItem> =
+        when (val publicChallenges = challengeService.getPublicChallenges()) {
+            is Either.Right ->
+                listOf(HeaderItem("Public Challenges")) + publicChallenges.value.toChallengeListItems()
+            is Either.Left ->
+                throw Throwable("Unable to fetch public challenges ${publicChallenges.value}")
         }
 
 }
@@ -57,6 +55,24 @@ class ChallengesPublicFragment(
 
     private val viewModel: ChallengesPublicViewModel by inject()
 
+    private suspend fun buildChallengeList() = flow<List<ListItem>> {
+        either<CommonErrors, Unit> {
+            emit(emptyList())
+
+            val publicChallenges = challengeService
+                .getOpenChallenges()
+                .bind()
+                .toChallengeListItems()
+
+            val combined = listOf(HeaderItem("Public Challenges")) + publicChallenges
+
+            emit(combined)
+        }.fold(
+            ifLeft = { emit(emptyList()) },
+            ifRight = ::identity
+        )
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -70,12 +86,13 @@ class ChallengesPublicFragment(
                 mAdapter?.notifyDataSetChanged()
             }.fold(
                 ifLeft = {
-                    Log.d("ChallengesPublicFragment","Something went wrong while fetching public Challenges $it")
+                    Log.d(
+                        "ChallengesPublicFragment",
+                        "Something went wrong while fetching public Challenges $it"
+                    )
                 },
                 ifRight = {}
             )
-
-
 
 
 //            viewModel.fetchStatus.collect {
@@ -138,6 +155,7 @@ class ChallengesPublicFragment(
                 0,
                 0,
                 0,
+                0,
                 0
             ) { item ->
                 // Open New Fragment
@@ -172,7 +190,7 @@ class ChallengesPublicFragment(
     }
 }
 
-private fun  List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
+fun List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
     val item = ChallengesItem()
 
     item.id = i

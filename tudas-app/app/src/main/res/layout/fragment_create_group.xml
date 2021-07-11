@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@color/secondary"
+    android:id="@+id/create_group_layout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back"
+            android:layout_margin="@dimen/info_box_margin_3"
+            app:cornerRadius="@dimen/button_radius" />
+        <Button
+            android:id="@+id/create_group_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create"
+            android:layout_margin="@dimen/info_box_margin_3"
+            app:cornerRadius="@dimen/button_radius" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/info_box_text_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/info_box_text_margin"
+            android:text="@string/group_name"
+            android:textColor="@color/font_color_dark"
+            android:textSize="@dimen/font_size_medium" />
+
+        <EditText
+            android:id="@+id/group_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/info_box_text_margin"
+            android:padding="@dimen/info_box_text_input_padding"
+            android:text="@string/challenge_title"
+            android:textColor="@color/white"
+            android:background="@drawable/edit_text_box_rounded_corners_dark_green"
+            android:hint="@string/challenge_title"
+            android:inputType="text"
+            android:autofillHints="" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/create_group_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        android:layout_weight="1" />
+
+</LinearLayout>

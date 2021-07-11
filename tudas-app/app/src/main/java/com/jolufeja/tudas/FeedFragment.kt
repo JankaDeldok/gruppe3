@@ -5,19 +5,45 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import arrow.core.computations.either
 import arrow.core.computations.nullable
+import arrow.core.identity
+import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.FeedItem
 import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
+import com.jolufeja.tudas.service.challenges.ChallengeService
+import com.jolufeja.tudas.service.user.FeedEntry
+import com.jolufeja.tudas.service.user.UserService
+import kotlinx.coroutines.flow.flow
+import java.time.LocalDate
 import java.util.*
 
 
-class FeedFragment : Fragment(R.layout.fragment_feed) {
+class FeedFragment(
+    private val userService: UserService
+) : Fragment(R.layout.fragment_feed) {
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfActivities: ArrayList<FeedItem> = ArrayList()
     private var finalList: ArrayList<ListItem> = ArrayList()
+
+    private suspend fun buildFeedList() = flow<List<ListItem>> {
+        either<CommonErrors, Unit> {
+            emit(emptyList())
+
+            val feedElements = userService
+                .getFeed()
+                .bind()
+                .toFeedListItems()
+
+            emit(feedElements)
+        }.fold(
+            ifLeft = { emit(emptyList()) },
+            ifRight = ::identity
+        )
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,11 +92,21 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                     R.layout.card_feed,
                     0,
                     0,
+                    0,
                     0
                 ) {
                     null
                 }
             }
         mRecyclerView!!.adapter = mAdapter
+    }
+}
+
+private fun List<FeedEntry>.toFeedListItems(): List<ListItem> = mapIndexed { i, entry ->
+    FeedItem().apply {
+        id = i
+        text = entry.message
+        date = LocalDate.now().toString()
+        type = "UNKNOWN"
     }
 }
