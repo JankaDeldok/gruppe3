@@ -1,6 +1,7 @@
 package com.jolufeja.tudas.service.challenges
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import java.io.Serializable
 import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,4 +15,4 @@ data class Challenge(
     val reward: String,
     val worth: Int,
     val addressedTo: String
-)
+) : Serializable

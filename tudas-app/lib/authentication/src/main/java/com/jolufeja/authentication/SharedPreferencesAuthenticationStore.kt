@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 
 data class FeedEntry(val message: String, val new: Boolean)
 
-data class UserInfo(val id: String, val name: String, val email: String, val feed: List<FeedEntry>)
+data class UserInfo(val id: String, val name: String, val email: String, val feed: List<FeedEntry> = listOf())
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     SharedPreferencesAuthenticationStore.SharedPreferencesName

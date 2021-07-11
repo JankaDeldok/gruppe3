@@ -1,10 +1,40 @@
 package com.jolufeja.tudas.service.challenges
 
+import android.graphics.Bitmap
 import arrow.core.Either
 import arrow.core.flatMap
 import com.jolufeja.authentication.UserAuthenticationService
 import com.jolufeja.httpclient.*
 import com.jolufeja.httpclient.error.*
+import java.nio.ByteBuffer
+
+sealed interface ProofKind {
+    interface Body
+
+    fun buildJsonBody(challenge: Challenge, userName: String): Body
+
+    data class ProofImage(val image: Bitmap) : ProofKind {
+        data class WithImageBody(
+            val challengeName: String,
+            val userName: String,
+            val file: ByteArray
+        ) : Body
+
+        override fun buildJsonBody(challenge: Challenge, userName: String) =
+            WithImageBody(challenge.name, userName, image.toByteArray())
+    }
+
+    data class SocialMediaLink(val link: String) : ProofKind {
+        data class WithLinkBody(
+            val challengeName: String,
+            val userName: String,
+            val url: String
+        ) : Body
+
+        override fun buildJsonBody(challenge: Challenge, userName: String) =
+            WithLinkBody(challenge.name, userName, link)
+    }
+}
 
 interface ChallengeService {
 
@@ -21,6 +51,12 @@ interface ChallengeService {
     suspend fun getFinishedChallenges(): Either<CommonErrors, List<Challenge>>
 
     suspend fun getOpenChallenges(): Either<CommonErrors, List<Challenge>>
+
+    suspend fun finishChallengeWithProof(
+        challenge: Challenge,
+        proofKind: ProofKind
+    ): Either<CommonErrors, Unit>
+
 }
 
 data class UserName(val userName: String)
@@ -44,7 +80,7 @@ class DefaultChallengeService(
     override suspend fun getChallenge(
         name: String
     ): Either<CommonErrors, Challenge?> =
-        httpClient.get("challenge/getchallenge")
+        httpClient.post("challenge/getchallenge")
             .jsonBody(ChallengeName(name))
             .tryExecute()
             .awaitJsonBodyOrNull()
@@ -55,31 +91,45 @@ class DefaultChallengeService(
             .awaitJsonBody(jsonListOf<Challenge>())
 
     override suspend fun getFriendChallenges(): Either<CommonErrors, List<Challenge>> =
-        httpClient.get("challenge/getchallengesfromfriends")
+        httpClient.post("challenge/getchallengesfromfriends")
             .jsonBodyOfCurrentUser()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())
 
     override suspend fun getOwnCreatedChallenges(): Either<CommonErrors, List<Challenge>> =
-        httpClient.get("user/getcreatedchallenges")
+        httpClient.post("user/getcreatedchallenges")
             .jsonBodyOfCurrentUser()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())
 
     override suspend fun getFinishedChallenges(): Either<CommonErrors, List<Challenge>> =
-        httpClient.get("user/getfinishedchallenges")
+        httpClient.post("user/getfinishedchallenges")
             .jsonBodyOfCurrentUser()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())
 
     override suspend fun getOpenChallenges(): Either<CommonErrors, List<Challenge>> =
-        httpClient.get("user/getopenchallenges")
+        httpClient.post("user/getopenchallenges")
             .jsonBodyOfCurrentUser()
             .tryExecute()
             .awaitJsonBody(jsonListOf<Challenge>())
 
+    override suspend fun finishChallengeWithProof(
+        challenge: Challenge,
+        proofKind: ProofKind
+    ): Either<CommonErrors, Unit> {
+        val userName = authenticationService.authentication.await().user.name
+        val body = proofKind.buildJsonBody(challenge, userName)
+        val endpoint = when (proofKind) {
+            is ProofKind.ProofImage -> httpClient.post("challenge/uploadPicture")
+            is ProofKind.SocialMediaLink -> httpClient.post("challenge/uploadsocialmedia")
+        }
 
-
+        return endpoint
+            .jsonBody(body)
+            .tryExecute()
+            .void()
+    }
 
 
     private suspend fun HttpClientRequest.Builder.jsonBodyOfCurrentUser() =
@@ -94,3 +144,10 @@ suspend fun <T : Any> Either<CommonErrors, HttpClientResponse>.awaitJsonBody(
     payloadType: JsonTypeSupplier<T>
 ): Either<CommonErrors, T> =
     flatMap { response -> catchError { response.awaitJsonBody(payloadType) } }
+
+
+
+fun Bitmap.toByteArray(): ByteArray = ByteBuffer.allocate(byteCount).apply {
+    copyPixelsToBuffer(this)
+    rewind()
+}.array()

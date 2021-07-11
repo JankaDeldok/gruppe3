@@ -199,6 +199,7 @@ fun List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, cha
     item.description = challenge.description
     item.points = challenge.worth
     item.timeLeft = LocalDate.now().until(challenge.dueDate, ChronoUnit.DAYS).toInt()
+    item.challenge = challenge
 
     item
 }

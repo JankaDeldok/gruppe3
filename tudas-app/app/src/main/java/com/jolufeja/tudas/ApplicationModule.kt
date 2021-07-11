@@ -6,6 +6,7 @@ import com.jolufeja.httpclient.HttpClientModule
 import com.jolufeja.navigation.EventDrivenNavigationModule
 import com.jolufeja.tudas.service.DefaultSettingsService
 import com.jolufeja.tudas.service.SettingsService
+import com.jolufeja.tudas.service.challenges.Challenge
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import com.jolufeja.tudas.service.challenges.DefaultChallengeService
 import com.jolufeja.tudas.service.user.DefaultUserService
@@ -28,19 +29,20 @@ object ApplicationModule {
         fragment { RankingsFragment() }
         fragment { LoginFragment() }
         fragment { RegistrationFragment() }
-        fragment { IndividualChallengeSentFragment() }
+        fragment { IndividualChallengeSentFragment(get()) }
         fragment { ChallengesPublicFragment(get()) }
         fragment { ChallengesReceivedFragment(get()) }
         fragment { ChallengesSentFragment(get()) }
         fragment { RankingsFriendsFragment(get()) }
         fragment { RankingsWorldFragment(get()) }
+        fragment { IndividualChallengeReceivedFragment(get()) }
 
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegistrationViewModel(get(), get()) }
         viewModel { IndividualChallengeSentViewModel(get(), get()) }
         viewModel { ChallengesPublicViewModel(get()) }
-        viewModel { (challengeName: String) ->
-            IndividualChallengeReceivedViewModel(challengeName, get())
+        viewModel { (challenge: Challenge) ->
+            IndividualChallengeReceivedViewModel(challenge)
         }
 
         single<UserService> {

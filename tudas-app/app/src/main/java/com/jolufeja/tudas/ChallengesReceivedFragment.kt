@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import arrow.core.computations.either
 import arrow.core.identity
 import com.jolufeja.httpclient.error.CommonErrors
+import com.jolufeja.tudas.IndividualChallengeReceivedFragment.Companion.CHALLENGE_KEY
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ChallengesItem
 import com.jolufeja.tudas.data.HeaderItem
@@ -101,7 +102,11 @@ class ChallengesReceivedFragment(
                 0
             ) { item ->
                 // Open New Fragment
-                val individualChallengeReceivedFragment = IndividualChallengeReceivedFragment()
+                val challengeArgs = Bundle().also { bundle ->
+                    bundle.putSerializable(CHALLENGE_KEY, (item as ChallengesItem).challenge)
+                }
+                val individualChallengeReceivedFragment = IndividualChallengeReceivedFragment(get())
+                individualChallengeReceivedFragment.arguments = challengeArgs
                 val transaction: FragmentTransaction =
                     requireActivity().supportFragmentManager.beginTransaction()
                 transaction.replace(

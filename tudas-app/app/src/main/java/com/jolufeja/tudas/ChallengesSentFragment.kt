@@ -18,6 +18,7 @@ import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import kotlinx.coroutines.flow.flow
+import org.koin.android.ext.android.get
 
 
 class ChallengesSentFragment(
@@ -98,7 +99,7 @@ class ChallengesSentFragment(
                     0
                 ) { item ->
                     // Open New Fragment
-                    val individualChallengeSentFragment = IndividualChallengeSentFragment()
+                    val individualChallengeSentFragment = IndividualChallengeSentFragment(get())
                     val transaction: FragmentTransaction =
                         requireActivity().supportFragmentManager.beginTransaction()
                     transaction.replace(
@@ -117,7 +118,7 @@ class ChallengesSentFragment(
         createChallengeButton = view.findViewById(R.id.create_challenge_button) as Button
         createChallengeButton!!.setOnClickListener {
             // Open New Fragment
-            val individualChallengeSentFragment = IndividualChallengeSentFragment()
+            val individualChallengeSentFragment = IndividualChallengeSentFragment(get())
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(

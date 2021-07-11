@@ -8,13 +8,22 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import arrow.core.computations.either
 import arrow.core.computations.nullable
+import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.navigation.NavigationEventPublisher
 import com.jolufeja.presentation.fragment.DataBoundFragment
 import com.jolufeja.tudas.databinding.FragmentChallengeSentInfoBinding
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import com.jolufeja.tudas.service.challenges.InitialChallenge
+import com.jolufeja.tudas.service.user.FriendEntry
+import com.jolufeja.tudas.service.user.UserService
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -31,6 +40,11 @@ class IndividualChallengeSentViewModel(
     val dueDate: MutableLiveData<String> = MutableLiveData("")
     val reward: MutableLiveData<String> = MutableLiveData("")
     val isPublic: MutableLiveData<Boolean> = MutableLiveData(false)
+    val addressedTo: MutableLiveData<String> = MutableLiveData("")
+    var recipient: String? = null
+
+
+    val challengeCreated: Channel<Unit> = Channel()
 
 
     fun createChallenge() {
@@ -42,28 +56,37 @@ class IndividualChallengeSentViewModel(
                     description.value.bind(),
                     LocalDate.now().plusDays(3),
                     reward.value.bind(),
-                    "public"
+                    recipient.bind()
                 )
 
                 challengeService.createChallenge(initialChallenge).fold(
                     ifLeft = {
                         Log.d("IndividualChallengeSentViewModel", "Challenge creation failed: $it")
                     },
-                    ifRight = { /* TODO: where to go from here? */ }
+                    ifRight = { challengeCreated.trySend(Unit) }
                 )
             }
-
         }
     }
-
 }
 
-class IndividualChallengeSentFragment :
+class IndividualChallengeSentFragment(
+    private val userService: UserService
+) :
     DataBoundFragment<IndividualChallengeSentViewModel, FragmentChallengeSentInfoBinding>(
         R.layout.fragment_challenge_sent_info,
         IndividualChallengeSentViewModel::class,
         BR.challengeSentViewModel
     ) {
+
+    private val friends = flow {
+        either<CommonErrors, List<FriendEntry>> {
+            userService.getFriendsOfCurrentUser().bind().also { emit(it) }
+        }.fold(
+            ifLeft = { Log.d("ERROR", it.toString()) },
+            ifRight = { }
+        )
+    }
 
     override fun createBinding(view: View): FragmentChallengeSentInfoBinding =
         FragmentChallengeSentInfoBinding.bind(view)
@@ -73,11 +96,40 @@ class IndividualChallengeSentFragment :
         binding: FragmentChallengeSentInfoBinding,
         savedInstanceState: Bundle?
     ) {
-        view.findViewById<TextView>(R.id.back_button)?.let {
-            it.setOnClickListener {
+
+        lifecycleScope.launchWhenCreated {
+            friends.collect { friendList ->
+                binding.challengeReceiver.adapter = ArrayAdapter(
+                    requireContext(),
+                    R.layout.fragment_challenge_sent_info,
+                    friendList.map { it.friendName }
+                )
+            }
+
+            viewModel.challengeCreated.receiveAsFlow().collect {
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
+
+
+        binding.backButton.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        val itemListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                viewModel.recipient = parent?.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.challengeReceiver.onItemSelectedListener = itemListener
     }
 }
 
@@ -95,7 +147,8 @@ class IndividualChallengeSentFragment2 : Fragment(R.layout.fragment_challenge_se
         var receiver: Spinner = view.findViewById<View>(R.id.challenge_receiver) as Spinner
 
         // toggle Show groups only
-        var groupsOnlyToggle: SwitchCompat = view.findViewById<View>(R.id.show_groups_only_switch) as SwitchCompat
+        var groupsOnlyToggle: SwitchCompat =
+            view.findViewById<View>(R.id.show_groups_only_switch) as SwitchCompat
 
         // Challenge description
         var description: EditText = view.findViewById<View>(R.id.challenge_description) as EditText

@@ -8,8 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.jolufeja.presentation.fragment.DataBoundFragment
 
+//class IndividualChallengePublicViewModel :
 
+//class IndividualChallengePublicFragment2 : DataBoundFragment
 
 
 class IndividualChallengePublicFragment : Fragment(R.layout.fragment_challenge_public_info) {
