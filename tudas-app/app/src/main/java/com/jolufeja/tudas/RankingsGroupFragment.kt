@@ -55,6 +55,7 @@ class RankingsGroupFragment : Fragment(R.layout.fragment_rankings_group){
                     0,
                     R.layout.card_rankings_friends,
                     0,
+                    0,
                     0
                 ) {
                     null

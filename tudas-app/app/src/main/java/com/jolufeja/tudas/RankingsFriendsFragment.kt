@@ -80,6 +80,7 @@ class RankingsFriendsFragment(
                     0,
                     R.layout.card_rankings_friends,
                     0,
+                    0,
                     0
                 ) {
                     null

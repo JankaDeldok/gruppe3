@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,9 @@ class RankingsGroupsFragment : Fragment(R.layout.fragment_rankings_groups) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        // Button create group
+        var createGroupButton: Button = view.findViewById<View>(R.id.create_group_button) as Button
+
         //adding items in list
         for (i in 0..20) {
             val group = RankingGroupsItem()
@@ -41,6 +45,8 @@ class RankingsGroupsFragment : Fragment(R.layout.fragment_rankings_groups) {
         mRecyclerView!!.layoutManager = mLayoutManager
 
 
+
+
         // Add Adapter so cards will be displayed
         mAdapter =
             context?.let {
@@ -52,6 +58,7 @@ class RankingsGroupsFragment : Fragment(R.layout.fragment_rankings_groups) {
                     0,
                     0,
                     R.layout.card_rankings_groups,
+                    0,
                     0
                 ) { item ->
                     // Open New Fragment
@@ -68,5 +75,21 @@ class RankingsGroupsFragment : Fragment(R.layout.fragment_rankings_groups) {
                 }
             }
         mRecyclerView!!.adapter = mAdapter
+
+
+        // Listener for Back Button to close fragment
+        createGroupButton.setOnClickListener {
+            // Open New Fragment
+            val createGroupFragment = CreateGroupFragment()
+            val transaction: FragmentTransaction =
+                requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(
+                ((view as ViewGroup).parent as View).id,
+                createGroupFragment
+            )
+            transaction.addToBackStack("create group")
+            transaction.commit()
+        }
+
     }
 }
