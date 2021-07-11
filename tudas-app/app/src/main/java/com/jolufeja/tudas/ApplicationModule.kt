@@ -32,10 +32,8 @@ object ApplicationModule {
         fragment { ChallengesPublicFragment(get()) }
         fragment { ChallengesReceivedFragment(get()) }
         fragment { ChallengesSentFragment(get()) }
-        fragment { FeedFragment(get()) }
         fragment { RankingsFriendsFragment(get()) }
         fragment { RankingsWorldFragment(get()) }
-
 
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegistrationViewModel(get(), get()) }
