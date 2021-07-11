@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -32,6 +33,9 @@ class ProfileFragment(
         }
 
         // Friends Button
+        var profileImage: ImageView = view.findViewById<View>(R.id.profileImage) as ImageView
+
+        // Friends Button
         var friendsButton: Button = view.findViewById<View>(R.id.friendsButton) as Button
 
         // change mail Button
@@ -49,6 +53,11 @@ class ProfileFragment(
         // test notifications Button
         var testNotificationsButton: Button = view.findViewById<View>(R.id.testNotificationsButton) as Button
 
+
+        profileImage.setOnClickListener{
+            //upload profile picture
+            //profileImage.setImageResource()
+        }
 
         //opens FriendsSettingsFragment when clicked, but no layout yet
         friendsButton.setOnClickListener{
