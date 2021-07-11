@@ -100,7 +100,6 @@ class FriendsSettingsFragment(
         }
 
 
-        // Back Button
         var addNewFriendsButton: Button = view.findViewById<View>(R.id.add_friends_button) as Button
 
         addNewFriendsButton.setOnClickListener {

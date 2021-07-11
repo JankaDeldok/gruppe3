@@ -25,13 +25,8 @@
     </navigation>
 
     <navigation android:id="@+id/nav_graph_authenticated"
-                app:startDestination="@id/homeFragment">
+                app:startDestination="@id/profileFragment">
 
-        <fragment
-                android:id="@+id/homeFragment"
-                android:name="com.jolufeja.tudas.HomeFragment"
-                android:label="fragment_home"
-                tools:layout="@layout/fragment_home"/>
         <fragment
                 android:id="@+id/feedFragment"
                 android:name="com.jolufeja.tudas.FeedFragment"
