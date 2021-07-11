@@ -92,6 +92,7 @@ class FeedFragment(
                     R.layout.card_feed,
                     0,
                     0,
+                    0,
                     0
                 ) {
                     null

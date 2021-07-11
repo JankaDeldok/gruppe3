@@ -97,6 +97,7 @@ class ChallengesReceivedFragment(
                 0,
                 0,
                 0,
+                0,
                 0
             ) { item ->
                 // Open New Fragment
