@@ -27,6 +27,7 @@ class ChangeEmailFragment(
         saveButton.setOnClickListener {
             val newEmailAddress = view.findViewById<EditText>(R.id.newEmail)
                 .text.toString()
+            requireActivity().supportFragmentManager.popBackStack();
         }
     }
 

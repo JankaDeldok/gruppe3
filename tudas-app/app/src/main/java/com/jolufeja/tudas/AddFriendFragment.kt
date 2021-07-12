@@ -36,14 +36,12 @@ class AddFriendFragment(
                         }
                     )
                 }
-                //look in database for the entered username (newFriendTextField.text.toString()) and add to friends list
 
             }
         }
 
         var cancelButton: Button = view.findViewById<View>(R.id.cancel) as Button
 
-        // Listener for Back Button to close fragment
         cancelButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack();
         }

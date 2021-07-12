@@ -32,25 +32,18 @@ class ProfileFragment(
             }
         }
 
-        // Friends Button
         var profileImage: ImageView = view.findViewById<View>(R.id.profileImage) as ImageView
 
-        // Friends Button
         var friendsButton: Button = view.findViewById<View>(R.id.friendsButton) as Button
 
-        // change mail Button
         var changeEmailButton: Button = view.findViewById<View>(R.id.changeEmail) as Button
 
-        // change password Button
         var changePasswordButton: Button = view.findViewById<View>(R.id.changePassword) as Button
 
-        // notification Button
         var notificationButton: Button = view.findViewById<View>(R.id.notificationButton) as Button
 
-        // log out Button
         var logOutButton: Button = view.findViewById<View>(R.id.logOutButton) as Button
 
-        // test notifications Button
         var testNotificationsButton: Button = view.findViewById<View>(R.id.testNotificationsButton) as Button
 
 
@@ -59,7 +52,6 @@ class ProfileFragment(
             //profileImage.setImageResource()
         }
 
-        //opens FriendsSettingsFragment when clicked, but no layout yet
         friendsButton.setOnClickListener{
             val friendsSettingsFragment = FriendsSettingsFragment(get())
             val transaction: FragmentTransaction =
@@ -72,7 +64,6 @@ class ProfileFragment(
             transaction.commit()
         }
 
-        //opens ChangeEmailFragment when clicked
         changeEmailButton.setOnClickListener{
             val changeEmailFragment = ChangeEmailFragment(get(), get())
             val transaction: FragmentTransaction =
@@ -84,7 +75,6 @@ class ProfileFragment(
             transaction.addToBackStack("change_email")
             transaction.commit()
         }
-        //opens ChangePasswordFragment when clicked
         changePasswordButton.setOnClickListener{
             val changePasswordFragment = ChangePasswordFragment()
             val transaction: FragmentTransaction =
@@ -97,7 +87,6 @@ class ProfileFragment(
             transaction.commit()
         }
 
-        //opens notification menu
         notificationButton.setOnClickListener{
             val notificationSettingsFragment = NotificationSettingsFragment()
             val transaction: FragmentTransaction =
@@ -119,13 +108,10 @@ class ProfileFragment(
         }
 
         testNotificationsButton.setOnClickListener {
-            if ((activity as MainActivity).notificationsAllowed) {
                 (activity as MainActivity).sendNotification(
                     "Test Notification",
                     "Click me to open TUDAS"
                 )
-            }
         }
-
     }
 }

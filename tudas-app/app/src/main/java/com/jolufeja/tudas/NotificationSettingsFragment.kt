@@ -61,11 +61,8 @@ class NotificationSettingsFragment  : Fragment(R.layout.fragment_notification_se
 
         var cancelButton: Button = view.findViewById<View>(R.id.cancel) as Button
 
-        // Listener for any-Notifications-Button to close fragment
         switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             anyNotification = isChecked
-            val message = if (isChecked) "Switch1:ON" else "Switch1:OFF"
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             if (!isChecked){
                 switchFriendRequest.isChecked = false
                 switchChallengeReceived.isChecked = false
@@ -86,28 +83,17 @@ class NotificationSettingsFragment  : Fragment(R.layout.fragment_notification_se
 
         switchChallengeReceived.setOnCheckedChangeListener { _, isChecked ->
             challengeReceivedNotification = isChecked
-            val message = if (isChecked) "Switch2:ON" else "Switch2:OFF"
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
 
         switchFriendRequest.setOnCheckedChangeListener { _, isChecked ->
             friendsRequestNotification = isChecked
-            val message = if (isChecked) "Switch3:ON" else "Switch3:OFF"
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
 
         switchChallengeEnds.setOnCheckedChangeListener { _, isChecked ->
             challengeEndsNotification = isChecked
-            val message = if (isChecked) "Switch4:ON" else "Switch4:OFF"
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
 
         saveButton.setOnClickListener {
-            //saving changed values
-            (activity as MainActivity).notificationsAllowed = anyNotification
-            (activity as MainActivity).challengeReceivedNotificationAllowed = challengeReceivedNotification
-            (activity as MainActivity).friendsRequestNotificationAllowed = friendsRequestNotification
-            (activity as MainActivity).challengeEndsNotificationAllowed = challengeEndsNotification
             editor.putBoolean("anyNotification", anyNotification)
             editor.putBoolean("challengeReceivedNotification", challengeReceivedNotification)
             editor.putBoolean("friendsRequestNotification", friendsRequestNotification)
@@ -116,13 +102,7 @@ class NotificationSettingsFragment  : Fragment(R.layout.fragment_notification_se
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        // Listener for Back Button to close fragment
         cancelButton.setOnClickListener {
-            //setting switches back to last saved state
-            /*anyNotification = (activity as MainActivity).notificationsAllowed
-            challengeReceivedNotification = (activity as MainActivity).challengeReceivedNotificationAllowed
-            friendsRequestNotification = (activity as MainActivity).friendsRequestNotificationAllowed
-            challengeEndsNotification = (activity as MainActivity).challengeEndsNotificationAllowed*/
             requireActivity().supportFragmentManager.popBackStack();
         }
     }

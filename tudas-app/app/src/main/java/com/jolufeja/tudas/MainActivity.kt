@@ -31,11 +31,6 @@ import org.koin.core.KoinExperimentalAPI
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    var notificationsAllowed = true
-    var challengeReceivedNotificationAllowed = true
-    var friendsRequestNotificationAllowed = true
-    var challengeEndsNotificationAllowed = true
-
     private val CHANNEL_ID = "channel_id_test_01"
     private val notificationId = 101
 
@@ -66,7 +61,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     // Change App Title on Toolbar according to current fragment
                     when (dest.id ) {
                         R.id.challengesFragment ->  toolbarTitle.text = "Challenges";
-                        R.id.homeFragment ->  toolbarTitle.text = "Home";
                         R.id.feedFragment ->  toolbarTitle.text = "Feed";
                         R.id.rankingsFragment ->  toolbarTitle.text = "Rankings";
                         R.id.profileFragment ->  toolbarTitle.text = "Profile";
