@@ -17,8 +17,8 @@ class ChallengesFragment : Fragment(R.layout.fragment_challenges) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true);
-        tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
-        viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
+        tabLayout = view.findViewById(R.id.tabLayout)
+        viewPager = view.findViewById(R.id.viewPager)
 
         // create a new tab for each challenge fragment
         for (item in tabTitles)

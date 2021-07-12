@@ -3,6 +3,7 @@ package com.jolufeja.tudas
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import arrow.core.computations.either
@@ -16,7 +17,9 @@ import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import com.jolufeja.tudas.service.user.UserService
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.*
 
@@ -27,7 +30,7 @@ class FeedFragment(
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfActivities: ArrayList<FeedItem> = ArrayList()
-    private var finalList: ArrayList<ListItem> = ArrayList()
+    private var finalList: MutableList<ListItem> = mutableListOf()
 
     private suspend fun buildFeedList() = flow<List<ListItem>> {
         either<CommonErrors, Unit> {
@@ -48,31 +51,31 @@ class FeedFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        //adding items in list
-        for (i in 0..10) {
-            val feed = FeedItem()
-            feed.id = i
-            feed.text = "Felix sent Laura a Challenge"
-            feed.type = "Sent Challenge"
-            feed.date = "2020-06-21"
-            listOfActivities.add(feed)
-        }
-
-        val header = HeaderItem()
-        header.text = "Today"
-        finalList.add(header)
-
-        listOfActivities.forEach {
-            finalList.add(it)
-        }
-
-        val header1 = HeaderItem()
-        header1.text = "Yesterday"
-        finalList.add(header1)
-
-        listOfActivities.forEach {
-            finalList.add(it)
-        }
+//        //adding items in list
+//        for (i in 0..10) {
+//            val feed = FeedItem()
+//            feed.id = i
+//            feed.text = "Felix sent Laura a Challenge"
+//            feed.type = "Sent Challenge"
+//            feed.date = "2020-06-21"
+//            listOfActivities.add(feed)
+//        }
+//
+//        val header = HeaderItem()
+//        header.text = "Today"
+//        finalList.add(header)
+//
+//        listOfActivities.forEach {
+//            finalList.add(it)
+//        }
+//
+//        val header1 = HeaderItem()
+//        header1.text = "Yesterday"
+//        finalList.add(header1)
+//
+//        listOfActivities.forEach {
+//            finalList.add(it)
+//        }
 
 
 
@@ -99,6 +102,14 @@ class FeedFragment(
                 }
             }
         mRecyclerView!!.adapter = mAdapter
+
+        lifecycleScope.launch {
+            buildFeedList().collect { feed ->
+                finalList = feed.toMutableList()
+                (mAdapter as? RecycleViewAdapter)?.refreshData(feed)
+                mAdapter?.notifyDataSetChanged()
+            }
+        }
     }
 }
 
@@ -107,6 +118,6 @@ private fun List<FeedEntry>.toFeedListItems(): List<ListItem> = mapIndexed { i, 
         id = i
         text = entry.message
         date = LocalDate.now().toString()
-        type = "UNKNOWN"
+        type = "Sent challenge"
     }
 }

@@ -15,7 +15,7 @@ import com.jolufeja.tudas.service.challenges.UserName
 import com.jolufeja.tudas.service.challenges.awaitJsonBody
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class FriendRanking(val name: String, val points: Int)
+data class Ranking(val name: String, val points: Int)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class FriendEntry(val name: String, val streak: Int)
@@ -54,9 +54,9 @@ interface UserService {
 
     suspend fun getFeed(): Either<CommonErrors, List<FeedEntry>>
 
-    suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendRanking>>
+    suspend fun getFriendsRanking(): Either<CommonErrors, List<Ranking>>
 
-    suspend fun getPublicRanking(): Either<CommonErrors, List<User>>
+    suspend fun getPublicRanking(): Either<CommonErrors, List<Ranking>>
 
 }
 
@@ -130,16 +130,16 @@ class DefaultUserService(
             .awaitJsonBody<FeedResult>()
             .map { it.feed }
 
-    override suspend fun getFriendsRanking(): Either<CommonErrors, List<FriendRanking>> =
+    override suspend fun getFriendsRanking(): Either<CommonErrors, List<Ranking>> =
         httpClient.post("user/getfriendranking")
             .jsonBody(UserName(authService.authentication.await().user.name))
             .tryExecute()
-            .awaitJsonBody(jsonListOf<FriendRanking>())
+            .awaitJsonBody(jsonListOf<Ranking>())
 
-    override suspend fun getPublicRanking(): Either<CommonErrors, List<User>> =
+    override suspend fun getPublicRanking(): Either<CommonErrors, List<Ranking>> =
         httpClient.get("user/getpublicranking")
             .tryExecute()
-            .awaitJsonBody(jsonListOf<FriendEntry>())
+            .awaitJsonBody(jsonListOf<Ranking>())
 
 }
 

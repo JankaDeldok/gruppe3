@@ -113,34 +113,34 @@ class ChallengesPublicFragment(
         }
 
 
-        //adding items in list
-        for (i in 0..10) {
-            val challenges = ChallengesItem()
-            challenges.id = i
-            challenges.title = "Challenge $i"
-            challenges.author = "Max Mustermann"
-            challenges.description =
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis at justo a volutpat. In sed leo vel ipsum egestas mattis vitae eget lorem."
-            challenges.points = 100
-            challenges.timeLeft = 200
-            listOfChallenges.add(challenges)
-        }
-
-        val header = HeaderItem()
-        header.text = "Open"
-        finalList.add(header)
-
-        listOfChallenges.forEach {
-            finalList.add(it)
-        }
-
-        val header1 = HeaderItem()
-        header1.text = "Completed"
-        finalList.add(header1)
-
-        listOfChallenges.forEach {
-            finalList.add(it)
-        }
+//        //adding items in list
+//        for (i in 0..10) {
+//            val challenges = ChallengesItem()
+//            challenges.id = i
+//            challenges.title = "Challenge $i"
+//            challenges.author = "Max Mustermann"
+//            challenges.description =
+//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis at justo a volutpat. In sed leo vel ipsum egestas mattis vitae eget lorem."
+//            challenges.points = 100
+//            challenges.timeLeft = 200
+//            listOfChallenges.add(challenges)
+//        }
+//
+//        val header = HeaderItem()
+//        header.text = "Open"
+//        finalList.add(header)
+//
+//        listOfChallenges.forEach {
+//            finalList.add(it)
+//        }
+//
+//        val header1 = HeaderItem()
+//        header1.text = "Completed"
+//        finalList.add(header1)
+//
+//        listOfChallenges.forEach {
+//            finalList.add(it)
+//        }
 
         mRecyclerView = view.findViewById(R.id.challenges_public_recycler_view)
         var mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -190,16 +190,15 @@ class ChallengesPublicFragment(
     }
 }
 
-fun List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, challenge ->
-    val item = ChallengesItem()
+fun List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, publicChallenge ->
+    ChallengesItem().apply {
+        id = i
+        title = publicChallenge.name
+        author = publicChallenge.creator
+        description = publicChallenge.description
+        points = publicChallenge.worth
+        timeLeft = LocalDate.now().until(publicChallenge.dueDate, ChronoUnit.DAYS).toInt()
+        challenge = publicChallenge
+    }
 
-    item.id = i
-    item.title = challenge.name
-    item.author = challenge.creator
-    item.description = challenge.description
-    item.points = challenge.worth
-    item.timeLeft = LocalDate.now().until(challenge.dueDate, ChronoUnit.DAYS).toInt()
-    item.challenge = challenge
-
-    item
 }

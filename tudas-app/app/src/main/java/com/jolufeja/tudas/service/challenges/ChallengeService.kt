@@ -1,12 +1,16 @@
 package com.jolufeja.tudas.service.challenges
 
 import android.graphics.Bitmap
+import android.util.Log
 import arrow.core.Either
 import arrow.core.flatMap
 import com.jolufeja.authentication.UserAuthenticationService
 import com.jolufeja.httpclient.*
 import com.jolufeja.httpclient.error.*
+import okhttp3.RequestBody
+import okio.Buffer
 import java.nio.ByteBuffer
+
 
 sealed interface ProofKind {
     interface Body
@@ -110,9 +114,10 @@ class DefaultChallengeService(
 
     override suspend fun getOpenChallenges(): Either<CommonErrors, List<Challenge>> =
         httpClient.post("user/getopenchallenges")
-            .jsonBodyOfCurrentUser()
-            .tryExecute()
-            .awaitJsonBody(jsonListOf<Challenge>())
+             .jsonBodyOfCurrentUser()
+             .tryExecute()
+             .awaitJsonBody(jsonListOf<Challenge>())
+
 
     override suspend fun finishChallengeWithProof(
         challenge: Challenge,

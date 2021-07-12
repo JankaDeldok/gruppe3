@@ -13,7 +13,11 @@ object HttpClientModule {
     private val module = module {
 
         single {
-            OkHttpClient.Builder().build()
+            OkHttpClient.Builder()
+                .retryOnConnectionFailure(true)
+                .build()
+
+
         }
 
         single(qualifier = named("baseUrl")) {

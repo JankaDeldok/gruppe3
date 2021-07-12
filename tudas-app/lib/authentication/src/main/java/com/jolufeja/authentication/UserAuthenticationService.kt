@@ -55,7 +55,7 @@ class DefaultUserAuthenticationService(
      * the [cached] delegate can automatically try to refresh or revalidate the token through the backend
      */
     override val authentication: Deferred<AuthenticationInfo> by cached(
-        ttlForValue = { Duration.ofMinutes(30) },
+        ttlForValue = { Duration.ofMinutes(300) },
         ttlForError = { Duration.ofMinutes(5) },
         cancellation = authCancellable
     ) { authStore.retrieve() ?: throw EmptyAuthStoreException }
