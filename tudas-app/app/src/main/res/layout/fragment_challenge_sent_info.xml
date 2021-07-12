@@ -224,7 +224,7 @@
                             android:text="@={challengeSentViewModel.dueDate}"
                             android:textColor="@color/font_color_light"
                             tools:cornerRadius="@dimen/button_radius"
-                            android:hint="@string/challenge_time_left"
+                            android:hint="Due date"
                             android:autofillHints=""
                             android:inputType="text" />
                     </LinearLayout>

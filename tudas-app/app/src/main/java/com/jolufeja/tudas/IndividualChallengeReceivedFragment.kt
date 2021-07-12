@@ -12,7 +12,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import androidx.lifecycle.lifecycleScope
+import arrow.core.computations.nullable
 import com.jolufeja.presentation.fragment.DataBoundFragment
 import com.jolufeja.tudas.databinding.FragmentChallengeReceivedInfoBinding
 import com.jolufeja.tudas.service.challenges.ChallengeService
@@ -23,6 +25,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -118,6 +122,20 @@ class IndividualChallengeReceivedFragment(
         if (requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK) {
             viewImage.setImageURI(data?.data)
             pictureWasTakenAsFile = true
+
+            nullable.eager<Unit> {
+                val uri = data?.data.bind()
+                val inputStream = requireContext().contentResolver.openInputStream(uri).bind()
+                val tempFile = createTempImageFile()
+
+                Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+
+                filePhoto = tempFile
+                Unit
+            }
+
+
+
         }
 
         super.onActivityResult(requestCode, resultCode, data)

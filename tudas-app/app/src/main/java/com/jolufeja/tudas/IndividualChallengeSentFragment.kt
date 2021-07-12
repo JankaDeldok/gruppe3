@@ -1,5 +1,6 @@
 package com.jolufeja.tudas
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -26,7 +27,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.util.*
 
 private val DefaultDueDate = LocalDate.now().plusDays(1)
 
@@ -44,7 +47,18 @@ class IndividualChallengeSentViewModel(
     val isPublic: MutableLiveData<Boolean> = MutableLiveData(false)
     val addressedTo: MutableLiveData<String> = MutableLiveData("")
     val worth: MutableLiveData<Int> = MutableLiveData(200)
+
     var recipient: String? = null
+    var day: Int = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+    var month: Int = Calendar.getInstance().get(Calendar.MONTH)
+    var year: Int = Calendar.getInstance().get(Calendar.YEAR)
+
+    fun calculateTime(): Date {
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
+
+        return calendar.time
+    }
 
 
     val challengeCreated: Channel<Boolean> = Channel()
@@ -57,7 +71,7 @@ class IndividualChallengeSentViewModel(
                     challengeName.value.bind(),
                     authenticationService.authentication.await().user.name,
                     description.value.bind(),
-                    LocalDate.now().plusDays(3),
+                    calculateTime(),
                     reward.value.bind(),
                     recipient.bind(),
                     200
@@ -120,6 +134,20 @@ class IndividualChallengeSentFragment(
                 }
 
             }
+        }
+
+        binding.challengeTime.setOnClickListener { challengeTime ->
+            val calendar = Calendar.getInstance()
+            val picker = DatePickerDialog(requireContext())
+            picker.setOnDateSetListener { view, year, month, dayOfMonth ->
+                val dateString = "${dayOfMonth}.${month}.${year}"
+                viewModel.day = dayOfMonth
+                viewModel.month = month
+                viewModel.year = year
+                binding.challengeTime.setText(dateString)
+            }
+
+            picker.show()
         }
 
 

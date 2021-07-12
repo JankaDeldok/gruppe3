@@ -117,7 +117,7 @@ class RecycleViewAdapter(
 
             title.text = recyclerViewModel.title
             author.text = recyclerViewModel.author
-            timeLeft.text = recyclerViewModel.timeLeft.toString();
+            timeLeft.text = "${recyclerViewModel.timeLeft.toString()} days"
             reward.text = recyclerViewModel.reward
             points.text = recyclerViewModel.points.toString();
             description.text = recyclerViewModel.description

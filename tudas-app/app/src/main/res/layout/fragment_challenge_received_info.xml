@@ -217,7 +217,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/challenge_time_left"
+                                android:text="Due date"
                                 android:textColor="@color/secondary"
                                 android:textSize="@dimen/font_size_medium" />
 
@@ -229,7 +229,7 @@
                                 android:background="@drawable/edit_text_box_rounded_corners_green"
                                 android:hint="@string/challenge_duration"
                                 android:padding="@dimen/info_box_text_padding"
-                                android:text="@{challengeReceivedViewModel.dueDate.toString()}"
+                                android:text="@{challengeReceivedViewModel.dueDate.toLocaleString()}"
                                 android:textColor="@color/font_color_light"
                                 tools:cornerRadius="@dimen/button_radius" />
                         </LinearLayout>

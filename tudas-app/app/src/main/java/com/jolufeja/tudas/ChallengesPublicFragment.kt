@@ -30,6 +30,9 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 internal val ChallengeErrorHandler = ErrorHandler(CommonErrors::GenericError)
 
@@ -154,12 +157,14 @@ class ChallengesPublicFragment(
 
 fun List<Challenge>.toChallengeListItems(): List<ListItem> = mapIndexed { i, publicChallenge ->
     ChallengesItem().apply {
+        val diff = publicChallenge.dueDate.time - Calendar.getInstance().time.time
+        val diffInDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
         id = i
         title = publicChallenge.name
         author = publicChallenge.creator
         description = publicChallenge.description
         points = publicChallenge.worth
-        timeLeft = LocalDate.now().until(publicChallenge.dueDate, ChronoUnit.DAYS).toInt()
+        timeLeft = diffInDays.toInt()
         challenge = publicChallenge
     }
 

@@ -19,10 +19,13 @@ class IndividualChallengeReceivedViewModel(private val challenge: Challenge) : V
     val worth = MutableLiveData(challenge.worth)
     val addressedTo = MutableLiveData(challenge.addressedTo)
 
+
+
     val completeChallenge: Channel<Challenge> = Channel()
 
     fun completeChallenge() {
         Log.d("IndividualChallengeReceivedViewModel", name.value.toString())
         completeChallenge.trySend(challenge)
     }
+
 }

@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-fun provideUrl(): String = "http://10.0.2.2:3000/"
+fun provideUrl(): String = "http://192.168.2.100:3000/"
 
 object HttpClientModule {
 
