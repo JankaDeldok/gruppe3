@@ -9,9 +9,6 @@ import kotlinx.coroutines.channels.Channel
 
 class IndividualChallengeReceivedViewModel(private val challenge: Challenge) : ViewModel() {
 
-    init {
-        Log.d("IndividualChallengeReceivedViewModel", challenge.name)
-    }
 
     val name = MutableLiveData(challenge.name)
     val creator = MutableLiveData(challenge.creator)

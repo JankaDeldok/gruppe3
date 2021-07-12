@@ -47,7 +47,7 @@ class IndividualChallengeSentViewModel(
     var recipient: String? = null
 
 
-    val challengeCreated: Channel<Unit> = Channel()
+    val challengeCreated: Channel<Boolean> = Channel()
 
 
     fun createChallenge() {
@@ -66,8 +66,9 @@ class IndividualChallengeSentViewModel(
                 challengeService.createChallenge(initialChallenge).fold(
                     ifLeft = {
                         Log.d("IndividualChallengeSentViewModel", "Challenge creation failed: $it")
+                        challengeCreated.trySend(false)
                     },
-                    ifRight = { challengeCreated.trySend(Unit) }
+                    ifRight = { challengeCreated.trySend(true) }
                 )
             }
         }
@@ -110,8 +111,14 @@ class IndividualChallengeSentFragment(
                 )
             }
 
-            viewModel.challengeCreated.receiveAsFlow().collect {
-                requireActivity().supportFragmentManager.popBackStack()
+            viewModel.challengeCreated.receiveAsFlow().collect { success ->
+                if (success) {
+                    showToast("Challenge successfully created!")
+                    requireActivity().supportFragmentManager.popBackStack()
+                } else {
+                    showToast("Could not create challenge. Please try again.")
+                }
+
             }
         }
 
@@ -123,7 +130,7 @@ class IndividualChallengeSentFragment(
         binding.showGroupsOnlySwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             binding.challengeReceiver.isEnabled = !isChecked
             when {
-                isChecked -> viewModel.recipient = "Friends"
+                isChecked -> viewModel.recipient = "public"
                 binding.challengeReceiver.adapter.count > 0 -> {
                     viewModel.recipient = binding.challengeReceiver.adapter.getItem(0).toString()
                 }
@@ -145,4 +152,6 @@ class IndividualChallengeSentFragment(
 
         binding.challengeReceiver.onItemSelectedListener = itemListener
     }
+
+
 }

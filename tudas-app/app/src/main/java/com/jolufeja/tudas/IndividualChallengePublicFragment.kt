@@ -1,52 +1,85 @@
 package com.jolufeja.tudas
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import com.jolufeja.presentation.fragment.DataBoundFragment
+import com.jolufeja.tudas.databinding.FragmentChallengePublicInfoBinding
+import com.jolufeja.tudas.service.challenges.Challenge
+import com.jolufeja.tudas.service.challenges.ChallengeService
+import com.jolufeja.tudas.service.challenges.ProofKind
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
-//class IndividualChallengePublicViewModel :
+class IndividualChallengePublicViewModel(private val challenge: Challenge) : ViewModel() {
 
-//class IndividualChallengePublicFragment2 : DataBoundFragment
+    val name = MutableLiveData(challenge.name)
+    val creator = MutableLiveData(challenge.creator)
+    val creationDate = MutableLiveData(challenge.creationDate)
+    val description = MutableLiveData(challenge.description)
+    val dueDate = MutableLiveData(challenge.dueDate)
+    val reward = MutableLiveData(challenge.reward)
+    val worth = MutableLiveData(challenge.worth)
+    val addressedTo = MutableLiveData(challenge.addressedTo)
+
+    val completeChallenge: Channel<Challenge> = Channel()
+
+    fun completeChallenge() {
+        Log.d("IndividualChallengeReceivedViewModel", name.value.toString())
+        completeChallenge.trySend(challenge)
+    }
+}
 
 
-class IndividualChallengePublicFragment : Fragment(R.layout.fragment_challenge_public_info) {
+class IndividualChallengePublicFragment(
+    private val challengeService: ChallengeService
+) :
+    DataBoundFragment<IndividualChallengePublicViewModel, FragmentChallengePublicInfoBinding>(
+        R.layout.fragment_challenge_public_info,
+        IndividualChallengePublicViewModel::class,
+        BR.challengePublicViewModel
+    ) {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override val viewModel: IndividualChallengePublicViewModel by viewModel {
+        val challenge =
+            arguments?.getSerializable(CHALLENGE_KEY)
+                ?: throw MissingChallengeName
+        parametersOf(challenge)
+    }
 
-        // Back Button
-        var backButton: TextView = view.findViewById<View>(R.id.back_button) as TextView
+    override fun createBinding(view: View) = FragmentChallengePublicInfoBinding.bind(view)
 
-        // From who
-        var title: EditText = view.findViewById<View>(R.id.challenge_title) as EditText
+    override fun onViewAndBindingCreated(
+        view: View,
+        binding: FragmentChallengePublicInfoBinding,
+        savedInstanceState: Bundle?
+    ) {
 
-        // Challenge description
-        var description: EditText = view.findViewById<View>(R.id.challenge_description) as EditText
-
-        // Difficulty
-        var difficulty: EditText = view.findViewById<View>(R.id.challenge_difficulty) as EditText
-
-        // Duration
-        var time: EditText = view.findViewById<View>(R.id.challenge_time) as EditText
-
-        // Send challenge Button
-        var challengeButton: Button = view.findViewById<View>(R.id.challenge) as Button
-
-        // Listener for Back Button to close fragment
-        backButton.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack();
+        binding.backButton.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
+        lifecycleScope.launch {
+            viewModel.completeChallenge.receiveAsFlow().collect { finishChallenge ->
+                val proof = ProofKind.SocialMediaLink("Public-Challenge")
+                challengeService.finishChallengeWithProof(finishChallenge, proof).fold(
+                    ifLeft = { err ->
+                        showToast("Could not complete challenge. Please try again.")
+                    },
+                    ifRight = {
+                        showToast("Challenge successfully completed!")
+                        requireActivity().supportFragmentManager.popBackStack()
+                    }
+                )
 
-
-        // Listener for challenge completed button
-        challengeButton.setOnClickListener {
-            // TO DO
+            }
         }
     }
 }

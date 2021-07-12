@@ -1,6 +1,7 @@
 package com.jolufeja.tudas
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -14,16 +15,13 @@ import arrow.core.computations.either
 import arrow.core.identity
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
-import com.jolufeja.tudas.data.*
-import com.jolufeja.tudas.service.challenges.Challenge
+import com.jolufeja.tudas.data.FriendsItem
+import com.jolufeja.tudas.data.ListItem
 import com.jolufeja.tudas.service.user.FriendEntry
 import com.jolufeja.tudas.service.user.UserService
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import org.koin.android.ext.android.get
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
-import java.util.ArrayList
 
 private val DefaultFriendsList = listOf(
     FriendsItem().apply {
@@ -34,14 +32,14 @@ private val DefaultFriendsList = listOf(
 
 class FriendsSettingsFragment(
     private val userService: UserService
-)  : Fragment(R.layout.fragment_friends_settings) {
+) : Fragment(R.layout.fragment_friends_settings) {
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var listOfFriends: ArrayList<FriendsItem> = ArrayList()
     private var finalList: MutableList<ListItem> = mutableListOf()
 
 
-    private suspend fun buildFriendsList() = flow<List<ListItem>> {
+    private suspend fun buildFriendsList() = flow {
         either<CommonErrors, Unit> {
             emit(emptyList())
 
@@ -50,7 +48,7 @@ class FriendsSettingsFragment(
                 .bind()
                 .toFriendsListItems()
 
-            val friendsNonEmpty = when(friends.isEmpty()) {
+            val friendsNonEmpty = when (friends.isEmpty()) {
                 true -> DefaultFriendsList
                 false -> friends
             }
@@ -58,14 +56,15 @@ class FriendsSettingsFragment(
 
             emit(friendsNonEmpty)
         }.fold(
-            ifLeft = { emit(DefaultFriendsList) },
+            ifLeft = {
+                Log.d("FriendsSettingsFragment", it.toString())
+                emit(DefaultFriendsList)
+            },
             ifRight = ::identity
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
 
 
         mRecyclerView = view.findViewById(R.id.lists_recycler_view)

@@ -1,7 +1,6 @@
 package com.jolufeja.tudas
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,20 +10,19 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.jolufeja.presentation.fragment.DataBoundFragment
 import com.jolufeja.tudas.databinding.FragmentChallengeReceivedInfoBinding
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import com.jolufeja.tudas.service.challenges.ProofKind
-import com.jolufeja.tudas.service.challenges.asByteArray
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,6 +32,7 @@ object FailedToGetChallenge : ChallengeErrors("Couldn't retrieve challenge from 
 object NonExistentChallenge : ChallengeErrors("No challenge associated with given name found.")
 object MissingChallengeName : ChallengeErrors("No challenge name passed to fragment.")
 
+const val CHALLENGE_KEY = "challenge"
 
 class IndividualChallengeReceivedFragment(
     private val challengeService: ChallengeService
@@ -45,7 +44,6 @@ class IndividualChallengeReceivedFragment(
     ) {
 
     companion object {
-        const val CHALLENGE_KEY = "challenge"
         private const val REQUEST_CODE_CAMERA = 1
         private const val REQUEST_CODE_IMAGE = 2
         private const val FILE_INTENT_TYPE = "image/*"
@@ -62,7 +60,6 @@ class IndividualChallengeReceivedFragment(
 
     override val viewModel: IndividualChallengeReceivedViewModel by viewModel {
         val challenge = arguments?.getSerializable(CHALLENGE_KEY) ?: throw MissingChallengeName
-        Log.d("IndividualChallengeReceivedFragment", challenge.toString())
         parametersOf(challenge)
     }
 
@@ -88,7 +85,7 @@ class IndividualChallengeReceivedFragment(
 
             val photoFile = tempPhotoFile
             val photoURI = FileProvider
-                .getUriForFile(requireContext(),"com.jolufeja.tudas.fileprovider",photoFile)
+                .getUriForFile(requireContext(), "com.jolufeja.tudas.fileprovider", photoFile)
 
             it.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         }
@@ -156,11 +153,18 @@ class IndividualChallengeReceivedFragment(
                         finishChallenge,
                         proofKind
                     ).fold(
-                        ifLeft = { err -> error(err) },
-                        ifRight = { requireActivity().supportFragmentManager.popBackStack() }
+                        ifLeft = { err ->
+                            showToast("Could not complete challenge. Please try again.")
+                        },
+                        ifRight = {
+                            showToast("Challenge successfully completed!")
+                            requireActivity().supportFragmentManager.popBackStack()
+                        }
                     )
                 }
             }
         }
     }
+
+
 }

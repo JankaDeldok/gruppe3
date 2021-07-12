@@ -2,10 +2,13 @@ package com.jolufeja.tudas
 
 import android.util.Log
 import androidx.lifecycle.*
+import arrow.core.computations.either
 import com.jolufeja.authentication.UserAuthenticationService
 import com.jolufeja.authentication.UserCredentials
+import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.navigation.NavigationEvent
 import com.jolufeja.navigation.NavigationEventPublisher
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -21,6 +24,8 @@ class LoginViewModel(
     private val authenticationService: UserAuthenticationService,
     private val navigator: NavigationEventPublisher
 ) : ViewModel() {
+
+    val hasLoggedIn: Channel<Unit> = Channel()
 
     val userNameData: MutableLiveData<String> = MutableLiveData("")
     val passwordData: MutableLiveData<String> = MutableLiveData("")
@@ -46,11 +51,16 @@ class LoginViewModel(
 
             authenticationService.login(credentials).fold(
                 ifLeft = { Log.d("LoginViewModel", "Login failed. $it") },
-                ifRight = { navigator.publish(LoginNavigationEvents.PROCEED_TO_HOME) }
+                ifRight = {
+                    hasLoggedIn.trySend(Unit)
+                    navigator.publish(LoginNavigationEvents.PROCEED_TO_HOME)
+                }
             )
         }
     }
 
     fun switchToRegistration() = navigator.publish(LoginNavigationEvents.PROCEED_TO_REGISTRATION)
+
+
 
 }

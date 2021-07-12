@@ -21,12 +21,12 @@ import org.koin.dsl.module
 object ApplicationModule {
 
     private val module = module {
-        fragment { MainFragment(get()) }
+        fragment { MainFragment(get(), get()) }
         fragment { ChallengesFragment() }
         fragment { FeedFragment(get()) }
-        fragment { ProfileFragment(get()) }
+        fragment { ProfileFragment(get(), get()) }
         fragment { RankingsFragment() }
-        fragment { LoginFragment() }
+        fragment { LoginFragment(get()) }
         fragment { RegistrationFragment() }
         fragment { IndividualChallengeSentFragment(get()) }
         fragment { ChallengesPublicFragment(get()) }
@@ -35,6 +35,7 @@ object ApplicationModule {
         fragment { RankingsFriendsFragment(get()) }
         fragment { RankingsWorldFragment(get()) }
         fragment { IndividualChallengeReceivedFragment(get()) }
+        fragment { IndividualChallengePublicFragment(get()) }
         fragment { AddFriendFragment(get()) }
 
         viewModel { LoginViewModel(get(), get()) }
@@ -44,6 +45,9 @@ object ApplicationModule {
         viewModel { (challenge: Challenge) ->
             IndividualChallengeReceivedViewModel(challenge)
         }
+
+        viewModel { (challenge: Challenge) ->
+            IndividualChallengePublicViewModel(challenge) }
 
         single<UserService> {
             DefaultUserService(

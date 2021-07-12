@@ -11,12 +11,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -24,15 +26,25 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jolufeja.navigation.NavigationEventBus
 import com.jolufeja.navigation.eventDrivenNavigation
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.core.KoinExperimentalAPI
 
+fun Fragment.showToast(message: String) {
+    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+}
+
+
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val CHANNEL_ID = "channel_id_test_01"
     private val notificationId = 101
+
+    val statsChannel: Channel<Int> = Channel()
 
 
     val permissions = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -79,6 +91,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             navigationEventBus.subscribe { navigationSubscriptions(navController)(it) }
         }
 
+        updateCoins()
+
+    }
+
+    private fun updateCoins() {
+        val pointsLayout = findViewById<TextView>(R.id.user_points_main)
+        lifecycleScope.launch {
+            statsChannel.receiveAsFlow().collect {
+                pointsLayout.text = it.toString()
+            }
+        }
     }
 
     private fun navigationSubscriptions(navController: NavController) = eventDrivenNavigation(navController) {

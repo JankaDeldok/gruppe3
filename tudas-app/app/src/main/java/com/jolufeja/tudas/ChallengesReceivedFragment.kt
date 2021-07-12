@@ -13,7 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import arrow.core.computations.either
 import arrow.core.identity
 import com.jolufeja.httpclient.error.CommonErrors
-import com.jolufeja.tudas.IndividualChallengeReceivedFragment.Companion.CHALLENGE_KEY
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.ChallengesItem
 import com.jolufeja.tudas.data.HeaderItem

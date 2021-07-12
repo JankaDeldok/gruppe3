@@ -1,28 +1,26 @@
 package com.jolufeja.tudas
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import arrow.core.computations.either
-import arrow.core.computations.nullable
 import arrow.core.identity
 import com.jolufeja.authentication.FeedEntry
 import com.jolufeja.httpclient.error.CommonErrors
 import com.jolufeja.tudas.adapters.RecycleViewAdapter
 import com.jolufeja.tudas.data.FeedItem
-import com.jolufeja.tudas.data.HeaderItem
 import com.jolufeja.tudas.data.ListItem
-import com.jolufeja.tudas.service.challenges.ChallengeService
 import com.jolufeja.tudas.service.user.UserService
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.*
 
 
 class FeedFragment(
@@ -44,7 +42,11 @@ class FeedFragment(
 
             emit(feedElements)
         }.fold(
-            ifLeft = { emit(emptyList()) },
+            ifLeft = {
+                Log.d("FeedFragment", it.toString())
+                showToast("Could not fetch feed. Please try again.")
+                emit(emptyList())
+            },
             ifRight = ::identity
         )
     }
@@ -98,6 +100,8 @@ class FeedFragment(
             }
         }
     }
+
+
 }
 
 private fun List<FeedEntry>.toFeedListItems(): List<ListItem> = mapIndexed { i, entry ->

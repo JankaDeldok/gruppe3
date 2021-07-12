@@ -12,14 +12,18 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import arrow.core.computations.either
 import com.jolufeja.authentication.UserAuthenticationService
+import com.jolufeja.httpclient.error.CommonErrors
+import com.jolufeja.tudas.service.user.UserService
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.get
 
 
 class ProfileFragment(
-    private val authenticationService: UserAuthenticationService
+    private val authenticationService: UserAuthenticationService,
+    private val userService: UserService
 ) : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,6 +33,16 @@ class ProfileFragment(
         val userName = view.findViewById<TextView>(R.id.userName).let {
             runBlocking {
                 it.text = authenticationService.authentication.await().user.name
+            }
+        }
+
+        view.findViewById<TextView>(R.id.userPoints).let {
+            runBlocking {
+                either<CommonErrors, Unit> {
+                    val points = userService.getPointsOfCurrentUser().bind()
+                    it.text = points.toString()
+                }
+
             }
         }
 
@@ -45,6 +59,10 @@ class ProfileFragment(
         var logOutButton: Button = view.findViewById<View>(R.id.logOutButton) as Button
 
         var testNotificationsButton: Button = view.findViewById<View>(R.id.testNotificationsButton) as Button
+
+
+
+
 
 
         profileImage.setOnClickListener{
@@ -103,6 +121,7 @@ class ProfileFragment(
             lifecycleScope.launch {
                 authenticationService.logout()
                 requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                (activity as MainActivity).statsChannel.trySend(0)
                 findNavController().navigate(R.id.nav_graph_unauthenticated)
             }
         }

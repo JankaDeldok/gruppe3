@@ -26,6 +26,7 @@ import com.jolufeja.tudas.service.challenges.ChallengeService
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -107,7 +108,12 @@ class ChallengesPublicFragment(
                 0
             ) { item ->
                 // Open New Fragment
-                val individualChallengePublicFragment = IndividualChallengePublicFragment()
+                val challengeArgs = Bundle().also { bundle ->
+                    bundle.putSerializable(CHALLENGE_KEY, (item as ChallengesItem).challenge)
+                }
+                val individualChallengePublicFragment = IndividualChallengePublicFragment(get())
+                individualChallengePublicFragment.arguments = challengeArgs
+
                 val transaction: FragmentTransaction =
                     requireActivity().supportFragmentManager.beginTransaction()
                 transaction.replace(
@@ -125,7 +131,7 @@ class ChallengesPublicFragment(
         createChallengeButton = view.findViewById(R.id.create_challenge_button) as Button
         createChallengeButton!!.setOnClickListener {
             // Open New Fragment
-            val individualChallengePublicFragment = IndividualChallengePublicFragment()
+            val individualChallengePublicFragment = IndividualChallengeSentFragment(get())
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(
