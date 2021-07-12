@@ -42,6 +42,7 @@ challengeIO.use(function (req, res, next) {
 /* POST /challenge/uploadpicture */
 /* adds a proof picture to a challenge and returns the updated challenge with the picture link */
 challengeIO.post('/uploadpicture', proofImg.single("file"), async (req, res) => {
+    console.log("Receivied picture ?")
     const { challengeName, userName } = req.body;
     let url = "http://localhost:3030/images/challenges/" + req.file.originalname;
     Challenge.findOne({ name: challengeName }).then(challenge => {
@@ -74,7 +75,7 @@ challengeIO.post('/uploadsocialmedia', async (req, res) => {
 const finishedChallenge = async (challenge, userName) => {
     await User.findOneAndUpdate({ name: challenge.creator }, { $push: { feed: { message: userName + " finished your challenge " + challenge.name, new: true } }, $inc: { points: challenge.worth / 4 } })
     return User.findOneAndUpdate({ name: userName },
-        { $push: { finishedChallenges: challenge._Id }, $pull: { openChallenges: challenge._Id }, $inc: { points: challenge.worth } },
+        { $push: { finishedChallenges: challenge._id }, $pull: { openChallenges: challenge._id }, $inc: { points: challenge.worth } },
         { new: true })
 }
 

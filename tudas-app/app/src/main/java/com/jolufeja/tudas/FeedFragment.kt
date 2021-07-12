@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import arrow.core.computations.either
 import arrow.core.computations.nullable
 import arrow.core.identity
@@ -51,31 +52,17 @@ class FeedFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-//        //adding items in list
-//        for (i in 0..10) {
-//            val feed = FeedItem()
-//            feed.id = i
-//            feed.text = "Felix sent Laura a Challenge"
-//            feed.type = "Sent Challenge"
-//            feed.date = "2020-06-21"
-//            listOfActivities.add(feed)
-//        }
-//
-//        val header = HeaderItem()
-//        header.text = "Today"
-//        finalList.add(header)
-//
-//        listOfActivities.forEach {
-//            finalList.add(it)
-//        }
-//
-//        val header1 = HeaderItem()
-//        header1.text = "Yesterday"
-//        finalList.add(header1)
-//
-//        listOfActivities.forEach {
-//            finalList.add(it)
-//        }
+        val refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.feed_swiperefresh)
+        refreshLayout?.setOnRefreshListener {
+            lifecycleScope.launch {
+                buildFeedList().collect { feed ->
+                    refreshLayout.isRefreshing = false
+                    finalList = feed.toMutableList()
+                    (mAdapter as? RecycleViewAdapter)?.refreshData(feed)
+                    mAdapter?.notifyDataSetChanged()
+                }
+            }
+        }
 
 
 

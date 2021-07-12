@@ -43,6 +43,7 @@ class IndividualChallengeSentViewModel(
     val reward: MutableLiveData<String> = MutableLiveData("")
     val isPublic: MutableLiveData<Boolean> = MutableLiveData(false)
     val addressedTo: MutableLiveData<String> = MutableLiveData("")
+    val worth: MutableLiveData<Int> = MutableLiveData(200)
     var recipient: String? = null
 
 
@@ -58,7 +59,8 @@ class IndividualChallengeSentViewModel(
                     description.value.bind(),
                     LocalDate.now().plusDays(3),
                     reward.value.bind(),
-                    recipient.bind()
+                    recipient.bind(),
+                    200
                 )
 
                 challengeService.createChallenge(initialChallenge).fold(

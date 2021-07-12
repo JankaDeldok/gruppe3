@@ -45,6 +45,8 @@ interface HttpClientRequest {
 
         fun jsonBody(payload: Any, contentType: MediaType = JsonRequestBody.DEFAULT_MEDIA_TYPE): Builder
 
+        fun jsonRequestBodyOf(payload: Any, contentType: MediaType = JsonRequestBody.DEFAULT_MEDIA_TYPE): RequestBody
+
         fun formBody(spec: (FormBody.Builder) -> Unit): Builder =
             body(FormBody.Builder().apply(spec).build())
 
@@ -141,6 +143,9 @@ private class DefaultHttpClientRequest(
         override fun jsonBody(payload: Any, contentType: MediaType) = body(
             JsonRequestBody(payload, objectMapper, contentType)
         )
+
+        override fun jsonRequestBodyOf(payload: Any, contentType: MediaType): RequestBody =
+            JsonRequestBody(payload, objectMapper, contentType)
 
 
         override fun build(): HttpClientRequest =

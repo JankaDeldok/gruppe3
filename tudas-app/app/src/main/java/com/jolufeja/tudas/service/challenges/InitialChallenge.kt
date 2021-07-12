@@ -8,5 +8,6 @@ data class InitialChallenge(
     val description: String,
     val dueDate: LocalDate,
     val reward: String,
-    val addressedTo: String
+    val addressedTo: String,
+    val worth: Int,
 )

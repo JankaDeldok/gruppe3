@@ -38,14 +38,14 @@ internal object HttpMapDomain :
 
     override suspend fun HttpClientResponse.toDomain(): Either<CommonErrors, HttpClientResponse> =
         when (statusCode) {
-            in 500..600 -> CommonErrors.InternalServerError.left()
+            in 500..600 -> CommonErrors.InternalServerError(body?.string() ?: "Internal server error").left()
             in 400..410 -> try {
                 readErrorBody(CommonErrors::BadRequest)
             } catch (err: Throwable) {
-                CommonErrors.GenericError("Request failed with $statusCode, but cant read error body.")
+                CommonErrors.GenericError("Request failed with $statusCode, but cant read error body. ${body?.string()}")
             }.left()
             in 200..305 -> this.right()
-            else -> CommonErrors.GenericError("Request successful, but response has unrecognisable status code.")
+            else -> CommonErrors.GenericError("Request successful, but response has unrecognisable status code. ${body?.string()}")
                 .left()
         }
 }
@@ -86,9 +86,7 @@ sealed interface CommonErrors {
 
     data class BadRequest(override val message: String) : CommonErrors
 
-    object InternalServerError : CommonErrors {
-        override val message = "Internal server error."
-    }
+    data class InternalServerError(override val message: String) : CommonErrors
 }
 
 

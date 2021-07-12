@@ -171,7 +171,9 @@ userIO.post('/getopenchallenges', (req, res) => {
     User.findOne({ name: req.body.userName }, { openChallenges: 1 })
         .then(challenges =>
             {
+                console.log(req.body)
                 console.log(challenges)
+                console.log(req.body.userName)
                 return Challenge.find({ _id: { $in: challenges.openChallenges }, dueDate: { $gt: Date.now() } }).then(challenges => res.status(200).json(challenges));
             })
 });

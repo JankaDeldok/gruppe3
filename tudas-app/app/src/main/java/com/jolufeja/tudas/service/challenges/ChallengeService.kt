@@ -1,15 +1,23 @@
 package com.jolufeja.tudas.service.challenges
 
+import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
+import android.os.Environment
+import android.provider.MediaStore
 import arrow.core.Either
 import arrow.core.flatMap
 import com.jolufeja.authentication.UserAuthenticationService
 import com.jolufeja.httpclient.*
 import com.jolufeja.httpclient.error.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okio.Buffer
-import java.nio.ByteBuffer
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 sealed interface ProofKind {
@@ -17,15 +25,22 @@ sealed interface ProofKind {
 
     fun buildJsonBody(challenge: Challenge, userName: String): Body
 
-    data class ProofImage(val image: Bitmap) : ProofKind {
+    data class ProofImage(val image: File) : ProofKind {
         data class WithImageBody(
             val challengeName: String,
-            val userName: String,
-            val file: ByteArray
+            val userName: String
         ) : Body
 
+
         override fun buildJsonBody(challenge: Challenge, userName: String) =
-            WithImageBody(challenge.name, userName, image.toByteArray())
+            WithImageBody(challenge.name, userName)
+
+        fun contentToRequestBody(challenge: Challenge, userName: String) = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("file",image.name, image.asRequestBody("image/jpeg".toMediaType()))
+            .addFormDataPart("challengeName", challenge.name)
+            .addFormDataPart("userName", userName)
+            .build()
     }
 
     data class SocialMediaLink(val link: String) : ProofKind {
@@ -119,21 +134,30 @@ class DefaultChallengeService(
              .awaitJsonBody(jsonListOf<Challenge>())
 
 
+
+
+
     override suspend fun finishChallengeWithProof(
         challenge: Challenge,
         proofKind: ProofKind
     ): Either<CommonErrors, Unit> {
         val userName = authenticationService.authentication.await().user.name
-        val body = proofKind.buildJsonBody(challenge, userName)
-        val endpoint = when (proofKind) {
-            is ProofKind.ProofImage -> httpClient.post("challenge/uploadPicture")
-            is ProofKind.SocialMediaLink -> httpClient.post("challenge/uploadsocialmedia")
+        return when (proofKind) {
+            is ProofKind.ProofImage -> {
+                val body = proofKind.contentToRequestBody(challenge, userName)
+                httpClient.post("challenge/uploadPicture")
+                    .body(body)
+                    .tryExecute()
+                    .void()
+            }
+            is ProofKind.SocialMediaLink -> {
+                httpClient.post("challenge/uploadsocialmedia")
+                    .jsonBody(proofKind.buildJsonBody(challenge, userName))
+                    .tryExecute()
+                    .void()
+            }
         }
 
-        return endpoint
-            .jsonBody(body)
-            .tryExecute()
-            .void()
     }
 
 
@@ -152,7 +176,9 @@ suspend fun <T : Any> Either<CommonErrors, HttpClientResponse>.awaitJsonBody(
 
 
 
-fun Bitmap.toByteArray(): ByteArray = ByteBuffer.allocate(byteCount).apply {
-    copyPixelsToBuffer(this)
-    rewind()
-}.array()
+fun Bitmap.asByteArray(): ByteArray {
+    val ostream = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.JPEG,100,ostream)
+
+    return ostream.toByteArray()
+}

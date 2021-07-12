@@ -1,24 +1,32 @@
 package com.jolufeja.tudas
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.jolufeja.presentation.fragment.DataBoundFragment
 import com.jolufeja.tudas.databinding.FragmentChallengeReceivedInfoBinding
 import com.jolufeja.tudas.service.challenges.ChallengeService
 import com.jolufeja.tudas.service.challenges.ProofKind
+import com.jolufeja.tudas.service.challenges.asByteArray
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 sealed class ChallengeErrors(reason: String) : Throwable(reason)
@@ -33,7 +41,7 @@ class IndividualChallengeReceivedFragment(
     DataBoundFragment<IndividualChallengeReceivedViewModel, FragmentChallengeReceivedInfoBinding>(
         R.layout.fragment_challenge_received_info,
         IndividualChallengeReceivedViewModel::class,
-        BR.challengeSentViewModel
+        BR.challengeReceivedViewModel
     ) {
 
     companion object {
@@ -47,28 +55,50 @@ class IndividualChallengeReceivedFragment(
     private lateinit var takenImage: Bitmap
     private lateinit var viewImage: ImageView
 
+    private lateinit var tempPhotoFile: File
+
+    private var pictureWasTaken = false
+    private var pictureWasTakenAsFile = false
+
     override val viewModel: IndividualChallengeReceivedViewModel by viewModel {
         val challenge = arguments?.getSerializable(CHALLENGE_KEY) ?: throw MissingChallengeName
+        Log.d("IndividualChallengeReceivedFragment", challenge.toString())
         parametersOf(challenge)
     }
 
     override fun createBinding(view: View) = FragmentChallengeReceivedInfoBinding.bind(view)
 
+    private fun createTempImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.GERMANY).format(Date())
+        val fileName = "JPEG_${timeStamp}_"
+        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+        return File.createTempFile(
+            fileName,
+            ".jpg",
+            storageDir
+        )
+    }
+
     private fun getCamera() {
         if ((activity as MainActivity?)!!.hasNoPermissions()) {
             (activity as MainActivity?)!!.requestPermission()
         }
-        val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {
+
+            val photoFile = tempPhotoFile
+            val photoURI = FileProvider
+                .getUriForFile(requireContext(),"com.jolufeja.tudas.fileprovider",photoFile)
+
+            it.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        }
+
         startActivityForResult(
             takePhotoIntent,
             REQUEST_CODE_CAMERA
         );
     }
 
-//     Listener for Back Button to close fragment
-//    backButton.setOnClickListener {
-//        requireActivity().supportFragmentManager.popBackStack();
-//    }
 
     private fun getImage() {
         if ((activity as MainActivity?)!!.hasNoPermissions()) {
@@ -82,11 +112,15 @@ class IndividualChallengeReceivedFragment(
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK) {
-            takenImage = data?.extras?.get("data") as Bitmap
-            viewImage.setImageBitmap(takenImage);
+            // takenImage = data?.extras?.get("data") as? Bitmap
+            // viewImage.setImageBitmap(takenImage);
+            pictureWasTaken = true
+            val bitmap = BitmapFactory.decodeFile(tempPhotoFile.path)
+            viewImage.setImageBitmap(bitmap)
         }
         if (requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK) {
             viewImage.setImageURI(data?.data)
+            pictureWasTakenAsFile = true
         }
 
         super.onActivityResult(requestCode, resultCode, data)
@@ -98,8 +132,13 @@ class IndividualChallengeReceivedFragment(
         savedInstanceState: Bundle?
     ) {
 
+        tempPhotoFile = createTempImageFile()
+        viewImage = binding.imageView
         binding.addFile.setOnClickListener { getImage() }
         binding.openCamera.setOnClickListener { getCamera() }
+        binding.backButton.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
         /*
         Only try to complete the challenge if the user has selected an image already.
@@ -107,11 +146,8 @@ class IndividualChallengeReceivedFragment(
         lifecycleScope.launch {
             viewModel.completeChallenge.receiveAsFlow().collect { finishChallenge ->
                 val proof = when {
-                    ::takenImage.isInitialized -> ProofKind.ProofImage(takenImage)
-                    ::filePhoto.isInitialized -> {
-                        val bytes = filePhoto.readBytes()
-                        ProofKind.ProofImage(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
-                    }
+                    pictureWasTaken -> ProofKind.ProofImage(tempPhotoFile)
+                    pictureWasTakenAsFile -> ProofKind.ProofImage(filePhoto)
                     else -> null
                 }
 

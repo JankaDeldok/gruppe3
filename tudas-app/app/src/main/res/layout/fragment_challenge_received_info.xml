@@ -2,10 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".IndividualChallengeReceivedFragment2">
+    tools:context=".IndividualChallengeReceivedFragment">
 
     <data>
-        <variable name="viewModel" type="com.jolufeja.tudas.IndividualChallengeReceivedViewModel"/>
+        <variable
+            name="challengeReceivedViewModel"
+            type="com.jolufeja.tudas.IndividualChallengeReceivedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,300 +22,306 @@
             android:layout_marginLeft="@dimen/info_box_margin"
             android:layout_marginTop="@dimen/info_box_margin"
             android:layout_marginRight="@dimen/info_box_margin"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="20dp"
             app:cardBackgroundColor="@color/green"
             app:cardCornerRadius="@dimen/card_radius"
             app:contentPadding="10dp">
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/info_box_margin_2"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/back_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/back"
-                        android:textColor="@color/secondary"
-                        android:textSize="@dimen/font_size_medium"
-                        app:drawableLeftCompat="@drawable/ic_baseline_keyboard_arrow_left_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/info_box_text_margin"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/challenge_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@{viewModel.name}"
-                            android:hint="@string/challenge_title"
-                            android:textColor="@color/secondary"
-                            android:textSize="@dimen/font_size_large" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/from"
-                            android:textColor="@color/secondary"
-                            android:textSize="@dimen/font_size_medium" />
-
-                        <TextView
-                            android:id="@+id/challenge_author"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/edit_text_box_rounded_corners_green"
-                            android:ems="10"
-                            android:padding="@dimen/info_box_text_padding"
-                            android:text="@{viewModel.creator}"
-                            android:hint="@string/challenge_name"
-                            android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/info_box_margin"
-                        android:contentDescription="@string/profile_picture"
-                        tools:srcCompat="@tools:sample/avatars" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/info_box_text_margin"
-                    android:layout_weight="1"
+                    android:layout_margin="@dimen/info_box_margin_2"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/challenge_description"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/challenge_description"
-                        android:textColor="@color/secondary"
-                        android:textSize="@dimen/font_size_medium" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/challenge_name"
+                        <TextView
+                            android:id="@+id/back_button"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/back"
+                            android:textColor="@color/secondary"
+                            android:textSize="@dimen/font_size_medium"
+                            app:drawableLeftCompat="@drawable/ic_baseline_keyboard_arrow_left_24" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/info_box_text_margin"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/challenge_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/challenge_title"
+                                android:text="@{challengeReceivedViewModel.name}"
+                                android:textColor="@color/secondary"
+                                android:textSize="@dimen/font_size_large" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/from"
+                                android:textColor="@color/secondary"
+                                android:textSize="@dimen/font_size_medium" />
+
+                            <TextView
+                                android:id="@+id/challenge_author"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/edit_text_box_rounded_corners_green"
+                                android:ems="10"
+                                android:hint="@string/challenge_name"
+                                android:padding="@dimen/info_box_text_padding"
+                                android:text="@{challengeReceivedViewModel.creator}"
+                                android:textColor="@color/font_color_light"
+                                tools:cornerRadius="@dimen/button_radius" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/info_box_margin"
+                            android:contentDescription="@string/profile_picture"
+                            tools:srcCompat="@tools:sample/avatars" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/edit_text_box_rounded_corners_green"
-                        android:ems="10"
-                        android:padding="@dimen/info_box_text_padding"
-                        android:text="@{viewModel.description}"
-                        android:hint="@string/challenge_description"
-                        android:textColor="@color/font_color_light"
-                        tools:cornerRadius="@dimen/button_radius" />
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/info_box_text_margin"
-
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/info_box_text_margin"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/challenge_description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/challenge_reward"
+                            android:text="@string/challenge_description"
                             android:textColor="@color/secondary"
                             android:textSize="@dimen/font_size_medium" />
 
                         <TextView
-                            android:id="@+id/challenge_reward"
+                            android:id="@+id/challenge_name"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/info_box_text_margin"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:background="@drawable/edit_text_box_rounded_corners_green"
                             android:ems="10"
+                            android:hint="@string/challenge_description"
                             android:padding="@dimen/info_box_text_padding"
-                            android:text="@{viewModel.reward}"
-                            android:hint="@string/challenge_reward"
+                            android:text="@{challengeReceivedViewModel.description}"
                             android:textColor="@color/font_color_light"
                             tools:cornerRadius="@dimen/button_radius" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/info_box_text_margin"
+
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/challenge_reward"
+                                android:textColor="@color/secondary"
+                                android:textSize="@dimen/font_size_medium" />
+
+                            <TextView
+                                android:id="@+id/challenge_reward"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/info_box_text_margin"
+                                android:background="@drawable/edit_text_box_rounded_corners_green"
+                                android:ems="10"
+                                android:hint="@string/challenge_reward"
+                                android:padding="@dimen/info_box_text_padding"
+                                android:text="@{challengeReceivedViewModel.reward}"
+                                android:textColor="@color/font_color_light"
+                                tools:cornerRadius="@dimen/button_radius" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/challenge_difficulty"
+                                android:textColor="@color/secondary"
+                                android:textSize="@dimen/font_size_medium" />
+
+                            <TextView
+                                android:id="@+id/challenge_difficulty"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/edit_text_box_rounded_corners_green"
+                                android:ems="10"
+                                android:hint="@string/challenge_difficulty"
+                                android:padding="@dimen/info_box_text_padding"
+                                android:text="Medium"
+                                android:textColor="@color/font_color_light"
+                                tools:cornerRadius="@dimen/button_radius" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_marginTop="@dimen/info_box_text_margin"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/challenge_difficulty"
-                            android:textColor="@color/secondary"
-                            android:textSize="@dimen/font_size_medium" />
-
-                        <TextView
-                            android:id="@+id/challenge_difficulty"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/edit_text_box_rounded_corners_green"
-                            android:ems="10"
-                            android:padding="@dimen/info_box_text_padding"
-                            android:text="Medium"
-                            android:hint="@string/challenge_difficulty"
-                            android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
-                    </LinearLayout>
-                </LinearLayout>
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/info_box_text_margin"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/challenge_time_left"
+                                android:textColor="@color/secondary"
+                                android:textSize="@dimen/font_size_medium" />
+
+                            <TextView
+                                android:id="@+id/challenge_time_left"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/info_box_text_margin"
+                                android:background="@drawable/edit_text_box_rounded_corners_green"
+                                android:hint="@string/challenge_duration"
+                                android:padding="@dimen/info_box_text_padding"
+                                android:text="@{challengeReceivedViewModel.dueDate.toString()}"
+                                android:textColor="@color/font_color_light"
+                                tools:cornerRadius="@dimen/button_radius" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_marginTop="@dimen/info_box_text_margin"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/challenge_time_left"
-                            android:textColor="@color/secondary"
-                            android:textSize="@dimen/font_size_medium" />
-
-                        <TextView
-                            android:id="@+id/challenge_time_left"
-                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/info_box_text_margin"
-                            android:background="@drawable/edit_text_box_rounded_corners_green"
-                            android:padding="@dimen/info_box_text_padding"
-                            android:text="@{viewModel.dueDate.toString()}"
-                            android:hint="@string/challenge_duration"
-                            android:textColor="@color/font_color_light"
-                            tools:cornerRadius="@dimen/button_radius" />
+                            android:text="@string/add_proof"
+                            android:textColor="@color/secondary"
+                            android:textSize="@dimen/font_size_medium" />
+
+                        <ImageView
+                            android:id="@+id/add_file"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginEnd="@dimen/info_box_text_margin"
+                            android:background="@drawable/button_circle"
+                            android:clickable="true"
+                            android:contentDescription="@string/button_to_attach_file"
+                            android:padding="@dimen/circle_button_padding"
+                            android:src="@drawable/ic_baseline_attach_file_24"
+                            app:cornerRadius="@dimen/button_radius" />
+
+                        <ImageView
+                            android:id="@+id/open_camera"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginEnd="@dimen/info_box_text_margin"
+                            android:background="@drawable/button_circle"
+                            android:clickable="true"
+                            android:contentDescription="@string/button_to_open_camera"
+                            android:padding="@dimen/circle_button_padding"
+                            android:src="@drawable/ic_baseline_photo_camera_24"
+                            app:cornerRadius="@dimen/button_radius" />
+
+                        <ImageView
+                            android:id="@+id/send_to_someone"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/button_circle"
+                            android:clickable="true"
+                            android:contentDescription="@string/button_to_share_the_challenge"
+                            android:padding="@dimen/circle_button_padding"
+                            android:src="@drawable/ic_baseline_share_24"
+                            app:cornerRadius="@dimen/button_radius" />
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"/>
+                        android:layout_marginTop="@dimen/info_box_text_margin"
+                        android:orientation="horizontal">
 
+
+                        <Button
+                            android:id="@+id/completed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/info_box_text_margin"
+                            android:layout_weight="1"
+                            android:onClick="@{() -> challengeReceivedViewModel.completeChallenge() }"
+                            android:text="@string/completed"
+                            app:cornerRadius="@dimen/button_radius" />
+
+                        <Button
+                            android:id="@+id/give_up"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:backgroundTint="@color/red"
+                            android:text="@string/give_up"
+                            app:cornerRadius="@dimen/button_radius" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/info_box_text_margin"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/info_box_text_margin"
-                        android:text="@string/add_proof"
-                        android:textColor="@color/secondary"
-                        android:textSize="@dimen/font_size_medium" />
-
-                    <ImageView
-                        android:id="@+id/add_file"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginEnd="@dimen/info_box_text_margin"
-                        android:background="@drawable/button_circle"
-                        android:clickable="true"
-                        android:contentDescription="@string/button_to_attach_file"
-                        android:padding="@dimen/circle_button_padding"
-                        android:src="@drawable/ic_baseline_attach_file_24"
-                        app:cornerRadius="@dimen/button_radius" />
-
-                    <ImageView
-                        android:id="@+id/open_camera"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginEnd="@dimen/info_box_text_margin"
-                        android:background="@drawable/button_circle"
-                        android:clickable="true"
-                        android:contentDescription="@string/button_to_open_camera"
-                        android:padding="@dimen/circle_button_padding"
-                        android:src="@drawable/ic_baseline_photo_camera_24"
-                        app:cornerRadius="@dimen/button_radius" />
-
-                    <ImageView
-                        android:id="@+id/send_to_someone"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/button_circle"
-                        android:clickable="true"
-                        android:contentDescription="@string/button_to_share_the_challenge"
-                        android:padding="@dimen/circle_button_padding"
-                        android:src="@drawable/ic_baseline_share_24"
-                        app:cornerRadius="@dimen/button_radius" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/info_box_text_margin"
-                    android:orientation="horizontal">
-
-
-                    <Button
-                        android:id="@+id/completed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/info_box_text_margin"
-                        android:layout_weight="1"
-                        android:text="@string/completed"
-                        app:cornerRadius="@dimen/button_radius" />
-
-                    <Button
-                        android:id="@+id/give_up"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:backgroundTint="@color/red"
-                        android:text="@string/give_up"
-                        app:cornerRadius="@dimen/button_radius" />
-                </LinearLayout>
-            </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

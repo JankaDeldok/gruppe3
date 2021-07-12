@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import arrow.core.computations.either
 import arrow.core.identity
 import com.jolufeja.httpclient.error.CommonErrors
@@ -57,6 +58,19 @@ class ChallengesReceivedFragment(
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.received_swiperefresh)
+
+        refreshLayout?.setOnRefreshListener {
+            lifecycleScope.launch {
+                buildChallengeList().collect { challenges ->
+                    refreshLayout.isRefreshing = false
+                    finalList = challenges.toMutableList()
+                    (mAdapter as? RecycleViewAdapter)?.refreshData(challenges)
+                    mAdapter?.notifyDataSetChanged()
+                }
+            }
+        }
 
         mRecyclerView = view.findViewById(R.id.challenges_received_recycler_view)
         var mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
